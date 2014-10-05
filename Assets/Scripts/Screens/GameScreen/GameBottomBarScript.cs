@@ -13,9 +13,9 @@ public class GameBottomBarScript : MonoBehaviour {
   public GameObject chatPanel;
   public UIInput chatInput;
   
-  private BaseGameScreen currentScreen;
+  private BaseSlotMachineScreen currentScreen;
 
-  public void Init(BaseGameScreen currentScreen) {
+  public void Init(BaseSlotMachineScreen currentScreen) {
     this.currentScreen = currentScreen;
     EventDelegate.Set(btnOpenChat.onClick, ShowChatPanel);
     EventDelegate.Set(btnSendChat.onClick, SendChat);

@@ -8,7 +8,8 @@ public class BaseScreen : MonoBehaviour {
     SELECT_GAME,
     SELECT_ROOM,
     GAME_SCREEN,
-    LEADERBOARD
+    LEADERBOARD,
+    SLOT_GAME_SCREEN
   }
 	
 	public Type type;

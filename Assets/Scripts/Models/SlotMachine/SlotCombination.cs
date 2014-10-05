@@ -12,7 +12,7 @@ public class SlotCombination : MonoBehaviour {
   public static int NUM_REELS = 5;
   public static int MAX_DISPLAY_ITEMS = 15;
   
-  private float[] ITEM_RATES = new float[10] {5f, 23f, 10f, 10f, 10f, 10f, 10f, 9f, 8f, 5f};
+  private float[] ITEM_RATES = new float[10] {4f, 23f, 10f, 10f, 10f, 10f, 10f, 9f, 8f, 6f};
   
   private float randomValue;
   
@@ -98,7 +98,7 @@ public class SlotCombination : MonoBehaviour {
     return 1;
   }
   
-  // input data is array type of 15 items - output data is array winning value of 9 lines
+  // input data is array type of 15 items - output data is array winning gold of 9 lines
   public int[] CalculateCombination(int[] reelData) {
     int winIndex;
     int[] winningLineCount = new int[numLines];
@@ -143,6 +143,6 @@ public class SlotCombination : MonoBehaviour {
     Debug.Log(Utils.ArrIntToString(winningLineCount));
     Debug.Log(Utils.ArrIntToString(winningLineType));
     Debug.Log(Utils.ArrIntToString(winningGold));
-    return winningLineCount;
+    return winningGold;
   }
 }

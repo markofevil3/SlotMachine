@@ -83,10 +83,11 @@ public class Utils : MonoBehaviour {
 	}
 	
 	public static string ArrIntToString(int[] arr) {
-	  string log = "";
+	  string log = "[";
 	  for (int i = 0; i < arr.Length; i++) {
 	    log += arr[i] + ((i == arr.Length - 1) ? "" : ",");
 	  }
+	  log += "]";
 	  return log;
 	}
 }

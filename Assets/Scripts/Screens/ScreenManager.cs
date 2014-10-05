@@ -14,6 +14,7 @@ public class ScreenManager : MonoBehaviour {
 	private SelectRoomScreen selectRoomScreen;
 	private LeaderboardScreen leaderboardScreen;
 	private BaseGameScreen gameScreen;
+	private BaseSlotMachineScreen slotScreen;
 	
 	public LobbyScreen LobbyScreen {
 		get { return lobbyScreen; }
@@ -38,6 +39,11 @@ public class ScreenManager : MonoBehaviour {
 	public BaseGameScreen CurrentGameScreen {
 		get { return gameScreen; }
 		set { gameScreen = value; }
+	}
+	
+	public BaseSlotMachineScreen CurrentSlotScreen {
+		get { return slotScreen; }
+		set { slotScreen = value; }
 	}
 	
 	void Start() {
@@ -107,11 +113,34 @@ public class ScreenManager : MonoBehaviour {
 			case BaseScreen.Type.GAME_SCREEN:
       	currentScreen = SetGameScreen((BaseGameScreen.GameType)data[0], data);
 			break;
+			case BaseScreen.Type.SLOT_GAME_SCREEN:
+      	currentScreen = SetSlotGameScreen((BaseSlotMachineScreen.GameType)data[0], data);
+			break;
 		}
 		if (isFadeIn) {
       // currentScreen.FadeIn();
       PopupManager.Instance.FadeInScreen();
 		}
+  }
+  
+  private BaseScreen SetSlotGameScreen(BaseSlotMachineScreen.GameType gameType, object[] data = null) {
+    GameObject tempGameObject;
+    BaseSlotMachineScreen tempScreen;
+    switch(gameType) {
+      case BaseSlotMachineScreen.GameType.SLOT_FRUITS:
+        tempGameObject = NGUITools.AddChild(root, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotFruitScreen", typeof(GameObject)) as GameObject);
+       	tempGameObject.name = "SlotFruitScreen";
+       	SlotFruitsScreen slotFruitsScreen = tempGameObject.GetComponent<SlotFruitsScreen>();
+       	slotFruitsScreen.Init(data);
+	     	slotFruitsScreen.Open();
+	     	tempScreen = slotFruitsScreen as BaseSlotMachineScreen;
+      break;
+      default:
+        tempScreen = null;
+      break;
+    }
+    CurrentSlotScreen = tempScreen as BaseSlotMachineScreen;
+    return tempScreen;
   }
   
   private BaseScreen SetGameScreen(BaseGameScreen.GameType gameType, object[] data = null) {

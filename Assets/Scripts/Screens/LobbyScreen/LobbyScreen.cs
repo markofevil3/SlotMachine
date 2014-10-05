@@ -31,7 +31,9 @@ public class LobbyScreen : BaseScreen {
     EventDelegate.Set(btnLogin.onClick, delegate() { OpenTab(Tab.TabType.LOGIN_TAB); });
     EventDelegate.Set(btnRegister.onClick, delegate() { OpenTab(Tab.TabType.REGISTER_TAB); });
     EventDelegate.Set(btnPlayAsGuest.onClick, EventPlayAsGuest);
-    EventDelegate.Set(btnSelectGame.onClick, EventMoveToSelectGameScreen);
+    // EventDelegate.Set(btnSelectGame.onClick, EventMoveToSelectGameScreen);
+    // TEST - for test slot game
+    EventDelegate.Set(btnSelectGame.onClick, EventMoveToSlotScreen);
     EventDelegate.Set(btnLogout.onClick, EventLogout);
 
     GameObject tempGameObject = NGUITools.AddChild(gameObject, Resources.Load(Global.USER_BOTTOM_BAR_PREFAB, typeof(GameObject)) as GameObject);
@@ -122,6 +124,11 @@ public class LobbyScreen : BaseScreen {
     AccountManager.Instance.RegisterAsGuest();
   }
   
+  // TEST
+  private void EventMoveToSlotScreen() {
+	  ScreenManager.Instance.SetScreen(BaseScreen.Type.SLOT_GAME_SCREEN, new object[]{BaseSlotMachineScreen.GameType.SLOT_FRUITS, null});
+  }
+  
   private void EventMoveToSelectGameScreen() {
     ScreenManager.Instance.SetScreen(BaseScreen.Type.SELECT_GAME, null, true);
   }
@@ -160,42 +167,4 @@ public class LobbyScreen : BaseScreen {
       loginTab.ClearInput();
     }
   }
-
-  // public void EventSend() {
-  //   SmartfoxClient.Instance.ManualConnect("connect");
-  //   return;
-  //   switch (input.text) {
-  //     case "connect":
-  //       SmartfoxClient.Instance.ManualConnect(userIdInput.text);
-  //     break;
-  //     case "lobby":
-  //       TLMBClient.Instance.JoinLobby();
-  //     break;
-  //     case "create":
-  //       TLMBClient.Instance.Create();
-  //     break;
-  //     case "join":
-  //       TLMBClient.Instance.Join(cardsInput.text);
-  //     break;
-  //     case "sit":
-  //       TLMBClient.Instance.Sit(int.Parse(cardsInput.text));
-  //     break;
-  //     case "standup":
-  //       TLMBClient.Instance.Standup();
-  //     break;
-  //     case "start":
-  //       TLMBClient.Instance.StartGame();
-  //     break;
-  //     case "fold":
-  //       TLMBClient.Instance.Fold();
-  //     break;
-  //     case "drop":
-  //       TLMBClient.Instance.Drop(cardsInput.text);
-  //     break;
-  //   }
-  // }
-
-  // public void Display(string data) {
-  //   dataLbl.text = data;
-  // }
 }
