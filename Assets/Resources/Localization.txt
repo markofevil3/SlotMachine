@@ -1,0 +1,43 @@
+KEY,English,Vietnamese
+Btn_Login,Login,Đăng Nhập
+Btn_Register,Register,Đăng Ký
+Btn_Play_As_Guest,Play As Guest,Khách
+Btn_ForgetPassword,Forget\nPassword,Quên\nMật Khẩu
+Btn_Policy,Policy,Điều Khoản
+Username_Text,Username:,Tên Đăng Nhập:
+DisplayName_Text,Display Name:,Tên Nhân Vật:
+Password_Text,Password:,Password:
+Retype_Password_Text,Retype Password:,Retype Password:
+Btn_Select_Game,Play,Chơi
+Btn_Logout,Logout,Thoát
+Select_Game_Text,Select Game,Chọn Game
+Tien_Len_Mien_Nam_Text,Tiến Lên Miền Nam,Tiến Lên Miền Nam
+Btn_Skip_Turn,Skip,Thôi
+Btn_Throw_Card,Play,Đánh
+Btn_Sort,Sort,Xếp Bài
+Btn_Fast_Select,Quick Select,Chọn Nhanh
+Bet_Filter_All,All,Tất Cả
+Bet_Filter_under_50k,"< 50,000","< 50,000"
+Bet_Filter_over_100k,"> 100,000","> 100,000"
+Bet_Filter_over_500k,"> 500,000","> 500,000"
+Bet_Filter_over_1m,"> 1,000,000","> 1,000,000"
+Bet_Filter_Text,Bet Filter,Lọc Đặt Cược
+Title_Leave_Game,Leave Game?,Rời Phòng?
+Btn_Confirm,Confirm,Đồng Ý
+Btn_Cancel,Cancel,Hủy
+Message_Leave_Game,Are you sure you want to leave game?,Bạn có chắc chắn là muốn thoát khỏi game không?
+Title_Create_Room,Create Room,Tạo Bàn
+Btn_Create,Create,Tạo
+Bet_Select_Text,Select Bet,Mức Cược
+Btn_Create_Room,Create Room,Tạo Bàn
+Room_Name_Text,Room Name,Tên Bàn
+Room_Password_Text,Room Password,Mật Khẩu
+Btn_Top_Richer,Top Richer,Top Đại Gia
+Btn_Top_Winner,Top Winner,Top Chiến Thắng
+Top_Winner_Match_Text,{0} wins,{0} trận
+Title_User_Info,User Info,Thông Tin Người Chơi
+Btn_Add_Friend,Add Friend,Kết Bạn
+Btn_Send_Message,Message,Nhắn Tin
+USER_EXIST,Username existed!,Tên tài khoản đã tồn tại!
+USER_NOT_EXIST,User does not exist!,Tài khoản không tồn tại!
+PASSWORD_NOT_MATCH,Password does not match!,Mật khẩu không đúng!

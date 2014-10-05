@@ -1,0 +1,136 @@
+﻿using UnityEngine;
+using System.Collections;
+
+public class ScreenManager : MonoBehaviour {
+
+	public static ScreenManager Instance { get; private set; }
+	public GameObject root;
+	public Camera camera;
+	
+	public BaseScreen currentScreen;
+	private BaseScreen previousScreen;
+	private LobbyScreen lobbyScreen;
+	private SelectGameScreen selectGameScreen;
+	private SelectRoomScreen selectRoomScreen;
+	private LeaderboardScreen leaderboardScreen;
+	private BaseGameScreen gameScreen;
+	
+	public LobbyScreen LobbyScreen {
+		get { return lobbyScreen; }
+		set { lobbyScreen = value; }
+	}
+	
+	public SelectGameScreen SelectGameScreen {
+		get { return selectGameScreen; }
+		set { selectGameScreen = value; }
+	}
+	
+	public SelectRoomScreen SelectRoomScreen {
+		get { return selectRoomScreen; }
+		set { selectRoomScreen = value; }
+	}
+	
+	public LeaderboardScreen LeaderboardScreen {
+	  get { return leaderboardScreen; }
+	  set { leaderboardScreen = value; }
+	}
+	
+	public BaseGameScreen CurrentGameScreen {
+		get { return gameScreen; }
+		set { gameScreen = value; }
+	}
+	
+	void Start() {
+	  Application.targetFrameRate = 60;
+		Application.runInBackground = false;
+		Global.Init();
+		Global.isTablet = Utils.IsTablet();
+	  Instance = this;
+	  SetScreen(BaseScreen.Type.LOBBY);
+	}
+	
+	public void BackToPrevScreen() {
+	  if (previousScreen != null) {
+	    currentScreen.Close();
+	    previousScreen.Show();
+	    currentScreen = previousScreen;
+	  }
+	}
+	
+  public void SetScreen(BaseScreen.Type type, object[] data = null, bool isFadeIn = false, bool keepPrevScreen = false) {
+		if (currentScreen != null) {
+		  if (currentScreen.type == type) {
+		    return;
+		  }
+		  if (keepPrevScreen) {
+		    previousScreen = currentScreen;
+		    previousScreen.Hide();
+		  } else {
+		    currentScreen.Close();
+		  }
+		}
+		GameObject tempGameObject;
+		switch(type) {
+			case BaseScreen.Type.LOBBY:
+      	tempGameObject = NGUITools.AddChild(root, Resources.Load(Global.SCREEN_PATH + "/LobbyScreen/LobbyScreen", typeof(GameObject)) as GameObject);
+       	tempGameObject.name = "LobbyScreen";
+       	LobbyScreen = tempGameObject.GetComponent<LobbyScreen>();
+				currentScreen = LobbyScreen;
+       	LobbyScreen.Init(data);
+	     	LobbyScreen.Open();
+			break;
+			case BaseScreen.Type.SELECT_GAME:
+      	tempGameObject = NGUITools.AddChild(root, Resources.Load(Global.SCREEN_PATH + "/SelectGameScreen/SelectGameScreen", typeof(GameObject)) as GameObject);
+       	tempGameObject.name = "SelectGameScreen";
+       	SelectGameScreen = tempGameObject.GetComponent<SelectGameScreen>();
+				currentScreen = SelectGameScreen;
+       	SelectGameScreen.Init(data);
+	     	SelectGameScreen.Open();
+			break;
+			case BaseScreen.Type.SELECT_ROOM:
+      	tempGameObject = NGUITools.AddChild(root, Resources.Load(Global.SCREEN_PATH + "/SelectRoomScreen/SelectRoomScreen", typeof(GameObject)) as GameObject);
+       	tempGameObject.name = "SelectRoomScreen";
+       	SelectRoomScreen = tempGameObject.GetComponent<SelectRoomScreen>();
+				currentScreen = SelectRoomScreen;
+       	SelectRoomScreen.Init(data);
+	     	SelectRoomScreen.Open();
+			break;
+			case BaseScreen.Type.LEADERBOARD:
+      	tempGameObject = NGUITools.AddChild(root, Resources.Load(Global.SCREEN_PATH + "/LeaderboardScreen/LeaderboardScreen", typeof(GameObject)) as GameObject);
+       	tempGameObject.name = "LeaderboardScreen";
+       	LeaderboardScreen = tempGameObject.GetComponent<LeaderboardScreen>();
+				currentScreen = LeaderboardScreen;
+       	LeaderboardScreen.Init(data);
+	     	LeaderboardScreen.Open();
+			break;
+			// when open gamescreen, first element in data will be GameType
+			case BaseScreen.Type.GAME_SCREEN:
+      	currentScreen = SetGameScreen((BaseGameScreen.GameType)data[0], data);
+			break;
+		}
+		if (isFadeIn) {
+      // currentScreen.FadeIn();
+      PopupManager.Instance.FadeInScreen();
+		}
+  }
+  
+  private BaseScreen SetGameScreen(BaseGameScreen.GameType gameType, object[] data = null) {
+    GameObject tempGameObject;
+    BaseScreen tempScreen;
+    switch(gameType) {
+      case BaseGameScreen.GameType.TIEN_LEN_MB:
+        tempGameObject = NGUITools.AddChild(root, Resources.Load(Global.SCREEN_PATH + "/GameScreen/TienLenMN/TienLenMNScreen", typeof(GameObject)) as GameObject);
+       	tempGameObject.name = "TienLenMNScreen";
+       	TienLenMNScreen tienLenMNScreen = tempGameObject.GetComponent<TienLenMNScreen>();
+       	tienLenMNScreen.Init(data);
+	     	tienLenMNScreen.Open();
+	     	tempScreen = tienLenMNScreen as BaseGameScreen;
+      break;
+      default:
+        tempScreen = null;
+      break;
+    }
+    CurrentGameScreen = tempScreen as BaseGameScreen;
+    return tempScreen;
+  }
+}
