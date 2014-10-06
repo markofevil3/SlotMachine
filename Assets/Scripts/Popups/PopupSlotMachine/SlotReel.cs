@@ -7,6 +7,9 @@ public class SlotReel : MonoBehaviour {
 
   public Transform stopLineSprite;
   public int itemSize = 100;
+  public delegate void OnFinished ();
+
+	public OnFinished onFinished;
   
   private Transform targetItem;
 	private int STOP_ROUND_COUNT = 6;
@@ -171,13 +174,19 @@ public class SlotReel : MonoBehaviour {
                                                    new Vector3(transform.position.x, transform.position.y + Mathf.Abs(targetItem.position.y - stopLineSprite.position.y), transform.position.z),
                                                    8f);
           sp.worldSpace = true;
-          sp.onFinished = PopupManager.Instance.PopupSlotMachine.EventReelStop;
+          sp.onFinished = EventReelFinish;
         }
       }
 	  } else {
       // speed = Mathf.Max(speed - targetPassCount / 1.5f * Time.deltaTime, MIN_SPEED);
   	  transform.position = new Vector3(transform.position.x, transform.position.y - (speed * Time.deltaTime), transform.position.z);
   	  WrapContent();
+	  }
+	}
+	
+	private void EventReelFinish() {
+	  if (onFinished != null) {
+	    onFinished();
 	  }
 	}
 	

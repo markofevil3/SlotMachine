@@ -12,7 +12,7 @@ public class SlotCombination : MonoBehaviour {
   public static int NUM_REELS = 5;
   public static int MAX_DISPLAY_ITEMS = 15;
   
-  private float[] ITEM_RATES = new float[10] {4f, 23f, 10f, 10f, 10f, 10f, 10f, 9f, 8f, 6f};
+  private float[] ITEM_RATES = new float[10] {4f, 20f, 12f, 11f, 10f, 10f, 10f, 9f, 8f, 6f};
   
   private float randomValue;
   
@@ -71,7 +71,7 @@ public class SlotCombination : MonoBehaviour {
   
   public int numLines {
     get { return mNumLines; }
-    set { mNumLines = Mathf.Min(value, MAX_LINE); }
+    set { mNumLines = value; }
   }
   
   public void Init() {

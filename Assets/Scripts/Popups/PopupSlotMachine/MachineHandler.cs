@@ -5,7 +5,7 @@ public class MachineHandler : MonoBehaviour {
   
   public UISlider bodySlider;
   public UIEventListener btnDrag;
-  public PopupSlotMachine slotMachine;
+  public SlotMachine slotMachine;
   
   void Start() {
     btnDrag.onDragEnd = FinishDrag;
