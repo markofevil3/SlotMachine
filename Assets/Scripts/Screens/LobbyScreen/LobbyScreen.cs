@@ -50,16 +50,6 @@ public class LobbyScreen : BaseScreen {
     }
     
     Invoke("TestDropdown", 2.0f);
-    
-		// EventDelegate del = new EventDelegate(this, "OpenPopup");
-		// EventDelegate.Parameter a = new EventDelegate.Parameter(this, "testIndex");
-		// EventDelegate.Parameter b = new EventDelegate.Parameter(this, "testString");
-		// del.parameters.SetValue(a, 0);
-		// del.parameters.SetValue(b, 1);
-		// EventDelegate.Set(btnOpenPopup.onClick, del);
-		
-		// Example Button Click Event
-    // EventDelegate.Set(btnOpenPopup.onClick, delegate() { OpenPopup(5, "Strsfdaf"); });
   }
 
   void TestDropdown() {
@@ -126,6 +116,8 @@ public class LobbyScreen : BaseScreen {
   
   // TEST
   private void EventMoveToSlotScreen() {
+    SlotMachineClient.Instance.JoinRoom();
+    
 	  ScreenManager.Instance.SetScreen(BaseScreen.Type.SLOT_GAME_SCREEN, new object[]{BaseSlotMachineScreen.GameType.SLOT_FRUITS, null});
   }
   

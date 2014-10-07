@@ -25,6 +25,11 @@ public class Command {
 		public const string UPDATE = "update";
 	}
 
+  public class SLOT_MACHINE {
+    public const string SLOT_JOIN_ROOM = "slotJoinRoom";
+		public const string SLOT_FRUITS = "slot_fruit";
+  }
+  
 	public static string Create(string gameId, string commandId) {
 		return gameId + "." + commandId;
 	}
