@@ -117,8 +117,6 @@ public class LobbyScreen : BaseScreen {
   // TEST
   private void EventMoveToSlotScreen() {
     SlotMachineClient.Instance.JoinRoom();
-    
-	  ScreenManager.Instance.SetScreen(BaseScreen.Type.SLOT_GAME_SCREEN, new object[]{BaseSlotMachineScreen.GameType.SLOT_FRUITS, null});
   }
   
   private void EventMoveToSelectGameScreen() {

@@ -20,16 +20,34 @@ public class SlotMachineClient : MonoBehaviour {
   
   // Join user to game lobby room and join available room
 	public void JoinRoom() {
+	  PopupManager.Instance.ShowLoadingPopup();
 	  JSONObject jsonData = new JSONObject();
-		jsonData.Add("gameType", Command.SLOT_MACHINE.SLOT_FRUITS);
+		jsonData.Add("gameType", Command.SLOT_MACHINE.SLOT_TYPE_FRUITS);
 		SmartfoxClient.Instance.HandleServerRequest(CreateExtensionRequest(Command.SLOT_MACHINE.SLOT_JOIN_ROOM, jsonData));
 	}
 
   // Move to Select room if join success
 	private void OnJoinRoom(JSONObject jsonData) {
 	  Debug.Log("OnJoinLobby " +jsonData.ToString());
+	  PopupManager.Instance.CloseLoadingPopup();
+	  ScreenManager.Instance.SetScreen(BaseScreen.Type.SLOT_GAME_SCREEN, new object[]{BaseSlotMachineScreen.GameType.SLOT_FRUITS, null});
     // ScreenManager.Instance.SetScreen(BaseScreen.Type.SELECT_ROOM, new object[]{(int)BaseGameScreen.GameType.TIEN_LEN_MB, jsonData});
 	}
+
+  public void Play(int betPerLine, int numLines) {
+    JSONObject jsonData = new JSONObject();
+		jsonData.Add("betPerLine", betPerLine);
+		jsonData.Add("numLines", numLines);
+		jsonData.Add("gameType", Command.SLOT_MACHINE.SLOT_TYPE_FRUITS);
+		SmartfoxClient.Instance.HandleServerRequest(CreateExtensionRequest(Command.SLOT_MACHINE.SLOT_PLAY, jsonData));
+  }
+
+  public void OnPlay(JSONObject jsonData) {
+    Debug.Log(jsonData.ToString());
+    if (ScreenManager.Instance.CurrentSlotScreen != null) {
+      ScreenManager.Instance.CurrentSlotScreen.SetResults(jsonData);
+    }
+  }
 
   // public void Create() {
   //  TLMBGameConfig gameConfig = TLMBGameConfig.CreateCountGame(10);
@@ -152,6 +170,7 @@ public class SlotMachineClient : MonoBehaviour {
 
 		switch (commandId) {
 			case Command.SLOT_MACHINE.SLOT_JOIN_ROOM: OnJoinRoom(jsonData); break;
+			case Command.SLOT_MACHINE.SLOT_PLAY: OnPlay(jsonData); break;
       // case Command.TLMB.CREATE: OnCreate(jsonData); break;
       // case Command.TLMB.START: OnStartGame(jsonData); break;
       // case Command.TLMB.JOIN: OnJoin(jsonData); break;

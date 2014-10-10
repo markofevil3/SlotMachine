@@ -100,7 +100,6 @@ public class SlotCombination : MonoBehaviour {
   
   // input data is array type of 15 items - output data is array winning gold of 9 lines
   public int[] CalculateCombination(int[] reelData) {
-    int winIndex;
     int[] winningLineCount = new int[numLines];
     int[] winningLineType = new int[numLines];
     int[] winningGold = new int[numLines];
@@ -125,18 +124,6 @@ public class SlotCombination : MonoBehaviour {
             break;
           }
         }
-        // if (reelData[COMBINATION[i, j]] == (int)SlotItem.Type.WILD) {
-        //   winningLineCount[i]++;
-        //   next;
-        // } else {
-        //   winningLineType[i] = reelData[COMBINATION[i, j]];
-        // }
-        // if (reelData[COMBINATION[i, j]] == reelData[COMBINATION[i, j + 1]] || reelData[COMBINATION[i, j]] == (int)SlotItem.Type.WILD || reelData[COMBINATION[i, j + 1]] == (int)SlotItem.Type.WILD) {
-        //   winningLineCount[i]++;
-        //   // match item
-        // } else {
-        //   break;
-        // }
       }
       winningGold[i] = PAYOUTS[winningLineType[i], winningLineCount[i] - 1] * betPerLine;
     }

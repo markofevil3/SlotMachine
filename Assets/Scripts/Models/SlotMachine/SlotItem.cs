@@ -19,14 +19,21 @@ public class SlotItem : MonoBehaviour {
   
   public UISprite sprite;
   
-  private string[] spriteNames = new string[10] {"wild", "apple", "strawberry", "radish", "broccoli", "eggplant", "bell_pepper", "chili_pepper", "mushroom", "fruits"};
+  private string[] baseSpriteNames = new string[10] {"wild", "apple", "strawberry", "radish", "broccoli", "eggplant", "bell_pepper", "chili_pepper", "mushroom", "fruits"};
   private Type type;
   private int index;
 
-  public void Init(Type type, int index) {
+  public virtual string GetSpriteName(int index) {
+    return baseSpriteNames[index];
+  }
+
+  public virtual void Init(Type type, int index) {
+    if (sprite == null) {
+      sprite = GetComponent<UISprite>();
+    }
     this.type = type;
     this.index = index;
-    sprite.spriteName = spriteNames[(int)type];
+    sprite.spriteName = GetSpriteName((int)type);
   }
   
   public bool IsTarget(int targetIndex) {

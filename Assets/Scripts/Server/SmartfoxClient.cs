@@ -120,11 +120,12 @@ public class SmartfoxClient : MonoBehaviour {
 		client.AddEventListener(SFSEvent.ADMIN_MESSAGE, OnAdminMessage);
 		client.AddEventListener(SFSEvent.EXTENSION_RESPONSE, OnExtensionResponse);
 		client.AddEventListener(SFSEvent.CONNECTION_LOST, OnConnectionLost);
+		client.AddEventListener(SFSEvent.ROOM_VARIABLES_UPDATE, OnRoomVarsUpdate);
     // client.Connect("54.255.173.193", 9933);
     #if UNITY_EDITOR
     client.Connect("127.0.0.1", 9933);
     # else
-    client.Connect("14.160.19.153", 9933);
+    client.Connect("113.190.10.207", 9933);
     # endif
     // walk around for custom error code from server
     SFSErrorCodes.SetErrorMessage(2, "{0}");
@@ -247,6 +248,14 @@ public class SmartfoxClient : MonoBehaviour {
 	void OnAdminMessage(BaseEvent e) {
 
 	}
+
+  void OnRoomVarsUpdate(BaseEvent e) {
+    Room crtRoom = e.Params["room"] as Room;
+    if (ScreenManager.Instance.CurrentSlotScreen != null) {
+      ScreenManager.Instance.CurrentSlotScreen.UpdateJackpot(crtRoom.GetVariable("jackpot").GetIntValue());
+    }
+    // Debug.Log(crtRoom.GetVariable("jackpot").GetIntValue());
+  }
 
 	void ResetAll() {
 		ServerRequestQueue.Clear();

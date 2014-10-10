@@ -1,25 +1,37 @@
-//
-//  PDKeychainBindings.h
-//  PDKeychainBindingsController
-//
-//  Created by Carl Brown on 7/10/11.
-//  Copyright 2011 PDAgent, LLC. Released under MIT License.
-//
+
+/*! @file       PDKeychainBindings.h
+    @class      PDKeychainBindings
+    @author     Carl Brown @since 7/10/11.
+    @copyright  2011 PDAgent, LLC. Released under MIT License.
+*/
 
 #import <Foundation/Foundation.h>
 
+@interface PDKeychainBindings : NSObject
 
-@interface PDKeychainBindings : NSObject {
-@private
-    
-}
++ (instancetype) sharedKeychainBindings;
 
-+ (PDKeychainBindings *)sharedKeychainBindings;
+- (NSString*)  stringForKey:(NSString*)def;
 
-- (id)objectForKey:(NSString *)defaultName;
-- (void)setObject:(NSString *)value forKey:(NSString *)defaultName;
-- (void)setString:(NSString *)value forKey:(NSString *)defaultName;
-- (void)removeObjectForKey:(NSString *)defaultName;
+- (void)          setString:(NSString*)s
+                     forKey:(NSString*)def;
 
-- (NSString *)stringForKey:(NSString *)defaultName;
+- (void)          setString:(NSString*)s
+                     forKey:(NSString*)def
+        accessibleAttribute:(CFTypeRef)aa;
+
+
+-              objectForKey:(NSString*)def;
+
+- (void)          setObject:(NSString*)x
+                     forKey:(NSString*)def;
+
+- (void)          setObject:(NSString*)x
+                     forKey:(NSString*)def
+       accessibleAttribute:(CFTypeRef)aa;
+
+- (void) removeObjectForKey:(NSString*)def;
+
+
+
 @end

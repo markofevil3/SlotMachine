@@ -1,28 +1,42 @@
-//
-//  PDKeychainBindingsController.h
-//  PDKeychainBindingsController
-//
-//  Created by Carl Brown on 7/10/11.
-//  Copyright 2011 PDAgent, LLC. Released under MIT License.
-//
 
-#import <Foundation/Foundation.h>
+/*! @file       PDKeychainBindingsController.h
+    @class      PDKeychainBindingsController
+    @author     Carl Brown @since 7/10/11.
+    @copyright  2011 PDAgent, LLC. Released under MIT License.
+*/
+
 #import "PDKeychainBindings.h"
 
+@interface PDKeychainBindingsController : NSObject
 
-@interface PDKeychainBindingsController : NSObject {
-@private
-    PDKeychainBindings *_keychainBindings;
-    NSMutableDictionary *_valueBuffer;
-}
+@property (readonly) PDKeychainBindings* keychainBindings;
 
-+ (PDKeychainBindingsController *)sharedKeychainBindingsController;
-- (PDKeychainBindings *) keychainBindings;
++ (instancetype) sharedKeychainBindingsController;
 
-- (id)values;    // accessor object for PDKeychainBindings values. This property is observable using key-value observing.
+/// KVO-observable accessor property representing the PDKeychainBindings' values.
 
-- (NSString*)stringForKey:(NSString*)key;
-- (BOOL)storeString:(NSString*)string forKey:(NSString*)key;
+@property (readonly) id values;
+
+- (void)          setValue:x
+                forKeyPath:(NSString*)kp
+       accessibleAttribute:(CFTypeRef)aa;
+
+- (BOOL)       storeString:(NSString*)s
+                    forKey:(NSString*)k
+       accessibleAttribute:(CFTypeRef)aa;
+
+- (BOOL)       storeString:(NSString*)s
+                    forKey:(NSString*)k;
+
+- (NSString*) stringForKey:(NSString*)k;
+
+#if !TARGET_OS_IPHONE // The following methods are OSX-only
+
+- (void)                  useDefaultKeychain;
+- (BOOL) removeExternalKeychainFileWithError:(NSError**)e;
+- (BOOL)     useExternalKeychainFileWithPath:(NSString*)x
+                                    password:(NSString*)p
+                                       error:(NSError**)e;
+#endif
 
 @end
-
