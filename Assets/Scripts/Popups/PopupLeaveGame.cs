@@ -16,8 +16,8 @@ public class PopupLeaveGame : Popup {
   }
   
   void EventLeaveGame() {
-    TLMBClient.Instance.Leave();
+    SlotMachineClient.Instance.LeaveGame();
     Close();
-    // ScreenManager.Instance.SetScreen(BaseScreen.Type.SELECT_ROOM, new object[]{gameType});
+    ScreenManager.Instance.SetScreen(BaseScreen.Type.SELECT_GAME, null, true);
   }
 }

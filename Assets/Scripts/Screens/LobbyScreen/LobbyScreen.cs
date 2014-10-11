@@ -31,9 +31,9 @@ public class LobbyScreen : BaseScreen {
     EventDelegate.Set(btnLogin.onClick, delegate() { OpenTab(Tab.TabType.LOGIN_TAB); });
     EventDelegate.Set(btnRegister.onClick, delegate() { OpenTab(Tab.TabType.REGISTER_TAB); });
     EventDelegate.Set(btnPlayAsGuest.onClick, EventPlayAsGuest);
-    // EventDelegate.Set(btnSelectGame.onClick, EventMoveToSelectGameScreen);
+    EventDelegate.Set(btnSelectGame.onClick, EventMoveToSelectGameScreen);
     // TEST - for test slot game
-    EventDelegate.Set(btnSelectGame.onClick, EventMoveToSlotScreen);
+    // EventDelegate.Set(btnSelectGame.onClick, EventMoveToSlotScreen);
     EventDelegate.Set(btnLogout.onClick, EventLogout);
 
     GameObject tempGameObject = NGUITools.AddChild(gameObject, Resources.Load(Global.USER_BOTTOM_BAR_PREFAB, typeof(GameObject)) as GameObject);
@@ -112,11 +112,6 @@ public class LobbyScreen : BaseScreen {
   private void EventPlayAsGuest() {
     PopupManager.Instance.ShowLoadingPopup();
     AccountManager.Instance.RegisterAsGuest();
-  }
-  
-  // TEST
-  private void EventMoveToSlotScreen() {
-    SlotMachineClient.Instance.JoinRoom();
   }
   
   private void EventMoveToSelectGameScreen() {

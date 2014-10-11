@@ -135,6 +135,14 @@ public class ScreenManager : MonoBehaviour {
 	     	slotFruitsScreen.Open();
 	     	tempScreen = slotFruitsScreen as BaseSlotMachineScreen;
       break;
+      case BaseSlotMachineScreen.GameType.SLOT_HALLOWEEN:
+        tempGameObject = NGUITools.AddChild(root, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotHalloweenScreen", typeof(GameObject)) as GameObject);
+       	tempGameObject.name = "SlotHalloweenScreen";
+       	SlotHalloweenScreen slotHalloweenScreen = tempGameObject.GetComponent<SlotHalloweenScreen>();
+       	slotHalloweenScreen.Init(data);
+	     	slotHalloweenScreen.Open();
+	     	tempScreen = slotHalloweenScreen as BaseSlotMachineScreen;
+      break;
       default:
         tempScreen = null;
       break;

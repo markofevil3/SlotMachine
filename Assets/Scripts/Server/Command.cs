@@ -28,7 +28,9 @@ public class Command {
   public class SLOT_MACHINE {
     public const string SLOT_JOIN_ROOM = "slotJoinRoom";
     public const string SLOT_PLAY = "slotPlay";
+    public const string SLOT_LEAVE = "slotLeave";
 		public const string SLOT_TYPE_FRUITS = "slot_fruit";
+		public const string SLOT_TYPE_HALLOWEEN = "slot_halloween";
   }
   
 	public static string Create(string gameId, string commandId) {

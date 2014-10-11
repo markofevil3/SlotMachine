@@ -18,11 +18,37 @@ public class SlotMachineClient : MonoBehaviour {
    Instance = this;
   }
   
+  private string GetCommandByGameType(BaseSlotMachineScreen.GameType gameType) {
+    switch (gameType) {
+      case BaseSlotMachineScreen.GameType.SLOT_FRUITS:
+        return Command.SLOT_MACHINE.SLOT_TYPE_FRUITS;
+      break;
+      case BaseSlotMachineScreen.GameType.SLOT_HALLOWEEN:
+        return Command.SLOT_MACHINE.SLOT_TYPE_HALLOWEEN;
+      break;
+      default:
+        return string.Empty;
+    }
+  }
+  
+  private BaseSlotMachineScreen.GameType GetGameTypeByCommand(string gameTypeCommand) {
+    switch (gameTypeCommand) {
+      case Command.SLOT_MACHINE.SLOT_TYPE_FRUITS:
+        return BaseSlotMachineScreen.GameType.SLOT_FRUITS;
+      break;
+      case Command.SLOT_MACHINE.SLOT_TYPE_HALLOWEEN:
+        return BaseSlotMachineScreen.GameType.SLOT_HALLOWEEN;
+      break;
+      default:
+        return BaseSlotMachineScreen.GameType.SLOT_FRUITS;
+    }
+  }
+  
   // Join user to game lobby room and join available room
-	public void JoinRoom() {
+	public void JoinRoom(BaseSlotMachineScreen.GameType gameType) {
 	  PopupManager.Instance.ShowLoadingPopup();
 	  JSONObject jsonData = new JSONObject();
-		jsonData.Add("gameType", Command.SLOT_MACHINE.SLOT_TYPE_FRUITS);
+		jsonData.Add("gameType", GetCommandByGameType(gameType));
 		SmartfoxClient.Instance.HandleServerRequest(CreateExtensionRequest(Command.SLOT_MACHINE.SLOT_JOIN_ROOM, jsonData));
 	}
 
@@ -30,7 +56,7 @@ public class SlotMachineClient : MonoBehaviour {
 	private void OnJoinRoom(JSONObject jsonData) {
 	  Debug.Log("OnJoinLobby " +jsonData.ToString());
 	  PopupManager.Instance.CloseLoadingPopup();
-	  ScreenManager.Instance.SetScreen(BaseScreen.Type.SLOT_GAME_SCREEN, new object[]{BaseSlotMachineScreen.GameType.SLOT_FRUITS, null});
+	  ScreenManager.Instance.SetScreen(BaseScreen.Type.SLOT_GAME_SCREEN, new object[]{GetGameTypeByCommand(jsonData.GetString("gameType")), null});
     // ScreenManager.Instance.SetScreen(BaseScreen.Type.SELECT_ROOM, new object[]{(int)BaseGameScreen.GameType.TIEN_LEN_MB, jsonData});
 	}
 
@@ -38,7 +64,7 @@ public class SlotMachineClient : MonoBehaviour {
     JSONObject jsonData = new JSONObject();
 		jsonData.Add("betPerLine", betPerLine);
 		jsonData.Add("numLines", numLines);
-		jsonData.Add("gameType", Command.SLOT_MACHINE.SLOT_TYPE_FRUITS);
+		jsonData.Add("gameType", GetCommandByGameType(ScreenManager.Instance.CurrentSlotScreen.GetCrtGameType()));
 		SmartfoxClient.Instance.HandleServerRequest(CreateExtensionRequest(Command.SLOT_MACHINE.SLOT_PLAY, jsonData));
   }
 
@@ -47,6 +73,16 @@ public class SlotMachineClient : MonoBehaviour {
     if (ScreenManager.Instance.CurrentSlotScreen != null) {
       ScreenManager.Instance.CurrentSlotScreen.SetResults(jsonData);
     }
+  }
+
+  public void LeaveGame() {
+    JSONObject jsonData = new JSONObject();
+    jsonData.Add("gameType", GetCommandByGameType(ScreenManager.Instance.CurrentSlotScreen.GetCrtGameType()));
+		SmartfoxClient.Instance.HandleServerRequest(CreateExtensionRequest(Command.SLOT_MACHINE.SLOT_LEAVE, jsonData));
+  }
+
+  public void OnLeaveGame(JSONObject jsonData) {
+    
   }
 
   // public void Create() {

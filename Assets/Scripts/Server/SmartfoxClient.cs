@@ -121,6 +121,8 @@ public class SmartfoxClient : MonoBehaviour {
 		client.AddEventListener(SFSEvent.EXTENSION_RESPONSE, OnExtensionResponse);
 		client.AddEventListener(SFSEvent.CONNECTION_LOST, OnConnectionLost);
 		client.AddEventListener(SFSEvent.ROOM_VARIABLES_UPDATE, OnRoomVarsUpdate);
+		client.AddEventListener(SFSEvent.USER_EXIT_ROOM, OnUserExitRoom);
+		
     // client.Connect("54.255.173.193", 9933);
     #if UNITY_EDITOR
     client.Connect("127.0.0.1", 9933);
@@ -211,6 +213,10 @@ public class SmartfoxClient : MonoBehaviour {
 	void OnJoinRoomError(BaseEvent e) {
 
 	}
+
+  void OnUserExitRoom(BaseEvent e) {
+    Debug.Log("OnUserExitRoom " + e.Params["room"] + " " + e.Params["user"]);
+  }
 
 	void OnPublicMessage(BaseEvent e) {
 	  foreach (DictionaryEntry entry in e.Params) {

@@ -10,11 +10,11 @@ public class BaseSlotMachineScreen : BaseScreen {
     TOTAL
   }
     
-  public GameType gameType;
-  
   [HideInInspector]
   public GameBottomBarScript bottomBarScript;
   
+  public GameType gameType;
+  public UIButton btnBack;
   public SlotMachine slotMachine;
   public UIButton btnBetPerLine;
   public UIButton btnLines;
@@ -22,11 +22,17 @@ public class BaseSlotMachineScreen : BaseScreen {
   public UILabel betPerLineLabel;
   public UILabel lineLabel;
   
+  public GameType GetCrtGameType() {
+    return gameType;
+  }
+  
   public override void Init(object[] data) {    
     GameObject tempGameObject = NGUITools.AddChild(gameObject, Resources.Load(Global.GAME_BOTTOM_BAR_PREFAB, typeof(GameObject)) as GameObject);
    	tempGameObject.name = "GameBottomBar";
    	bottomBarScript = tempGameObject.GetComponent<GameBottomBarScript>();
    	bottomBarScript.Init(this);
+   	    
+    EventDelegate.Set(btnBack.onClick, EventBackToSelectGame);
    	
    	slotMachine.Init();
     EventDelegate.Set(btnBetPerLine.onClick, EventBetPerLine);
@@ -36,6 +42,10 @@ public class BaseSlotMachineScreen : BaseScreen {
     SetNunLine(1);
     
     base.Init(data);
+  }
+  
+  private void EventBackToSelectGame() {
+    PopupManager.Instance.OpenPopup(Popup.Type.POPUP_LEAVE_GAME, new object[] { gameType });
   }
   
   public override void Open() {}
@@ -54,9 +64,7 @@ public class BaseSlotMachineScreen : BaseScreen {
     lineLabel.text = slotMachine.GetNumLine().ToString();
   }
 
-  void EventBetPerLine() {
-    
-  }
+  void EventBetPerLine() {}
   
   void EventBetLines() {
     SetNunLine((slotMachine.GetNumLine() % SlotCombination.MAX_LINE) + 1);
