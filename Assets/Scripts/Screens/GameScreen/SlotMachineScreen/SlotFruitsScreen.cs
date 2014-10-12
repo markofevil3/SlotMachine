@@ -8,11 +8,11 @@ public class SlotFruitsScreen : BaseSlotMachineScreen {
     base.Init(data);
   }
   
-  public override void SetResults(JSONObject jsonData) {
-    slotMachine.SetResults(jsonData);
-  }
-  
-  public override void UpdateJackpot(int score) {
-    slotMachine.UpdateJackpot(score);
-  }
+  // public override void SetResults(JSONObject jsonData) {
+  //   slotMachine.SetResults(jsonData);
+  // }
+  // 
+  // public override void UpdateJackpot(int score) {
+  //   slotMachine.UpdateJackpot(score);
+  // }
 }

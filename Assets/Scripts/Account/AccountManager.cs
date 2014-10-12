@@ -63,6 +63,10 @@ public class AccountManager : MonoBehaviour {
 		friends = user.GetArray("friends");
 	}
 	
+	public void UpdateUserCash(int updateVal) {
+	  cash = Mathf.Max(0, cash + updateVal);
+	}
+	
 	public bool IsYou(string username) {
 	  return username == this.username;
 	}

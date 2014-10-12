@@ -122,12 +122,14 @@ public class SmartfoxClient : MonoBehaviour {
 		client.AddEventListener(SFSEvent.CONNECTION_LOST, OnConnectionLost);
 		client.AddEventListener(SFSEvent.ROOM_VARIABLES_UPDATE, OnRoomVarsUpdate);
 		client.AddEventListener(SFSEvent.USER_EXIT_ROOM, OnUserExitRoom);
+		client.AddEventListener(SFSEvent.USER_ENTER_ROOM, OnUserEnterRoom);
+		client.AddEventListener(SFSEvent.USER_VARIABLES_UPDATE, OnUserVarsUpdate);
 		
     // client.Connect("54.255.173.193", 9933);
     #if UNITY_EDITOR
     client.Connect("127.0.0.1", 9933);
     # else
-    client.Connect("113.190.10.207", 9933);
+    client.Connect("113.160.37.133", 9933);
     # endif
     // walk around for custom error code from server
     SFSErrorCodes.SetErrorMessage(2, "{0}");
@@ -207,14 +209,33 @@ public class SmartfoxClient : MonoBehaviour {
   }
   
 	void OnJoinRoom(BaseEvent e) {
-
+    Debug.Log("#### OnJoinRoom");
 	}
 
 	void OnJoinRoomError(BaseEvent e) {
-
+    Debug.Log("#### OnJoinRoomError");
 	}
 
+  void OnUserEnterRoom(BaseEvent e) {
+    User enterUser = ((User)e.Params["user"]);
+    Room room = (Room)e.Params["room"];
+  	if (!enterUser.IsItMe && room.GroupId != "lobby" && ScreenManager.Instance.CurrentSlotScreen != null) {
+  	  Debug.Log("####!!!");
+  	  JSONObject userData = new JSONObject();
+  	  userData.Add("username", enterUser.Name);
+  	  userData.Add("cash", enterUser.GetVariable("cash").GetIntValue());
+  	  userData.Add("displayName", enterUser.GetVariable("displayName").GetStringValue());
+  	  ScreenManager.Instance.CurrentSlotScreen.OnPlayerJoinRoom(room.Name, userData);
+  	}
+  }
+
   void OnUserExitRoom(BaseEvent e) {
+    User leaveUser = ((User)e.Params["user"]);
+    Room room = (Room)e.Params["room"];
+    
+  	if (!leaveUser.IsItMe && room.GroupId != "lobby" && ScreenManager.Instance.CurrentSlotScreen != null) {
+  	  ScreenManager.Instance.CurrentSlotScreen.OnPlayerLeaveRoom(room.Name, leaveUser.Name);
+  	}
     Debug.Log("OnUserExitRoom " + e.Params["room"] + " " + e.Params["user"]);
   }
 
@@ -223,7 +244,7 @@ public class SmartfoxClient : MonoBehaviour {
 	    Debug.Log(entry.Key + " " + entry.Value);
   	}
   	User sender = ((User)e.Params["sender"]);
-  	if (ScreenManager.Instance.CurrentGameScreen != null && !AccountManager.Instance.IsYou(sender.Name)) {
+  	if (ScreenManager.Instance.CurrentGameScreen != null && !sender.IsItMe) {
   	  Debug.Log("#######");
   	  ScreenManager.Instance.CurrentGameScreen.bottomBarScript.DisplayBubbleChat(e.Params["message"].ToString(), sender.Name);
   	}
@@ -260,7 +281,12 @@ public class SmartfoxClient : MonoBehaviour {
     if (ScreenManager.Instance.CurrentSlotScreen != null) {
       ScreenManager.Instance.CurrentSlotScreen.UpdateJackpot(crtRoom.GetVariable("jackpot").GetIntValue());
     }
-    // Debug.Log(crtRoom.GetVariable("jackpot").GetIntValue());
+    Debug.Log(crtRoom.GetVariable("jackpot").GetIntValue());
+  }
+
+  void OnUserVarsUpdate(BaseEvent e) {
+    User user = ((User)e.Params["user"]);
+    Debug.Log("OnUserVarsUpdate " + user.GetVariable("cash").GetIntValue());
   }
 
 	void ResetAll() {

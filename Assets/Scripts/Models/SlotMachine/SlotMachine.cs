@@ -74,6 +74,8 @@ public class SlotMachine : MonoBehaviour {
   
   public void UpdateScore(int score) {
     scoreLabel.text = score.ToString("N0");
+    AccountManager.Instance.UpdateUserCash(score);
+    ScreenManager.Instance.CurrentSlotScreen.UpdateUserCashLabel();
   }
   
   public void SetBetPerLine(int betVal) {

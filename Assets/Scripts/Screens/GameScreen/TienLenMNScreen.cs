@@ -43,9 +43,9 @@ public class TienLenMNScreen : BaseGameScreen {
       PlayerSlotScript playerScript = tempUser.GetComponent<PlayerSlotScript>();
       JSONObject user = users.ContainsKey(i.ToString()) ? users.GetObject(i.ToString()) : null;
       if (user != null) {
-        playerScript.Init(i, user.GetString("userId"), "Dan Choi" + (i + 1), (i + 1) * 200000, string.Empty);
+        playerScript.Init(user.GetString("userId"), "Dan Choi" + (i + 1), (i + 1) * 200000, string.Empty);
       } else {
-        playerScript.InitEmpty(i);
+        playerScript.InitEmpty();
       }
       playerHolder.Add(playerScript);
     }
@@ -53,13 +53,13 @@ public class TienLenMNScreen : BaseGameScreen {
     playerLeftGrid.Reposition();
     playerRightGrid.Reposition();
     
-		for (int i = 0; i < playerHolder.Count; i++) {
-			UIButton tempBtn = playerHolder[i].btnThrowCard;
-			tempBtn.inputParams = new object[] {playerHolder[i]};
-      EventDelegate.Set(tempBtn.onClick, delegate() { PlayCardFromOther((PlayerSlotScript)tempBtn.inputParams[0]); });
-      // Test Player turn circle display
-      StartCoroutine(DisplayPlayerTurn(i));
-		}
+    // for (int i = 0; i < playerHolder.Count; i++) {
+    //  UIButton tempBtn = playerHolder[i].btnThrowCard;
+    //  tempBtn.inputParams = new object[] {playerHolder[i]};
+    //       EventDelegate.Set(tempBtn.onClick, delegate() { PlayCardFromOther((PlayerSlotScript)tempBtn.inputParams[0]); });
+    //       // Test Player turn circle display
+    //       StartCoroutine(DisplayPlayerTurn(i));
+    // }
 		
 		StartNewGame();
   } 
@@ -76,9 +76,9 @@ public class TienLenMNScreen : BaseGameScreen {
       PlayerSlotScript playerScript = playerHolder[i];
       JSONObject user = users.ContainsKey(i.ToString()) ? users.GetObject(i.ToString()) : null;
       if (user != null) {
-        playerScript.Init(i, user.GetString("userId"), "Dan Choi" + (i + 1), (i + 1) * 200000, string.Empty);
+        playerScript.Init(user.GetString("userId"), "Dan Choi" + (i + 1), (i + 1) * 200000, string.Empty);
       } else {
-        playerScript.InitEmpty(i);
+        playerScript.InitEmpty();
       }
     }
   }
@@ -114,7 +114,7 @@ public class TienLenMNScreen : BaseGameScreen {
   
   IEnumerator DisplayPlayerTurn(int index) {
     yield return new WaitForSeconds((index + 1) * 5.0f);
-    playerHolder[index].ShowCircle(5f);
+    // playerHolder[index].ShowCircle(5f);
   }
   //##########
   
@@ -175,7 +175,7 @@ public class TienLenMNScreen : BaseGameScreen {
 
 	private void PlayCardFromOther(PlayerSlotScript player) {
 	  // TEST STOP Player turn's circle if played
-	  player.StopCircle();
+    // player.StopCircle();
 	  //##########
 		EventPlayOPCards(player.transform, new string[] {"6C", "7C", "8C"});
 	}

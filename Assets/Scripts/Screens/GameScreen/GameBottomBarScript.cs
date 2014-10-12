@@ -34,7 +34,7 @@ public class GameBottomBarScript : MonoBehaviour {
   }
   
   public void DisplayBubbleChat(string text, string username) {
-    DisplayBubbleChat(text, currentScreen.GetPlayer(username));
+    DisplayBubbleChat(text, currentScreen.FindUserSlot(username));
   }
   
   // Event when hit send chat button
@@ -43,7 +43,7 @@ public class GameBottomBarScript : MonoBehaviour {
     if (chatInput.value != string.Empty) {
       string escapedString = Utils.ChatEscape(chatInput.value);
       Debug.Log("###### " + escapedString + " ---- " + Utils.ChatUnescape(escapedString));
-      DisplayBubbleChat(escapedString, currentScreen.GetPlayer(AccountManager.Instance.username));
+      DisplayBubbleChat(escapedString, currentScreen.FindUserSlot(AccountManager.Instance.username));
       JSONObject data = new JSONObject();
       data.Add("message", escapedString);
       data.Add("senderId", AccountManager.Instance.username);

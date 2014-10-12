@@ -56,7 +56,7 @@ public class SlotMachineClient : MonoBehaviour {
 	private void OnJoinRoom(JSONObject jsonData) {
 	  Debug.Log("OnJoinLobby " +jsonData.ToString());
 	  PopupManager.Instance.CloseLoadingPopup();
-	  ScreenManager.Instance.SetScreen(BaseScreen.Type.SLOT_GAME_SCREEN, new object[]{GetGameTypeByCommand(jsonData.GetString("gameType")), null});
+	  ScreenManager.Instance.SetScreen(BaseScreen.Type.SLOT_GAME_SCREEN, new object[]{GetGameTypeByCommand(jsonData.GetString("gameType")), jsonData});
     // ScreenManager.Instance.SetScreen(BaseScreen.Type.SELECT_ROOM, new object[]{(int)BaseGameScreen.GameType.TIEN_LEN_MB, jsonData});
 	}
 
