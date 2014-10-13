@@ -27,6 +27,10 @@ public class BaseSlotMachineScreen : BaseScreen {
   
   private string roomId = string.Empty;
   
+  public string GetRoomId() {
+    return roomId;
+  }
+  
   public GameType GetCrtGameType() {
     return gameType;
   }
@@ -127,13 +131,22 @@ public class BaseSlotMachineScreen : BaseScreen {
     }
   }
   
+  public void UpdateOtherPlayerCash(string username, int cashVal) {
+    PlayerSlotScript playerSlot = FindUserSlot(username);
+     if (playerSlot != null) {
+       playerSlot.UpdateCash(cashVal);
+     } else {
+       Debug.Log("Cant find user slot " + username);
+     }
+  }
+  
   private PlayerSlotScript GetAvailableSlot(string username) {
     PlayerSlotScript emptySlot = null;
     PlayerSlotScript alreadyJoinSlot = null;
     for (int i = 0; i < otherPlayers.Length; i++) {
       if (otherPlayers[i].IsThisUser(username)) {
         alreadyJoinSlot = otherPlayers[i];
-      } else if (otherPlayers[i].IsEmpty()){
+      } else if (otherPlayers[i].IsEmpty() && emptySlot == null){
         emptySlot = otherPlayers[i];
       }
     }

@@ -41,6 +41,10 @@ public class PlayerSlotScript : MonoBehaviour {
     // EventDelegate.Set(btnSit.onClick, EventSit);
   }
   
+  public void UpdateCash(int cashVal) {
+    cashLabel.text = cashVal.ToString("N0");
+  }
+  
   public bool IsEmpty() {
     return username == string.Empty;
   }
