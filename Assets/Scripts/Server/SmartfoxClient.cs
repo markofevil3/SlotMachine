@@ -7,6 +7,7 @@ using System.Text;
 using Sfs2X;
 using Sfs2X.Core;
 using Sfs2X.Requests;
+using Sfs2X.Requests.Game;
 using Sfs2X.Entities;
 using Sfs2X.Entities.Data;
 using Sfs2X.Util;
@@ -124,6 +125,7 @@ public class SmartfoxClient : MonoBehaviour {
 		client.AddEventListener(SFSEvent.USER_EXIT_ROOM, OnUserExitRoom);
 		client.AddEventListener(SFSEvent.USER_ENTER_ROOM, OnUserEnterRoom);
 		client.AddEventListener(SFSEvent.USER_VARIABLES_UPDATE, OnUserVarsUpdate);
+		client.AddEventListener(SFSEvent.INVITATION, OnInvitationReceived);
 		
     // client.Connect("54.255.173.193", 9933);
     #if UNITY_EDITOR
@@ -292,6 +294,18 @@ public class SmartfoxClient : MonoBehaviour {
     // Debug.Log("OnUserVarsUpdate " + user.GetVariable("cash").GetIntValue());
   }
 
+  void OnInvitationReceived(BaseEvent e) {
+    Debug.Log("OnInvitationReceived " + e.ToString());
+  }
+  
+  public void SendInviteToGame(List<object> invitedUsers, ISFSObject parameters) {
+    client.Send( new InviteUsersRequest(invitedUsers, 20, parameters) );
+  }
+  
+  public User GetUserByName(string mUsername) {
+    return client.UserManager.GetUserByName(mUsername);
+  }
+  
 	void ResetAll() {
 		ServerRequestQueue.Clear();
 		ResetServerRequest();

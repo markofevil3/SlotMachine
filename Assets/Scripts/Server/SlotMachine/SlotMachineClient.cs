@@ -75,6 +75,21 @@ public class SlotMachineClient : MonoBehaviour {
     }
   }
 
+  public void InviteToGame(List<string> inviteUsernames, string roomName) {
+    List<object> invitedUsers = new List<object>();
+    for (int i = 0; i < inviteUsernames.Count; i++) {
+      Debug.Log("InviteToGame " + SmartfoxClient.Instance.GetUserByName(inviteUsernames[i]));
+      invitedUsers.Add(SmartfoxClient.Instance.GetUserByName(inviteUsernames[i]));
+    }
+    // Set the custom invitation details
+    ISFSObject parameters = new SFSObject();
+    parameters.PutUtfString("msg", "Would you like to join me in my room?");
+    parameters.PutUtfString("roomName", roomName);
+    // Send the invitation; recipients have 20 seconds to reply before the invitation expires
+    // sfs.Send( new InviteUsersRequest(invitedUsers, 20, parameters) );
+    SmartfoxClient.Instance.SendInviteToGame(invitedUsers, parameters);
+  }
+
   public void LeaveGame() {
     JSONObject jsonData = new JSONObject();
     jsonData.Add("gameType", GetCommandByGameType(ScreenManager.Instance.CurrentSlotScreen.GetCrtGameType()));
