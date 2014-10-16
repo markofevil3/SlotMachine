@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class PopupManager : MonoBehaviour {
   
-  private float dimAnimateSpeed = 0.1f;
+  private float dimAnimateSpeed = 0.4f;
   private float dimAlpha = 0.7f;
   private List<Popup> openingPopup = new List<Popup>();
   
@@ -15,6 +15,7 @@ public class PopupManager : MonoBehaviour {
   private PopupFriends popupFriends;
   private PopupSlotMachine popupSlotMachine;
   private PopupInviteToGame popupInviteToGame;
+  private PopupInviteGameConfirm popupInviteGameConfirm;
 
   private PopupLoading popupLoading;
   
@@ -41,6 +42,7 @@ public class PopupManager : MonoBehaviour {
   public GameObject dimBackground;
   public UISprite dimBackgroundSprite;
   public GameObject dimPanel;
+  private bool isShowingDim = false;
 
 	// Use this for initialization
 	void Awake () {
@@ -51,8 +53,8 @@ public class PopupManager : MonoBehaviour {
   public void FadeInScreen() {
     dimBackground.SetActive(true);
     dimBackgroundSprite.color = Color.black;
-    TweenAlpha tween = TweenAlpha.Begin(dimBackground, 0.8f, 0);
-		tween.from = 0.8f;
+    TweenAlpha tween = TweenAlpha.Begin(dimBackground, dimAlpha, 0);
+		tween.from = dimAlpha;
   }
   
   public void ShowNotification(string iconName, string text) {
@@ -63,23 +65,30 @@ public class PopupManager : MonoBehaviour {
   }
   
   public void ShowDim() {
-    dimBackground.SetActive(true);
-    // dimBackgroundSprite.color = Color.white;
-    TweenAlpha tween = TweenAlpha.Begin(dimBackground, dimAnimateSpeed, dimAlpha);
-		tween.from = 0;
+    if (!isShowingDim) {
+      isShowingDim = true;
+      dimBackground.SetActive(true);
+      // dimBackgroundSprite.color = Color.white;
+      TweenAlpha tween = TweenAlpha.Begin(dimBackground, dimAnimateSpeed, dimAlpha);
+  		tween.from = 0;
+    }
   }
   
   public void HideDim() {
-		LeanTween.cancel(dimBackground);
-		LeanTween.value(dimBackground, DoUpdateDimAlpha, dimBackgroundSprite.alpha, 0, dimAnimateSpeed, new Hashtable() {
-			{"onComplete", "HideDimCallback"},
-			{"onCompleteTarget", gameObject}
-		});
+    if (openingPopup.Count == 0) {
+      LeanTween.cancel(dimBackground);
+  		LeanTween.value(dimBackground, DoUpdateDimAlpha, dimBackgroundSprite.alpha, 0, dimAnimateSpeed, new Hashtable() {
+  			{"onComplete", "HideDimCallback"},
+  			{"onCompleteTarget", gameObject}
+  		});
+    }
 	}
   
   public void HideDimNoAnimation() {
-    dimBackgroundSprite.alpha = 0;
-		dimBackground.SetActive(false);
+    if (openingPopup.Count == 0) {
+      dimBackgroundSprite.alpha = 0;
+  		HideDimCallback();
+    }
 	}
   
   private void DoUpdateDimAlpha(float updateVal) {
@@ -87,6 +96,7 @@ public class PopupManager : MonoBehaviour {
 	}
   
   private void HideDimCallback() {
+    isShowingDim = false;
     dimBackground.SetActive(false);
   }
   
@@ -191,6 +201,20 @@ public class PopupManager : MonoBehaviour {
 	       	}
 	     	}
 	    break;
+	    case Popup.Type.POPUP_INVITE_TO_GAME_CONFIRM:
+	    	if (popupInviteGameConfirm == null) {
+	      	GameObject tempGameObject = NGUITools.AddChild(root, Resources.Load(Global.POPUP_PATH + "/PopupInviteGameConfirm", typeof(GameObject)) as GameObject);
+	       	tempGameObject.name = "PopupInviteGameConfirm";
+	       	popupInviteGameConfirm = tempGameObject.GetComponent<PopupInviteGameConfirm>();
+	       	tempPopup = popupInviteGameConfirm as Popup;
+	       	popupInviteGameConfirm.Init(data);
+	       	if (shouldAnimate) {
+	       	  popupInviteGameConfirm.Open();
+	       	} else {
+	       	  popupInviteGameConfirm.OpenPopupNoAnimation();
+	       	}
+	     	}
+	    break;
 	  }
 	  if (tempPopup != null) {
 	    openingPopup.Add(tempPopup);
@@ -221,6 +245,9 @@ public class PopupManager : MonoBehaviour {
 	    break;
 	    case Popup.Type.POPUP_INVITE_TO_GAME:
 	      popupInviteToGame = null;
+	    break;
+	    case Popup.Type.POPUP_INVITE_TO_GAME_CONFIRM:
+	      popupInviteGameConfirm = null;
 	    break;
 	  }
   }

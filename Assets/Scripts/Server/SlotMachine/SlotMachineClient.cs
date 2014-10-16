@@ -31,7 +31,7 @@ public class SlotMachineClient : MonoBehaviour {
     }
   }
   
-  private BaseSlotMachineScreen.GameType GetGameTypeByCommand(string gameTypeCommand) {
+  public BaseSlotMachineScreen.GameType GetGameTypeByCommand(string gameTypeCommand) {
     switch (gameTypeCommand) {
       case Command.SLOT_MACHINE.SLOT_TYPE_FRUITS:
         return BaseSlotMachineScreen.GameType.SLOT_FRUITS;
@@ -75,7 +75,7 @@ public class SlotMachineClient : MonoBehaviour {
     }
   }
 
-  public void InviteToGame(List<string> inviteUsernames, string roomName) {
+  public void InviteToGame(List<string> inviteUsernames, BaseSlotMachineScreen.GameType gameType, string roomName) {
     List<object> invitedUsers = new List<object>();
     for (int i = 0; i < inviteUsernames.Count; i++) {
       Debug.Log("InviteToGame " + SmartfoxClient.Instance.GetUserByName(inviteUsernames[i]));
@@ -83,8 +83,9 @@ public class SlotMachineClient : MonoBehaviour {
     }
     // Set the custom invitation details
     ISFSObject parameters = new SFSObject();
-    parameters.PutUtfString("msg", "Would you like to join me in my room?");
+    parameters.PutUtfString("msg", AccountManager.Instance.displayName + " invite you to play " + GetCommandByGameType(gameType) + " with him.");
     parameters.PutUtfString("roomName", roomName);
+		parameters.PutUtfString("gameType", GetCommandByGameType(gameType));
     // Send the invitation; recipients have 20 seconds to reply before the invitation expires
     // sfs.Send( new InviteUsersRequest(invitedUsers, 20, parameters) );
     SmartfoxClient.Instance.SendInviteToGame(invitedUsers, parameters);

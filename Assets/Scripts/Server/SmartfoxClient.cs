@@ -10,6 +10,7 @@ using Sfs2X.Requests;
 using Sfs2X.Requests.Game;
 using Sfs2X.Entities;
 using Sfs2X.Entities.Data;
+using Sfs2X.Entities.Invitation;
 using Sfs2X.Util;
 
 using Boomlagoon.JSON;
@@ -295,7 +296,12 @@ public class SmartfoxClient : MonoBehaviour {
   }
 
   void OnInvitationReceived(BaseEvent e) {
-    Debug.Log("OnInvitationReceived " + e.ToString());
+  	Invitation invitation = e.Params["invitation"] as SFSInvitation;
+    PopupManager.Instance.OpenPopup(Popup.Type.POPUP_INVITE_TO_GAME_CONFIRM, new object[] { SlotMachineClient.Instance.GetGameTypeByCommand(invitation.Params.GetUtfString("gameType")),
+                                                                                            invitation.Params.GetUtfString("roomName"),
+                                                                                            invitation.Inviter.Name,
+                                                                                            invitation.Params.GetUtfString("msg")});
+  	Debug.Log(invitation.Inviter + " | " + invitation.Params.GetUtfString("msg") + " | " + invitation.Params.GetUtfString("roomName"));
   }
   
   public void SendInviteToGame(List<object> invitedUsers, ISFSObject parameters) {

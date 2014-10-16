@@ -40,7 +40,7 @@ public class PopupInviteToGame : Popup {
 
   void EventSendInvite() {
     Debug.Log("EventSendInvite " + string.Join(",", listInviteUsers.ToArray()));
-    SlotMachineClient.Instance.InviteToGame(listInviteUsers, ScreenManager.Instance.CurrentSlotScreen.GetRoomId());
+    SlotMachineClient.Instance.InviteToGame(listInviteUsers, ScreenManager.Instance.CurrentSlotScreen.GetCrtGameType(), ScreenManager.Instance.CurrentSlotScreen.GetRoomId());
   }
 
   void LoadListFriendFromServer() {

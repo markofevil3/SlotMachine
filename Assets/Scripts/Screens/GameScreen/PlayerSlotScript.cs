@@ -47,7 +47,6 @@ public class PlayerSlotScript : MonoBehaviour {
   }
   
   void EventShowUserInfo(string mUsername) {
-    Debug.Log("EventShowUserInfo " + mUsername);
     PopupManager.Instance.OpenPopup(Popup.Type.POPUP_USER_INFO, new object[] { mUsername });
   }
   

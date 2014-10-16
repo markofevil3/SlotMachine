@@ -10,7 +10,8 @@ public class Popup : MonoBehaviour {
 		POPUP_USER_INFO,
 		POPUP_FRIENDS,
 		POPUP_SLOT_MACHINE,
-		POPUP_INVITE_TO_GAME
+		POPUP_INVITE_TO_GAME,
+		POPUP_INVITE_TO_GAME_CONFIRM
   }
   
   private Vector3 maxScale = new Vector3(1f, 1f, 1.0f);
@@ -31,7 +32,9 @@ public class Popup : MonoBehaviour {
   }
   
   public virtual void BaseInit() {
-    EventDelegate.Set(btnClose.onClick, Close);
+    if (btnClose != null) {
+      EventDelegate.Set(btnClose.onClick, Close);
+    }
   }
   
   public virtual void OpenPopupNoAnimation() {
@@ -81,7 +84,6 @@ public class Popup : MonoBehaviour {
   public virtual void HandleClosePopupCallback() {
     isAnimating = false;
     Global.isAnimatingPopup = false;
-    PopupManager.Instance.ClosePopup(this);
     Destroy(gameObject);
   }
   
@@ -89,12 +91,14 @@ public class Popup : MonoBehaviour {
     if (!isAnimating) {
       isAnimating = true;
       Global.isAnimatingPopup = true;
+      PopupManager.Instance.ClosePopup(this);
       BounceDownAnimation();
       PopupManager.Instance.HideDim();
     }
   }
   
   public virtual void CloseNoAnimation() {
+    PopupManager.Instance.ClosePopup(this);
     HandleClosePopupCallback();
     PopupManager.Instance.HideDimNoAnimation();
   }
