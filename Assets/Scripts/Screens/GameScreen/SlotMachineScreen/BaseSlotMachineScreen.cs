@@ -62,6 +62,12 @@ public class BaseSlotMachineScreen : BaseScreen {
       }
     }
     
+    for (int i = 0; i < otherPlayers.Length; i++) {
+      if (otherPlayers[i].IsEmpty()) {
+        otherPlayers[i].InitEmpty();
+      }
+    }
+    
     roomId = jsonData.GetString("roomId");
     
     UpdateUserCashLabel();

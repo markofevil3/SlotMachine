@@ -289,7 +289,7 @@ public class SmartfoxClient : MonoBehaviour {
   	if (!user.IsItMe && ScreenManager.Instance.CurrentSlotScreen != null) {
   	  ScreenManager.Instance.CurrentSlotScreen.UpdateOtherPlayerCash(user.Name, user.GetVariable("cash").GetIntValue());
   	}
-    Debug.Log("OnUserVarsUpdate " + user.GetVariable("cash").GetIntValue());
+    // Debug.Log("OnUserVarsUpdate " + user.GetVariable("cash").GetIntValue());
   }
 
 	void ResetAll() {
@@ -390,5 +390,9 @@ public class SmartfoxClient : MonoBehaviour {
 
 	public bool IsYou(string userId) {
 		return this.userId == userId;
+	}
+	
+	public List<User> GetListUsers() {
+	  return client.UserManager.GetUserList();
 	}
 }
