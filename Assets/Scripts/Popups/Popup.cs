@@ -4,13 +4,13 @@ using System.Collections;
 public class Popup : MonoBehaviour {
   
   public enum Type {
-		TEST_POPUP,
 		POPUP_RESULT,
 		POPUP_LEAVE_GAME,
 		POPUP_CREATE_ROOM,
 		POPUP_USER_INFO,
 		POPUP_FRIENDS,
-		POPUP_SLOT_MACHINE
+		POPUP_SLOT_MACHINE,
+		POPUP_INVITE_TO_GAME
   }
   
   private Vector3 maxScale = new Vector3(1f, 1f, 1.0f);

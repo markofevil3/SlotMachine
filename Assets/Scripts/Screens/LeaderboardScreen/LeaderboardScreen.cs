@@ -6,7 +6,7 @@ using Boomlagoon.JSON;
 public class LeaderboardScreen : BaseScreen {
 
   private const int RELOAD_DATA_SECONDS = 300;
-  private const int STOP_DRAG_NUMB_ROW = 5;
+  private const int STOP_DRAG_NUMB_ROW = 7;
 
   public enum Tab {
     NULL = -1,

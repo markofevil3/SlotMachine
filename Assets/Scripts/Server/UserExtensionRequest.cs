@@ -38,6 +38,12 @@ public class UserExtensionRequest : MonoBehaviour {
     if (PopupManager.Instance.PopupFriends != null) {
       PopupManager.Instance.PopupFriends.InitScrollViewData(data.GetArray("friends"));
     }
+    
+    // Fake to get inviteable friend list
+    if (PopupManager.Instance.PopupInviteToGame != null) {
+      PopupManager.Instance.PopupInviteToGame.InitScrollViewData(data.GetArray("friends"));
+    }
+    
     PopupManager.Instance.CloseLoadingPopup();
   }
   

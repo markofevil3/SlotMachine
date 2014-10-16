@@ -54,6 +54,7 @@ public class PlayerSlotScript : MonoBehaviour {
   void OpenInvitePlayerPopup() {
     Debug.Log("OpenInvitePlayerPopup");
     Debug.Log(SmartfoxClient.Instance.GetListUsers().Count);
+    PopupManager.Instance.OpenPopup(Popup.Type.POPUP_INVITE_TO_GAME, null);
   }
   
   public void UpdateCash(int cashVal) {

@@ -14,6 +14,7 @@ public class PopupManager : MonoBehaviour {
   private PopupUserInfo popupUserInfo;
   private PopupFriends popupFriends;
   private PopupSlotMachine popupSlotMachine;
+  private PopupInviteToGame popupInviteToGame;
 
   private PopupLoading popupLoading;
   
@@ -23,6 +24,10 @@ public class PopupManager : MonoBehaviour {
   
   public PopupFriends PopupFriends {
     get { return popupFriends; }
+  }
+  
+  public PopupInviteToGame PopupInviteToGame {
+    get { return popupInviteToGame; }
   }
   
   public PopupSlotMachine PopupSlotMachine {
@@ -172,6 +177,20 @@ public class PopupManager : MonoBehaviour {
 	       	}
 	     	}
 	    break;
+	    case Popup.Type.POPUP_INVITE_TO_GAME:
+	    	if (popupInviteToGame == null) {
+	      	GameObject tempGameObject = NGUITools.AddChild(root, Resources.Load(Global.POPUP_PATH + "/PopupInviteToGame/PopupInviteToGame", typeof(GameObject)) as GameObject);
+	       	tempGameObject.name = "PopupInviteToGame";
+	       	popupInviteToGame = tempGameObject.GetComponent<PopupInviteToGame>();
+	       	tempPopup = popupInviteToGame as Popup;
+	       	popupInviteToGame.Init(data);
+	       	if (shouldAnimate) {
+	       	  popupInviteToGame.Open();
+	       	} else {
+	       	  popupInviteToGame.OpenPopupNoAnimation();
+	       	}
+	     	}
+	    break;
 	  }
 	  if (tempPopup != null) {
 	    openingPopup.Add(tempPopup);
@@ -199,6 +218,9 @@ public class PopupManager : MonoBehaviour {
 	    break;
 	    case Popup.Type.POPUP_SLOT_MACHINE:
 	      popupSlotMachine = null;
+	    break;
+	    case Popup.Type.POPUP_INVITE_TO_GAME:
+	      popupInviteToGame = null;
 	    break;
 	  }
   }

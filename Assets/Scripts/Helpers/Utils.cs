@@ -71,6 +71,14 @@ public class Utils : MonoBehaviour {
 	  return Uri.UnescapeDataString(text);
 	}
 	
+	public static bool IsOdd(int value) {
+  	return value % 2 != 0;
+  }
+	
+	public static void SetActive(GameObject go, bool state) {
+	  NGUITools.SetActive(go, state);
+	}
+	
 	private static string chars = "abcdefghijklmnopqrstuvwxyz_";
 	private static System.Random random = new System.Random();
 	
