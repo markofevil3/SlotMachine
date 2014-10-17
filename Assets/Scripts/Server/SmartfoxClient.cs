@@ -8,6 +8,7 @@ using Sfs2X;
 using Sfs2X.Core;
 using Sfs2X.Requests;
 using Sfs2X.Requests.Game;
+using Sfs2X.Requests.Buddylist;
 using Sfs2X.Entities;
 using Sfs2X.Entities.Data;
 using Sfs2X.Entities.Invitation;
@@ -127,6 +128,9 @@ public class SmartfoxClient : MonoBehaviour {
 		client.AddEventListener(SFSEvent.USER_ENTER_ROOM, OnUserEnterRoom);
 		client.AddEventListener(SFSEvent.USER_VARIABLES_UPDATE, OnUserVarsUpdate);
 		client.AddEventListener(SFSEvent.INVITATION, OnInvitationReceived);
+		client.AddEventListener(SFSBuddyEvent.BUDDY_LIST_INIT, OnBuddyInited);
+    // client.addEventListener(SFSBuddyEvent.BUDDY_ADD, OnBuddyListUpdate);
+    
 		
     // client.Connect("54.255.173.193", 9933);
     #if UNITY_EDITOR
@@ -183,7 +187,7 @@ public class SmartfoxClient : MonoBehaviour {
 		  }
 		  isManualLogin = false;
 		}
-		
+		InitBuddyList();
 		Debug.Log("OnLogin---" + user.ToString());
 	}
 
@@ -209,6 +213,10 @@ public class SmartfoxClient : MonoBehaviour {
     }
 	  
     Debug.Log("Log out");
+  }
+  
+  void InitBuddyList() {
+    client.Send(new InitBuddyListRequest());
   }
   
 	void OnJoinRoom(BaseEvent e) {
@@ -310,6 +318,14 @@ public class SmartfoxClient : MonoBehaviour {
   
   public User GetUserByName(string mUsername) {
     return client.UserManager.GetUserByName(mUsername);
+  }
+  
+  void OnBuddyInited(BaseEvent e) {
+    
+  }
+
+  public List<Buddy> GetBuddyList() {
+    return client.BuddyManager.BuddyList;
   }
   
 	void ResetAll() {

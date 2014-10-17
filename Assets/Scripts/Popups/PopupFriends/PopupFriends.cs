@@ -16,6 +16,9 @@ public class PopupFriends : Popup {
   
   public override void Init(object[] data) {
     base.Init(data);
+    
+    Debug.Log(SmartfoxClient.Instance.GetBuddyList().Count);
+    
     if (AccountManager.Instance.friends.Length > 0) {
       LoadListFriendFromServer();
     } else {
