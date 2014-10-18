@@ -25,5 +25,4 @@ public class PopupInviteGameConfirm : Popup {
     Debug.Log("EventJoinGame");
     Close();
   }
-  
 }

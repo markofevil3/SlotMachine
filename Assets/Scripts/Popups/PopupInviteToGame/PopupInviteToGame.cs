@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Boomlagoon.JSON;
+using Sfs2X.Entities;
 
 public class PopupInviteToGame : Popup {
   
@@ -20,9 +21,25 @@ public class PopupInviteToGame : Popup {
   
   public override void Init(object[] data) {
     base.Init(data);
-    if (AccountManager.Instance.friends.Length > 0) {
-      LoadListFriendFromServer();
+    List<Buddy> buddyList = SmartfoxClient.Instance.GetBuddyList();
+    if (buddyList.Count > 0) {
       EventDelegate.Set(btnSendInvite.onClick, EventSendInvite);
+			JSONObject friend;
+			friendList = new JSONArray();
+			for (int i = 0; i < buddyList.Count; i++) {
+				friend = new JSONObject();
+				if (buddyList[i].IsOnline) {
+					Debug.Log("GetOnline Var");
+					friend.Add("displayName", buddyList[i].GetVariable("displayName").GetStringValue());
+					friend.Add("cash", buddyList[i].GetVariable("cash").GetIntValue());
+				} else {
+					friend.Add("displayName", buddyList[i].GetVariable("$displayName").GetStringValue());
+					friend.Add("cash", buddyList[i].GetVariable("$cash").GetIntValue());
+				}
+				friend.Add("username", buddyList[i].Name);
+				friendList.Add(friend);
+				InitScrollViewData(friendList);
+			}
     } else {
       Utils.SetActive(scrollview.gameObject, false);
       Utils.SetActive(btnSendInvite.gameObject, false);
@@ -39,17 +56,16 @@ public class PopupInviteToGame : Popup {
   }
 
   void EventSendInvite() {
-    Debug.Log("EventSendInvite " + string.Join(",", listInviteUsers.ToArray()));
-    SlotMachineClient.Instance.InviteToGame(listInviteUsers, ScreenManager.Instance.CurrentSlotScreen.GetCrtGameType(), ScreenManager.Instance.CurrentSlotScreen.GetRoomId());
-  }
-
-  void LoadListFriendFromServer() {
-    PopupManager.Instance.ShowLoadingPopup();
-    isLoading = true;
-    for (int i = 0; i < wrapContent.transform.childCount; i++) {
-      wrapContent.transform.GetChild(i).gameObject.SetActive(false);
-    }
-    UserExtensionRequest.Instance.LoadFriendList();
+		if (listInviteUsers.Count > 0) {
+			JSONArray arr = new JSONArray();
+			for (int i = 0; i < listInviteUsers.Count; i++) {
+				arr.Add(listInviteUsers[i]);
+			}
+	    Debug.Log("EventSendInvite " + arr.ToString());
+			
+	    UserExtensionRequest.Instance.InviteToGame(arr, ScreenManager.Instance.CurrentSlotScreen.GetCrtGameType(), ScreenManager.Instance.CurrentSlotScreen.GetRoomId());
+			Close();
+		}
   }
   
   public void InitScrollViewData(JSONArray mFriendList) {

@@ -7,7 +7,6 @@ public class AccountManager : MonoBehaviour {
   
   public static AccountManager Instance { get; private set; }
 	
-  private const string COMMAND_USER = "User";
   private int randomNumb = new System.Random().Next();
 	
 	private string mUsername = string.Empty;
@@ -15,7 +14,7 @@ public class AccountManager : MonoBehaviour {
 	private string mDisplayName = string.Empty;
 	private int mCash = 0;
 	private bool mIsGuest = false;
-	private JSONArray mFriends;
+	// private JSONArray mFriends;
 	
 	public string username {
 	  get { return mUsername; }
@@ -42,10 +41,10 @@ public class AccountManager : MonoBehaviour {
 	  set { mIsGuest = value; }
 	}
 	
-	public JSONArray friends {
-	  get { return mFriends; }
-	  set { mFriends = value; }
-	}
+	// public JSONArray friends {
+	//   get { return mFriends; }
+	//   set { mFriends = value; }
+	// }
 	
 	void Awake() {
 		Instance = this;
@@ -60,7 +59,7 @@ public class AccountManager : MonoBehaviour {
 		password = user.GetString("password");
 		displayName = user.GetString("displayName");
 		cash = user.GetInt("cash");
-		friends = user.GetArray("friends");
+		// friends = user.GetArray("friends");
 	}
 	
 	public void UpdateUserCash(int updateVal) {
@@ -72,21 +71,12 @@ public class AccountManager : MonoBehaviour {
 	}
 	
 	public bool IsFriend(string username) {
-	  bool isFriend = false;
-	  if (friends != null && friends.Length > 0) {
-	    for (int i = 0; i < friends.Length; i++) {
-        if (friends[i].Str == username) {
-          isFriend = true;
-        }
-  	  }
-  	  return isFriend;
-	  } else {
-	    return false;
-	  }
+		return SmartfoxClient.Instance.IsContainBuddy(username);
 	}
 	
 	private bool CanAddFriend(string username) {
-	  return friends == null || friends.Length < Global.MAX_FRIEND_NUMB;
+		int count = SmartfoxClient.Instance.GetBuddyList().Count;
+	  return count > 0 && count < Global.MAX_FRIEND_NUMB;
 	}
 	
 	public void AddFriend(string username) {

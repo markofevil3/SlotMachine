@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Boomlagoon.JSON;
+using Sfs2X.Entities;
 
 public class PopupFriends : Popup {
   
@@ -16,28 +18,42 @@ public class PopupFriends : Popup {
   
   public override void Init(object[] data) {
     base.Init(data);
-    
-    Debug.Log(SmartfoxClient.Instance.GetBuddyList().Count);
-    
-    if (AccountManager.Instance.friends.Length > 0) {
-      LoadListFriendFromServer();
+		// Get list friends from smartfox buddy list
+    List<Buddy> buddyList = SmartfoxClient.Instance.GetBuddyList();
+    if (buddyList.Count > 0) {
+			JSONObject friend;
+			friendList = new JSONArray();
+			for (int i = 0; i < buddyList.Count; i++) {
+				friend = new JSONObject();
+				if (buddyList[i].IsOnline) {
+					Debug.Log("GetOnline Var");
+					friend.Add("displayName", buddyList[i].GetVariable("displayName").GetStringValue());
+					friend.Add("cash", buddyList[i].GetVariable("cash").GetIntValue());
+				} else {
+					friend.Add("displayName", buddyList[i].GetVariable("$displayName").GetStringValue());
+					friend.Add("cash", buddyList[i].GetVariable("$cash").GetIntValue());
+				}
+				friend.Add("username", buddyList[i].Name);
+				friendList.Add(friend);
+				InitScrollViewData(friendList);
+			}
     } else {
-      scrollview.gameObject.SetActive(false);
+      Utils.SetActive(scrollview.gameObject, false);
       Debug.Log("----------- DONE HAVE ANY FRIEND ----------------");
     }
   }
 
-  void LoadListFriendFromServer() {
-    PopupManager.Instance.ShowLoadingPopup();
-    isLoading = true;
-    for (int i = 0; i < wrapContent.transform.childCount; i++) {
-      wrapContent.transform.GetChild(i).gameObject.SetActive(false);
-    }
-    UserExtensionRequest.Instance.LoadFriendList();
-  }
+  // void LoadListFriendFromServer() {
+  //   PopupManager.Instance.ShowLoadingPopup();
+  //   isLoading = true;
+  //   for (int i = 0; i < wrapContent.transform.childCount; i++) {
+  //     wrapContent.transform.GetChild(i).gameObject.SetActive(false);
+  //   }
+  //   UserExtensionRequest.Instance.LoadFriendList();
+  // }
   
   public void InitScrollViewData(JSONArray mFriendList) {
-    friendList = mFriendList;
+    // friendList = mFriendList;
     isLoading = false;
     wrapContent.ResetChildPositions();
     scrollview.currentMomentum = Vector3.zero;
@@ -56,7 +72,7 @@ public class PopupFriends : Popup {
     for (int i = 0; i < wrapContent.transform.childCount; i++) {
       tempGameObject = wrapContent.transform.GetChild(i);
       if (!tempGameObject.gameObject.activeSelf) {
-        tempGameObject.gameObject.SetActive(true);
+				Utils.SetActive(tempGameObject.gameObject, true);
       }
       FriendRowScript tempRowScript = tempGameObject.GetComponent<FriendRowScript>();
       tempRowScript.Init(scrollview);
@@ -67,10 +83,10 @@ public class PopupFriends : Popup {
         tempRowScript.dragScrollView.enabled = false;
       }
       if (i < friendList.Length) {
-        tempGameObject.gameObject.SetActive(true);
+				Utils.SetActive(tempGameObject.gameObject, true);
         tempRowScript.UpdateRowData(friendList[i].Obj);
       } else {
-        tempGameObject.gameObject.SetActive(false);
+				Utils.SetActive(tempGameObject.gameObject, false);
       }
     }
   }

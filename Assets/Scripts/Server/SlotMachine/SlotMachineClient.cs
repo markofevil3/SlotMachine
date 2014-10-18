@@ -18,7 +18,7 @@ public class SlotMachineClient : MonoBehaviour {
    Instance = this;
   }
   
-  private string GetCommandByGameType(BaseSlotMachineScreen.GameType gameType) {
+  public static string GetCommandByGameType(BaseSlotMachineScreen.GameType gameType) {
     switch (gameType) {
       case BaseSlotMachineScreen.GameType.SLOT_FRUITS:
         return Command.SLOT_MACHINE.SLOT_TYPE_FRUITS;
@@ -31,7 +31,7 @@ public class SlotMachineClient : MonoBehaviour {
     }
   }
   
-  public BaseSlotMachineScreen.GameType GetGameTypeByCommand(string gameTypeCommand) {
+  public static BaseSlotMachineScreen.GameType GetGameTypeByCommand(string gameTypeCommand) {
     switch (gameTypeCommand) {
       case Command.SLOT_MACHINE.SLOT_TYPE_FRUITS:
         return BaseSlotMachineScreen.GameType.SLOT_FRUITS;
@@ -73,22 +73,6 @@ public class SlotMachineClient : MonoBehaviour {
     if (ScreenManager.Instance.CurrentSlotScreen != null) {
       ScreenManager.Instance.CurrentSlotScreen.SetResults(jsonData);
     }
-  }
-
-  public void InviteToGame(List<string> inviteUsernames, BaseSlotMachineScreen.GameType gameType, string roomName) {
-    List<object> invitedUsers = new List<object>();
-    for (int i = 0; i < inviteUsernames.Count; i++) {
-      Debug.Log("InviteToGame " + SmartfoxClient.Instance.GetUserByName(inviteUsernames[i]));
-      invitedUsers.Add(SmartfoxClient.Instance.GetUserByName(inviteUsernames[i]));
-    }
-    // Set the custom invitation details
-    ISFSObject parameters = new SFSObject();
-    parameters.PutUtfString("msg", AccountManager.Instance.displayName + " invite you to play " + GetCommandByGameType(gameType) + " with him.");
-    parameters.PutUtfString("roomName", roomName);
-		parameters.PutUtfString("gameType", GetCommandByGameType(gameType));
-    // Send the invitation; recipients have 20 seconds to reply before the invitation expires
-    // sfs.Send( new InviteUsersRequest(invitedUsers, 20, parameters) );
-    SmartfoxClient.Instance.SendInviteToGame(invitedUsers, parameters);
   }
 
   public void LeaveGame() {

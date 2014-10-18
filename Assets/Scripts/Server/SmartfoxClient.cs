@@ -187,7 +187,6 @@ public class SmartfoxClient : MonoBehaviour {
 		  }
 		  isManualLogin = false;
 		}
-		InitBuddyList();
 		Debug.Log("OnLogin---" + user.ToString());
 	}
 
@@ -213,10 +212,6 @@ public class SmartfoxClient : MonoBehaviour {
     }
 	  
     Debug.Log("Log out");
-  }
-  
-  void InitBuddyList() {
-    client.Send(new InitBuddyListRequest());
   }
   
 	void OnJoinRoom(BaseEvent e) {
@@ -305,11 +300,11 @@ public class SmartfoxClient : MonoBehaviour {
 
   void OnInvitationReceived(BaseEvent e) {
   	Invitation invitation = e.Params["invitation"] as SFSInvitation;
-    PopupManager.Instance.OpenPopup(Popup.Type.POPUP_INVITE_TO_GAME_CONFIRM, new object[] { SlotMachineClient.Instance.GetGameTypeByCommand(invitation.Params.GetUtfString("gameType")),
+    PopupManager.Instance.OpenPopup(Popup.Type.POPUP_INVITE_TO_GAME_CONFIRM, new object[] { SlotMachineClient.GetGameTypeByCommand(invitation.Params.GetUtfString("gameType")),
                                                                                             invitation.Params.GetUtfString("roomName"),
                                                                                             invitation.Inviter.Name,
-                                                                                            invitation.Params.GetUtfString("msg")});
-  	Debug.Log(invitation.Inviter + " | " + invitation.Params.GetUtfString("msg") + " | " + invitation.Params.GetUtfString("roomName"));
+                                                                                            invitation.Params.GetUtfString("message")});
+  	Debug.Log(invitation.Inviter + " | " + invitation.Params.GetUtfString("message") + " | " + invitation.Params.GetUtfString("roomName"));
   }
   
   public void SendInviteToGame(List<object> invitedUsers, ISFSObject parameters) {
@@ -323,6 +318,10 @@ public class SmartfoxClient : MonoBehaviour {
   void OnBuddyInited(BaseEvent e) {
     
   }
+
+	public bool IsContainBuddy(string mUsername) {
+		return client.BuddyManager.ContainsBuddy(mUsername);
+	}
 
   public List<Buddy> GetBuddyList() {
     return client.BuddyManager.BuddyList;

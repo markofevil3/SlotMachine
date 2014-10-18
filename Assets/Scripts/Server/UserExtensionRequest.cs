@@ -27,26 +27,6 @@ public class UserExtensionRequest : MonoBehaviour {
     PopupManager.Instance.CloseLoadingPopup();
   }
   
-  public void LoadFriendList() {
-    JSONObject data = new JSONObject();
-    data.Add("friends", AccountManager.Instance.friends);
-    SmartfoxClient.Instance.HandleServerRequest(CreateExtensionRequest(Command.USER.LOAD_FRIEND_LIST, "LoadFriendListSuccess", data));
-  }
-  
-  void LoadFriendListSuccess(JSONObject data) {
-    Debug.Log("LoadFriendListSuccess " + data.ToString());
-    if (PopupManager.Instance.PopupFriends != null) {
-      PopupManager.Instance.PopupFriends.InitScrollViewData(data.GetArray("friends"));
-    }
-    
-    // Fake to get inviteable friend list
-    if (PopupManager.Instance.PopupInviteToGame != null) {
-      PopupManager.Instance.PopupInviteToGame.InitScrollViewData(data.GetArray("friends"));
-    }
-    
-    PopupManager.Instance.CloseLoadingPopup();
-  }
-  
   public void LoadUserInfo(string username) {
     JSONObject data = new JSONObject();
     data.Add("username", username);
@@ -74,7 +54,7 @@ public class UserExtensionRequest : MonoBehaviour {
     ErrorCode.USER errorCode = (ErrorCode.USER)data.GetInt("errorCode");
     if (errorCode == ErrorCode.USER.NULL) {
       string fUsername = data.GetString("fUsername");
-      AccountManager.Instance.friends.Add(fUsername);
+      // AccountManager.Instance.friends.Add(fUsername);
       if (PopupManager.Instance.PopupUserInfo != null) {
         PopupManager.Instance.PopupUserInfo.AddFriendSuccess(fUsername);
       }
@@ -83,6 +63,19 @@ public class UserExtensionRequest : MonoBehaviour {
     }
   }
   
+  public void InviteToGame(JSONArray inviteUsernames, BaseSlotMachineScreen.GameType gameType, string roomName) {
+	  JSONObject jsonData = new JSONObject();
+		jsonData.Add("gameType", SlotMachineClient.GetCommandByGameType(gameType));
+		jsonData.Add("message", AccountManager.Instance.displayName + " invite you to play " + SlotMachineClient.GetCommandByGameType(gameType) + " with him.");
+		jsonData.Add("roomName", roomName);
+		jsonData.Add("invitees", inviteUsernames);
+    SmartfoxClient.Instance.HandleServerRequest(CreateExtensionRequest(Command.USER.INVITE_TO_GAME, "InviteToGameSuccess", jsonData));
+  }
+	
+	void InviteToGameSuccess(JSONObject data) {
+		
+	}
+	
   void HandleErrorCode(ErrorCode.USER errorCode) {
     PopupManager.Instance.CloseLoadingPopup();
     PopupManager.Instance.HideLoadingIndicator();
