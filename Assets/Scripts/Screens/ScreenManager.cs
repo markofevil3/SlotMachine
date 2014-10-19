@@ -54,12 +54,6 @@ public class ScreenManager : MonoBehaviour {
 		Global.isTablet = Utils.IsTablet();
 	  Instance = this;
 	  SetScreen(BaseScreen.Type.LOBBY, null, true);
-		
-		Invoke("Test", 10f);
-	}
-	
-	void Test() {
-    PopupManager.Instance.OpenPopup(Popup.Type.POPUP_RELOAD_GAME);
 	}
 	
 	public void Restart() {
