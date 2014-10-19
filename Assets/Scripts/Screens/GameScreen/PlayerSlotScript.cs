@@ -51,8 +51,6 @@ public class PlayerSlotScript : MonoBehaviour {
   }
   
   void OpenInvitePlayerPopup() {
-    Debug.Log("OpenInvitePlayerPopup");
-    Debug.Log(SmartfoxClient.Instance.GetListUsers().Count + " " + SmartfoxClient.Instance.GetListUsers()[0].Name);
     PopupManager.Instance.OpenPopup(Popup.Type.POPUP_INVITE_TO_GAME, null);
   }
   

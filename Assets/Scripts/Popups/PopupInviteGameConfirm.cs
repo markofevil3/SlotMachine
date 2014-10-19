@@ -22,7 +22,7 @@ public class PopupInviteGameConfirm : Popup {
   }
   
   void EventJoinGame() {
-    Debug.Log("EventJoinGame");
+    SlotMachineClient.Instance.JoinRoom(gameType, roomId);		
     Close();
   }
 }

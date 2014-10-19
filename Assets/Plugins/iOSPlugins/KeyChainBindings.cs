@@ -3,7 +3,7 @@ using System;
 using System.Runtime.InteropServices;
 
 public class KeyChainBindings {
-	static public void SetStringForKey(string value, string keyName) {
+	static public void SetStringForKey(string keyName, string value) {
 		#if UNITY_IPHONE
     IOSSetStringForKey(value, keyName);
     #endif

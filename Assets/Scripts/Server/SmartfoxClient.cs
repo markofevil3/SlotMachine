@@ -91,13 +91,13 @@ public class SmartfoxClient : MonoBehaviour {
     client.Send(new LoginRequest(userId, DEFAULT_PASSWORD, "Gamble", loginData));
   }
 
-  public void LoginUser(string username, string password) {
+  public void LoginUser(string username, string password, bool isManual = true) {
     JSONObject jsonData = new JSONObject();
     jsonData.Add("isRegister", false);
     jsonData.Add("isGuest", false);
     ISFSObject loginData = new SFSObject();
     loginData.PutByteArray("jsonData", Utils.ToByteArray(jsonData.ToString()));
-    isManualLogin = true;
+    isManualLogin = isManual;
     client.Send(new LoginRequest(username, password, "Gamble", loginData));
   }
   
@@ -108,6 +108,7 @@ public class SmartfoxClient : MonoBehaviour {
   }
   
 	public void Connect() {
+		PopupManager.Instance.ShowLoadingPopup();
 		client = new SmartFox();
 		client.ThreadSafeMode = true;
 		client.UseBlueBox = false;
@@ -148,22 +149,36 @@ public class SmartfoxClient : MonoBehaviour {
 		  Debug.Log("Connect Success " + AccountManager.Instance.username + " " + AccountManager.Instance.password);
 		  if (AccountManager.Instance.username != string.Empty) {
         // PopupManager.Instance.ShowLoadingPopup();
-		    LoginUser(AccountManager.Instance.username, AccountManager.Instance.password);
+		    LoginUser(AccountManager.Instance.username, AccountManager.Instance.password, false);
 		  } else {
+				Debug.Log("OnConnection " + FileManager.GetFromKeyChain("username"));
 		    if (FileManager.GetFromKeyChain("username") != string.Empty) {
           // PopupManager.Instance.ShowLoadingPopup();
-		      LoginUser(FileManager.GetFromKeyChain("username"), FileManager.GetFromKeyChain("password"));
-		    }
+		      LoginUser(FileManager.GetFromKeyChain("username"), FileManager.GetFromKeyChain("password"), false);
+				} else {
+				  PopupManager.Instance.CloseLoadingPopup();
+				}
 		  }
 		} else {
+		  PopupManager.Instance.CloseLoadingPopup();
+	    PopupManager.Instance.OpenPopup(Popup.Type.POPUP_RELOAD_GAME);
 		  Debug.Log("Connect FAIL!");
 		}
 	}
 
 	void OnConnectionLost(BaseEvent e) {
 	  isConnected = false;
-	  Debug.Log("Connection is lost, reason:" + e.Params["reason"]);
-	  HUDManager.Instance.AddFlyText("Connection is lost, reason:" + e.Params["reason"], Vector3.zero, 40, Color.red, 0, 4f);
+	  Debug.LogError("Connection is lost, reason:" + e.Params["reason"]);
+    PopupManager.Instance.OpenPopup(Popup.Type.POPUP_RELOAD_GAME);
+	  // HUDManager.Instance.AddFlyText("Connection is lost, reason:" + e.Params["reason"], Vector3.zero, 40, Color.red, 0, 4f);
+	}
+
+	public void Restart() {
+		isManualLogin = false;
+		isLoggedIn = false;
+		PopupManager.Instance.Restart();
+		ScreenManager.Instance.Restart();
+		Connect();
 	}
 
 	void OnLogin(BaseEvent e) {
@@ -175,7 +190,6 @@ public class SmartfoxClient : MonoBehaviour {
 		if (ScreenManager.Instance.LobbyScreen != null) {
 		  ScreenManager.Instance.LobbyScreen.EventLoggedIn();
 		}
-		
 		if (user.GetBoolean("isRegister") || isManualLogin) {
       bool mIsGuest = user.GetBoolean("isGuest");
       string mUsername = user.GetString("username");

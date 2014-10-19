@@ -47,12 +47,32 @@ public class ScreenManager : MonoBehaviour {
 	}
 	
 	void Start() {
+		Debug.Log("Start------------");
 	  Application.targetFrameRate = 60;
 		Application.runInBackground = false;
 		Global.Init();
 		Global.isTablet = Utils.IsTablet();
 	  Instance = this;
-	  SetScreen(BaseScreen.Type.LOBBY);
+	  SetScreen(BaseScreen.Type.LOBBY, null, true);
+		
+		Invoke("Test", 10f);
+	}
+	
+	void Test() {
+    PopupManager.Instance.OpenPopup(Popup.Type.POPUP_RELOAD_GAME);
+	}
+	
+	public void Restart() {
+		currentScreen.FadeOutAndDestroy(gameObject, "RestartCallback");
+		currentScreen = null;
+		if (previousScreen != null) {
+			previousScreen.Close();
+			previousScreen = null;
+		}
+	}
+	
+	void RestartCallback() {
+		Invoke("Start", 0.2f);
 	}
 	
 	public void BackToPrevScreen() {
@@ -75,6 +95,7 @@ public class ScreenManager : MonoBehaviour {
 		    currentScreen.Close();
 		  }
 		}
+		Debug.Log("@@@@@@@@@@11111111111");
 		GameObject tempGameObject;
 		switch(type) {
 			case BaseScreen.Type.LOBBY:

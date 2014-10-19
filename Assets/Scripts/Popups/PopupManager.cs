@@ -16,6 +16,7 @@ public class PopupManager : MonoBehaviour {
   private PopupSlotMachine popupSlotMachine;
   private PopupInviteToGame popupInviteToGame;
   private PopupInviteGameConfirm popupInviteGameConfirm;
+  private PopupReloadGame popupReloadGame;
 
   private PopupLoading popupLoading;
   
@@ -50,6 +51,10 @@ public class PopupManager : MonoBehaviour {
 	  HideDimNoAnimation();
 	}
   
+	public void Restart() {
+		CloseAllNoAnimation();
+	}
+	
   public void FadeInScreen() {
     dimBackground.SetActive(true);
     dimBackgroundSprite.color = Color.black;
@@ -215,6 +220,20 @@ public class PopupManager : MonoBehaviour {
 	       	}
 	     	}
 	    break;
+	    case Popup.Type.POPUP_RELOAD_GAME:
+	    	if (popupReloadGame == null) {
+	      	GameObject tempGameObject = NGUITools.AddChild(root, Resources.Load(Global.POPUP_PATH + "/PopupReloadGame", typeof(GameObject)) as GameObject);
+	       	tempGameObject.name = "PopupReloadGame";
+	       	popupReloadGame = tempGameObject.GetComponent<PopupReloadGame>();
+	       	tempPopup = popupReloadGame as Popup;
+	       	popupReloadGame.Init(data);
+	       	if (shouldAnimate) {
+	       	  popupReloadGame.Open();
+	       	} else {
+	       	  popupReloadGame.OpenPopupNoAnimation();
+	       	}
+	     	}
+	    break;
 	  }
 	  if (tempPopup != null) {
 	    openingPopup.Add(tempPopup);
@@ -249,9 +268,26 @@ public class PopupManager : MonoBehaviour {
 	    case Popup.Type.POPUP_INVITE_TO_GAME_CONFIRM:
 	      popupInviteGameConfirm = null;
 	    break;
+	    case Popup.Type.POPUP_RELOAD_GAME:
+	      popupReloadGame = null;
+	    break;
 	  }
   }
   
+	public void CloseAll() {
+		for (int i = 0; i < openingPopup.Count; i++) {
+			openingPopup[i].Close();
+			i--;
+		}
+	}
+	
+	public void CloseAllNoAnimation() {
+		for (int i = 0; i < openingPopup.Count; i++) {
+			openingPopup[i].CloseNoAnimation();
+			i--;
+		}
+	}
+	
   // Show device loading indicator
   public void ShowLoadingIndicator() {
     #if UNITY_IPHONE

@@ -45,10 +45,11 @@ public class SlotMachineClient : MonoBehaviour {
   }
   
   // Join user to game lobby room and join available room
-	public void JoinRoom(BaseSlotMachineScreen.GameType gameType) {
+	public void JoinRoom(BaseSlotMachineScreen.GameType gameType, string roomName = null) {
 	  PopupManager.Instance.ShowLoadingPopup();
 	  JSONObject jsonData = new JSONObject();
 		jsonData.Add("gameType", GetCommandByGameType(gameType));
+		jsonData.Add("roomName", roomName);
 		SmartfoxClient.Instance.HandleServerRequest(CreateExtensionRequest(Command.SLOT_MACHINE.SLOT_JOIN_ROOM, jsonData));
 	}
 

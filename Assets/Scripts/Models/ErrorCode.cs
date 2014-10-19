@@ -23,4 +23,13 @@ public class ErrorCode {
 		CANNOT_CREATE_ROOM,
 		UNKNOWN = 100
 	}
+	
+	public enum SLOT_MACHINE {
+		NULL = 0,
+		INVALID_GAMECONFIG,
+		CANNOT_CREATE_ROOM,
+		GAME_NOT_EXISTS,
+		ROOM_IS_FULL,
+		UNKNOWN = 100
+	}
 }
