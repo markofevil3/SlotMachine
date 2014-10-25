@@ -47,7 +47,6 @@ public class ScreenManager : MonoBehaviour {
 	}
 	
 	void Start() {
-		Debug.Log("Start------------");
 	  Application.targetFrameRate = 60;
 		Application.runInBackground = false;
 		Global.Init();
@@ -89,7 +88,6 @@ public class ScreenManager : MonoBehaviour {
 		    currentScreen.Close();
 		  }
 		}
-		Debug.Log("@@@@@@@@@@11111111111");
 		GameObject tempGameObject;
 		switch(type) {
 			case BaseScreen.Type.LOBBY:

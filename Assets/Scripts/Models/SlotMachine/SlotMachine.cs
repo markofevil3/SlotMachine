@@ -8,6 +8,7 @@ public class SlotMachine : MonoBehaviour {
   public SlotCombination slotCombination;
   public UILabel scoreLabel;
   public UILabel jackpotLabel;
+	public MachineHandler machineHandler;
   
   private bool isRunning = false;
   private int reelStopCount = 0;
@@ -15,6 +16,7 @@ public class SlotMachine : MonoBehaviour {
   private JSONArray winningGold;
   private JSONObject winResults;
   private bool isJackpot = false;
+	private int freeSpinLeft = 0;
 
   public void Init() {
     slotCombination.Init();
@@ -49,6 +51,7 @@ public class SlotMachine : MonoBehaviour {
     winResults = jsonData.GetObject("winResults");
     winningGold = winResults.GetArray("winningGold");
     isJackpot = winResults.GetBoolean("isJackpot");
+		freeSpinLeft = jsonData.GetInt("freeSpinLeft");
     for (int i = 0; i < slotReels.Length; i++) {
       slotReels[i].SetResults(new int[3] { (int)resultsData[i * 3].Number, (int)resultsData[i * 3 + 1].Number, (int)resultsData[i * 3 + 2].Number });
     }
@@ -65,6 +68,12 @@ public class SlotMachine : MonoBehaviour {
         totalScore += (int)winningGold[i].Number;
       }
       UpdateScore(totalScore);
+			if (freeSpinLeft > 0) {
+				machineHandler.DisableHandler();
+				Invoke("StartMachine", 0.5f);
+			} else {
+				machineHandler.EnableHandler();
+			}
     }
   }
   

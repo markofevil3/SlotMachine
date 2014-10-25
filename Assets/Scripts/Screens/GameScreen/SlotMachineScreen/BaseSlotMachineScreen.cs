@@ -22,7 +22,8 @@ public class BaseSlotMachineScreen : BaseScreen {
   public UILabel betPerLineLabel;
   public UILabel lineLabel;
   public UILabel userCashLabel;
-  
+	public UIEventTriggerExtent backgroundEventListener;
+	public InGameChatBar inGameChatBar;
   public PlayerSlotScript[] otherPlayers = new PlayerSlotScript[4];
   
   private string roomId = string.Empty;
@@ -47,7 +48,7 @@ public class BaseSlotMachineScreen : BaseScreen {
     EventDelegate.Set(btnBetPerLine.onClick, EventBetPerLine);
     EventDelegate.Set(btnLines.onClick, EventBetLines);
     EventDelegate.Set(btnMaxBet.onClick, EventMaxBet);
-    SetBetPerLine(50);
+    SetBetPerLine(500);
     SetNunLine(1);
     
     // Init other players if have
@@ -113,6 +114,7 @@ public class BaseSlotMachineScreen : BaseScreen {
   
   void EventMaxBet() {
     SetNunLine(SlotCombination.MAX_LINE);
+		slotMachine.StartMachine();
   }
   
   public void OnPlayerJoinRoom(string roomId, JSONObject userData) {

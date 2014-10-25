@@ -137,7 +137,7 @@ public class SmartfoxClient : MonoBehaviour {
     #if UNITY_EDITOR
     client.Connect("127.0.0.1", 9933);
     # else
-    client.Connect("113.160.37.133", 9933);
+    client.Connect("113.190.2.125", 9933);
     # endif
     // walk around for custom error code from server
     SFSErrorCodes.SetErrorMessage(2, "{0}");
@@ -265,9 +265,16 @@ public class SmartfoxClient : MonoBehaviour {
 	    Debug.Log(entry.Key + " " + entry.Value);
   	}
   	User sender = ((User)e.Params["sender"]);
-  	if (ScreenManager.Instance.CurrentGameScreen != null && !sender.IsItMe) {
-  	  Debug.Log("#######");
-  	  ScreenManager.Instance.CurrentGameScreen.bottomBarScript.DisplayBubbleChat(e.Params["message"].ToString(), sender.Name);
+  	// if (ScreenManager.Instance.CurrentGameScreen != null && !sender.IsItMe) {
+  	//   Debug.Log("#######");
+  	//   ScreenManager.Instance.CurrentGameScreen.bottomBarScript.DisplayBubbleChat(e.Params["message"].ToString(), sender.Name);
+  	// }
+  	if (ScreenManager.Instance.CurrentSlotScreen != null && !sender.IsItMe) {
+      JSONObject data = new JSONObject();
+      data.Add("message", e.Params["message"].ToString());
+      data.Add("senderId", sender.Name);
+      data.Add("senderName", sender.GetVariable("displayName").GetStringValue());
+  	  ScreenManager.Instance.CurrentSlotScreen.inGameChatBar.AddChatToList(data);
   	}
     // Debug.Log("OnPublicMessage + " + e.Params.ToString());
     //    JSONObject messageJson = JSONObject.Parse(e.Params["message"].ToString());
