@@ -3,15 +3,28 @@ using System.Collections;
 using Boomlagoon.JSON;
 
 public class BaseSlotMachineScreen : BaseScreen {
-  
+	
   public enum GameType {
     SLOT_FRUITS,
     SLOT_HALLOWEEN,
     TOTAL
   }
-    
+  [HideInInspector]
+	public string WINNING_ANIMATION_PREFAB = "";
   [HideInInspector]
   public GameBottomBarScript bottomBarScript;
+  [HideInInspector]
+  public WinningAnimation winningAnimation {
+  	get { 
+			if (mWinningAnimation == null) {
+		    GameObject tempGameObject = NGUITools.AddChild(gameObject, Resources.Load(WINNING_ANIMATION_PREFAB, typeof(GameObject)) as GameObject);
+		   	tempGameObject.name = "WinningAnimation";
+		   	mWinningAnimation = tempGameObject.GetComponent<WinningAnimation>();
+		   	mWinningAnimation.Init(slotMachine);
+			}
+			return mWinningAnimation;
+		}
+  }
   
   public GameType gameType;
   public UIButton btnBack;
@@ -27,6 +40,7 @@ public class BaseSlotMachineScreen : BaseScreen {
   public PlayerSlotScript[] otherPlayers = new PlayerSlotScript[4];
   
   private string roomId = string.Empty;
+	private WinningAnimation mWinningAnimation;
   
   public string GetRoomId() {
     return roomId;
@@ -82,12 +96,27 @@ public class BaseSlotMachineScreen : BaseScreen {
   
   public override void Open() {}
   
+	// Set result after receive from server, then slot reel will display result
   public virtual void SetResults(JSONObject jsonData) {
     slotMachine.SetResults(jsonData);
     AccountManager.Instance.UpdateUserCash(-jsonData.GetInt("cost"));
     UpdateUserCashLabel();
   }
   
+	// Show animation when player got free spin
+	public void DisplayFreeSpinAnimation() {
+		
+	}
+	
+	// Slot reel stopped, displayed result, start display winning animation if should
+	public void EventFinishSpin(bool isBigWin, int winningCash) {
+		if (isBigWin) {
+			slotMachine.Wait();
+			winningAnimation.SetData(winningCash);
+			winningAnimation.FadeIn(true, 2f);
+		}
+	}
+
   public void UpdateUserCashLabel() {
     userCashLabel.text = AccountManager.Instance.cash.ToString("N0");
   }

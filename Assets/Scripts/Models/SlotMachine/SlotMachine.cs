@@ -17,7 +17,11 @@ public class SlotMachine : MonoBehaviour {
   private JSONObject winResults;
   private bool isJackpot = false;
 	private int freeSpinLeft = 0;
-
+	private bool autoStart = false;
+	private bool canStart = true;
+	private bool isBigWin = false;
+	private bool gotFreeSpin = false;
+	
   public void Init() {
     slotCombination.Init();
     for (int i = 0; i < slotReels.Length; i++) {
@@ -52,6 +56,8 @@ public class SlotMachine : MonoBehaviour {
     winningGold = winResults.GetArray("winningGold");
     isJackpot = winResults.GetBoolean("isJackpot");
 		freeSpinLeft = jsonData.GetInt("freeSpinLeft");
+		isBigWin = jsonData.GetBoolean("isBigWin");
+		gotFreeSpin = jsonData.GetInt("freeRunCount") > 0;
     for (int i = 0; i < slotReels.Length; i++) {
       slotReels[i].SetResults(new int[3] { (int)resultsData[i * 3].Number, (int)resultsData[i * 3 + 1].Number, (int)resultsData[i * 3 + 2].Number });
     }
@@ -68,15 +74,41 @@ public class SlotMachine : MonoBehaviour {
         totalScore += (int)winningGold[i].Number;
       }
       UpdateScore(totalScore);
+			if (gotFreeSpin) {
+				ScreenManager.Instance.CurrentSlotScreen.DisplayFreeSpinAnimation();
+			}
 			if (freeSpinLeft > 0) {
 				machineHandler.DisableHandler();
-				Invoke("StartMachine", 0.5f);
+				Invoke("EnableAutoStart", 0.5f);
 			} else {
+				DisableAutoStart();
 				machineHandler.EnableHandler();
 			}
     }
   }
   
+	public void Wait() {
+		canStart = false;
+	}
+	
+	public void Resume() {
+		canStart = true;
+	}
+	
+	void EnableAutoStart() {
+		autoStart = true;
+	}
+	
+	void DisableAutoStart() {
+		autoStart = false;
+	}
+	
+	void Update() {
+		if (canStart && autoStart) {
+			StartMachine();
+		}
+	}
+	
   public void UpdateJackpot(int score) {
     jackpotLabel.text = score.ToString("N0");
   }
@@ -85,6 +117,7 @@ public class SlotMachine : MonoBehaviour {
     scoreLabel.text = score.ToString("N0");
     AccountManager.Instance.UpdateUserCash(score);
     ScreenManager.Instance.CurrentSlotScreen.UpdateUserCashLabel();
+    ScreenManager.Instance.CurrentSlotScreen.EventFinishSpin(isBigWin, score);
   }
   
   public void SetBetPerLine(int betVal) {
