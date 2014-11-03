@@ -9,11 +9,13 @@ public class SelectGameScreen : BaseScreen {
   public UIButton btnBack;
   public UIButton btnFruitGame;
   public UIButton btnHalloweenGame;
+  public UIButton btnDragonGame;
 
   public override void Init(object[] data) {
     EventDelegate.Set(btnBack.onClick, BackToLobbyScreen);
     EventDelegate.Set(btnFruitGame.onClick, delegate() { EventOpenSlotGame(BaseSlotMachineScreen.GameType.SLOT_FRUITS); });
     EventDelegate.Set(btnHalloweenGame.onClick, delegate() { EventOpenSlotGame(BaseSlotMachineScreen.GameType.SLOT_HALLOWEEN); });
+    EventDelegate.Set(btnDragonGame.onClick, delegate() { EventOpenSlotGame(BaseSlotMachineScreen.GameType.SLOT_DRAGON); });
     
     GameObject tempGameObject = NGUITools.AddChild(gameObject, Resources.Load(Global.USER_BOTTOM_BAR_PREFAB, typeof(GameObject)) as GameObject);
    	tempGameObject.name = "UserBottomBar";

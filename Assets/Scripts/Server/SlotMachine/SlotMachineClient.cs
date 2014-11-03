@@ -26,6 +26,9 @@ public class SlotMachineClient : MonoBehaviour {
       case BaseSlotMachineScreen.GameType.SLOT_HALLOWEEN:
         return Command.SLOT_MACHINE.SLOT_TYPE_HALLOWEEN;
       break;
+      case BaseSlotMachineScreen.GameType.SLOT_DRAGON:
+        return Command.SLOT_MACHINE.SLOT_TYPE_DRAGON;
+      break;
       default:
         return string.Empty;
     }
@@ -38,6 +41,9 @@ public class SlotMachineClient : MonoBehaviour {
       break;
       case Command.SLOT_MACHINE.SLOT_TYPE_HALLOWEEN:
         return BaseSlotMachineScreen.GameType.SLOT_HALLOWEEN;
+      break;
+      case Command.SLOT_MACHINE.SLOT_TYPE_DRAGON:
+        return BaseSlotMachineScreen.GameType.SLOT_DRAGON;
       break;
       default:
         return BaseSlotMachineScreen.GameType.SLOT_FRUITS;

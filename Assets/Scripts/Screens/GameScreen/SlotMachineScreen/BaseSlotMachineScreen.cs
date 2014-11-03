@@ -7,6 +7,7 @@ public class BaseSlotMachineScreen : BaseScreen {
   public enum GameType {
     SLOT_FRUITS,
     SLOT_HALLOWEEN,
+		SLOT_DRAGON,
     TOTAL
   }
   [HideInInspector]
