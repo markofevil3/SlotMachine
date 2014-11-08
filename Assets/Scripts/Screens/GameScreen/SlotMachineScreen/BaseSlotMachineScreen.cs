@@ -26,7 +26,9 @@ public class BaseSlotMachineScreen : BaseScreen {
 			return mWinningAnimation;
 		}
   }
-  
+  [HideInInspector]
+	public JSONObject roomData;
+	
   public GameType gameType;
   public UIButton btnBack;
   public SlotMachine slotMachine;
@@ -70,6 +72,7 @@ public class BaseSlotMachineScreen : BaseScreen {
     Debug.Log("### " + data[1].ToString());
     JSONObject jsonData = (JSONObject)data[1];
     JSONArray otherPlayerDatas = jsonData.GetArray("otherPlayers");
+		roomData = jsonData.GetObject("roomData");
     int count = 0;
     for (int i = 0; i < otherPlayerDatas.Length; i++) {
       if (!AccountManager.Instance.IsYou(otherPlayerDatas[i].Obj.GetString("username"))) {
@@ -110,7 +113,7 @@ public class BaseSlotMachineScreen : BaseScreen {
 	}
 	
 	// Slot reel stopped, displayed result, start display winning animation if should
-	public void EventFinishSpin(bool isBigWin, int winningCash) {
+	public virtual void EventFinishSpin(bool isBigWin, int winningCash) {
 		if (isBigWin) {
 			slotMachine.Wait();
 			winningAnimation.SetData(winningCash);
