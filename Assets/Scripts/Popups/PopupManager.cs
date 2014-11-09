@@ -299,12 +299,16 @@ public class PopupManager : MonoBehaviour {
     #elif UNITY_ANDROID
       Handheld.SetActivityIndicatorStyle(AndroidActivityIndicatorStyle.Large);
     #endif
-    Handheld.StartActivityIndicator();
+    #if UNITY_IPHONE || UNITY_ANDROID
+	    Handheld.StartActivityIndicator();
+    #endif
   }
   
   // Hide device loading indicator
   public void HideLoadingIndicator() {
-    Handheld.StopActivityIndicator();
+	  #if UNITY_IPHONE || UNITY_ANDROID
+	    Handheld.StopActivityIndicator();
+	  #endif
   }
   
   public void ShowLoadingPopup() {

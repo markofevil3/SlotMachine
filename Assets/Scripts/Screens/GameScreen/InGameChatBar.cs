@@ -70,19 +70,21 @@ public class InGameChatBar : MonoBehaviour {
 	}
 	
 	void Update() {
-		if (chatInput.isSelected && !isOpen && TouchScreenKeyboard.area.height > 0) {
-			isOpen = true;
-			if (openPos == Vector3.zero) {
-				float pos = Mathf.Abs(transform.localPosition.y * 2) * TouchScreenKeyboard.area.height / Screen.height;
-				openPos = new Vector3(transform.localPosition.x, pos - Mathf.Abs(transform.localPosition.y) + 150f, transform.localPosition.z);
+    #if UNITY_IPHONE || UNITY_ANDROID
+			if (chatInput.isSelected && !isOpen && TouchScreenKeyboard.area.height > 0) {
+				isOpen = true;
+				if (openPos == Vector3.zero) {
+					float pos = Mathf.Abs(transform.localPosition.y * 2) * TouchScreenKeyboard.area.height / Screen.height;
+					openPos = new Vector3(transform.localPosition.x, pos - Mathf.Abs(transform.localPosition.y) + 150f, transform.localPosition.z);
+				}
+				Debug.Log("## " + openPos + " " + TouchScreenKeyboard.area);
+				TweenPosition tween = TweenPosition.Begin(gameObject, 0.3f, openPos, false);
 			}
-			Debug.Log("## " + openPos + " " + TouchScreenKeyboard.area);
-			TweenPosition tween = TweenPosition.Begin(gameObject, 0.3f, openPos, false);
-		}
-		if (!chatInput.isSelected && isOpen) {
-			isOpen = false;
-			TweenPosition tween = TweenPosition.Begin(gameObject, 0.3f, closePos, false);
-		}
+			if (!chatInput.isSelected && isOpen) {
+				isOpen = false;
+				TweenPosition tween = TweenPosition.Begin(gameObject, 0.3f, closePos, false);
+			}
+		#endif 
 	}
 	
 	public void Close() {

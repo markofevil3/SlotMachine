@@ -48,7 +48,7 @@ public class ScreenManager : MonoBehaviour {
 	
 	void Start() {
 	  Application.targetFrameRate = 60;
-		Application.runInBackground = false;
+		Application.runInBackground = true;
 		Global.Init();
 		Global.isTablet = Utils.IsTablet();
 	  Instance = this;
