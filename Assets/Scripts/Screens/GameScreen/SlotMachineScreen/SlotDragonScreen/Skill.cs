@@ -11,13 +11,16 @@ public class Skill : MonoBehaviour {
 	private int damage;
 	private Boss boss;
 
-	public void Init(Boss boss, int damage) {
+	public void Init(Boss boss, int damage, Vector3 startPos) {
 		transform.localScale = size;
-		transform.localRotation = Quaternion.Euler(rotation);
+		transform.position = startPos;
+		Vector3 target = boss.bossSprite.transform.position;
+		// Rotate skill to look at target
+		transform.rotation = Quaternion.Euler(0 , 0, Mathf.Atan2((target.y - transform.position.y), (target.x - transform.position.x))*Mathf.Rad2Deg);			
 		this.boss = boss;
 		this.damage = damage;
 		sprite.color = new Color(1f,1f,1f,0f);
-		LeanTween.move(gameObject, boss.bossSprite.transform.position, 0.6f).setEase(LeanTweenType.easeInQuad).setOnComplete(Explode);
+		LeanTween.move(gameObject, target, 0.6f).setEase(LeanTweenType.easeInQuad).setOnComplete(Explode);
 		LeanTween.value(gameObject, UpdateSpriteAlpha, 0, 1f, 0.2f);
 	}
 

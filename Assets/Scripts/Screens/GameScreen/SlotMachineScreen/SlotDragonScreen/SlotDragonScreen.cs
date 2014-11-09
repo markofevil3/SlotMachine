@@ -26,8 +26,7 @@ public class SlotDragonScreen : BaseSlotMachineScreen {
 	
 	private void SpawnSkill(int damage, Vector3 startPos) { // startPos is world position
   	GameObject tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotDragonScreen/FireBall", typeof(GameObject)) as GameObject);
-		tempGameObject.transform.position = startPos;
 		Skill skill = tempGameObject.GetComponent<Skill>();
-		skill.Init(boss, damage);
+		skill.Init(boss, damage, startPos);
 	}
 }
