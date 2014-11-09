@@ -41,6 +41,8 @@ public class BaseSlotMachineScreen : BaseScreen {
 	public UIEventTriggerExtent backgroundEventListener;
 	public InGameChatBar inGameChatBar;
   public PlayerSlotScript[] otherPlayers = new PlayerSlotScript[4];
+	public Transform userAvatarPanel;
+	public GameObject skillCamera;
   
   private string roomId = string.Empty;
 	private WinningAnimation mWinningAnimation;
@@ -120,6 +122,8 @@ public class BaseSlotMachineScreen : BaseScreen {
 			winningAnimation.FadeIn(true, 2f);
 		}
 	}
+
+	public virtual void OtherPlayerSpinResult(string username, JSONObject jsonData) {}
 
   public void UpdateUserCashLabel() {
     userCashLabel.text = AccountManager.Instance.cash.ToString("N0");

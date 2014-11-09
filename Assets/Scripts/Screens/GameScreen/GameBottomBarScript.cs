@@ -72,10 +72,11 @@ public class GameBottomBarScript : MonoBehaviour {
     chatPanel.SetActive(false);
   }
   
-  private ISFSObject CreatePublicMessageObject(JSONObject jsonData) {
+  private ISFSObject CreatePublicMessageObject(JSONObject jsonData, string commandId) {
     ISFSObject objOut = new SFSObject();
     objOut.PutByteArray("jsonData", Utils.ToByteArray(jsonData.ToString()));
     objOut.PutUtfString("message", jsonData.GetString("message"));
+    objOut.PutUtfString("cmd", commandId);
     return objOut;
   }
   
@@ -84,7 +85,7 @@ public class GameBottomBarScript : MonoBehaviour {
      jsonData = new JSONObject();
    }
   
-   ISFSObject requestData = CreatePublicMessageObject(jsonData);
+   ISFSObject requestData = CreatePublicMessageObject(jsonData, commandId);
    ServerRequest serverRequest = new ServerRequest(ServerRequest.Type.PUBLIC_MESSAGE,
                            Command.Create(GameId.USER, commandId),
                            requestData,

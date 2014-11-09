@@ -137,7 +137,7 @@ public class SmartfoxClient : MonoBehaviour {
     #if UNITY_EDITOR
     client.Connect("127.0.0.1", 9933);
     # else
-    client.Connect("113.190.2.125", 9933);
+    client.Connect("14.162.89.49", 9933);
     # endif
     // walk around for custom error code from server
     SFSErrorCodes.SetErrorMessage(2, "{0}");
@@ -261,21 +261,34 @@ public class SmartfoxClient : MonoBehaviour {
   }
 
 	void OnPublicMessage(BaseEvent e) {
-	  foreach (DictionaryEntry entry in e.Params) {
-	    Debug.Log(entry.Key + " " + entry.Value);
-  	}
+	  // foreach (DictionaryEntry entry in e.Params) {
+	  //   Debug.Log(entry.Key + " " + entry.Value);
+	  //   	}
   	User sender = ((User)e.Params["sender"]);
-  	// if (ScreenManager.Instance.CurrentGameScreen != null && !sender.IsItMe) {
-  	//   Debug.Log("#######");
-  	//   ScreenManager.Instance.CurrentGameScreen.bottomBarScript.DisplayBubbleChat(e.Params["message"].ToString(), sender.Name);
-  	// }
-  	if (ScreenManager.Instance.CurrentSlotScreen != null && !sender.IsItMe) {
-      JSONObject data = new JSONObject();
-      data.Add("message", e.Params["message"].ToString());
-      data.Add("senderId", sender.Name);
-      data.Add("senderName", sender.GetVariable("displayName").GetStringValue());
-  	  ScreenManager.Instance.CurrentSlotScreen.inGameChatBar.AddChatToList(data);
-  	}
+		ISFSObject objIn = (SFSObject)e.Params["data"];
+		Debug.Log("---------- " + objIn.GetUtfString("cmd"));
+		string cmd = objIn.GetUtfString("cmd");
+		switch(cmd) {
+			case Command.USER.CHAT_IN_ROOM:
+		  	if (ScreenManager.Instance.CurrentSlotScreen != null && !sender.IsItMe) {
+		      JSONObject data = new JSONObject();
+		      data.Add("message", e.Params["message"].ToString());
+		      data.Add("senderId", sender.Name);
+		      data.Add("senderName", sender.GetVariable("displayName").GetStringValue());
+		  	  ScreenManager.Instance.CurrentSlotScreen.inGameChatBar.AddChatToList(data);
+		  	}
+			break;
+			case Command.SLOT_MACHINE.SLOT_PLAY:
+				Room room = e.Params["room"] as Room;
+				JSONObject jsonData = JSONObject.Parse(Utils.FromByteArray(objIn.GetByteArray("jsonData")));
+				Debug.Log("!!!!!!!!!!!! " + jsonData.ToString() + " " + room.Name + " " + ScreenManager.Instance.CurrentSlotScreen.GetRoomId());
+				
+		  	if (ScreenManager.Instance.CurrentSlotScreen != null && !sender.IsItMe && room.Name == ScreenManager.Instance.CurrentSlotScreen.GetRoomId()) {
+					Debug.Log("@@@@@@");
+					ScreenManager.Instance.CurrentSlotScreen.OtherPlayerSpinResult(sender.Name, jsonData);
+				}
+			break;
+		}
     // Debug.Log("OnPublicMessage + " + e.Params.ToString());
     //    JSONObject messageJson = JSONObject.Parse(e.Params["message"].ToString());
     //    Debug.Log("OnPublicMessage " + messageJson.ToString());
