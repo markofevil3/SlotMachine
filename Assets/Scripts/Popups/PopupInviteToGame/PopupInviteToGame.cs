@@ -103,7 +103,7 @@ public class PopupInviteToGame : Popup {
     for (int i = 0; i < wrapContent.transform.childCount; i++) {
       tempGameObject = wrapContent.transform.GetChild(i);
       if (!tempGameObject.gameObject.activeSelf) {
-        tempGameObject.gameObject.SetActive(true);
+				Utils.SetActive(tempGameObject.gameObject, true);
       }
       InviteRowScript tempRowScript = tempGameObject.GetComponent<InviteRowScript>();
       tempRowScript.Init(scrollview);
@@ -114,10 +114,10 @@ public class PopupInviteToGame : Popup {
         tempRowScript.dragScrollView.enabled = false;
       }
       if (i < friendListRows.Length) {
-        tempGameObject.gameObject.SetActive(true);
+				Utils.SetActive(tempGameObject.gameObject, true);
         tempRowScript.UpdateRowData(friendListRows[i].Obj);
       } else {
-        tempGameObject.gameObject.SetActive(false);
+				Utils.SetActive(tempGameObject.gameObject, false);
       }
     }
   }

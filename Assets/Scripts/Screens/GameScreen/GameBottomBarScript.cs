@@ -19,7 +19,7 @@ public class GameBottomBarScript : MonoBehaviour {
     this.currentScreen = currentScreen;
     EventDelegate.Set(btnOpenChat.onClick, ShowChatPanel);
     EventDelegate.Set(btnSendChat.onClick, SendChat);
-    chatPanel.SetActive(false);
+		Utils.SetActive(chatPanel, false);
   }
   
   // Show bubble chat at player avatar
@@ -56,7 +56,7 @@ public class GameBottomBarScript : MonoBehaviour {
   
   // open chat panel
   private void ShowChatPanel() {
-    chatPanel.SetActive(true);
+		Utils.SetActive(chatPanel, true);
     TweenPosition.Begin(chatPanel, 0.2f, new Vector3(0, 265.0f,0));
   }
   
@@ -69,7 +69,7 @@ public class GameBottomBarScript : MonoBehaviour {
   
   // disable chat panel when finish animation
   private void HideChatPanelCallback() {
-    chatPanel.SetActive(false);
+		Utils.SetActive(chatPanel, false);
   }
   
   private ISFSObject CreatePublicMessageObject(JSONObject jsonData, string commandId) {

@@ -62,8 +62,8 @@ public class SelectableCard : MonoBehaviour {
   }
   
   public void RotateShow() {
-    gameObject.SetActive(true);
-    cardBack.SetActive(true);
+		Utils.SetActive(gameObject, true);
+		Utils.SetActive(cardBack, true);
     
     TweenAlpha tweenAlpha = TweenAlpha.Begin(gameObject, 0.2f, 1);
     tweenAlpha.from = 0;

@@ -50,6 +50,6 @@ public class UserBottomBar : MonoBehaviour {
   }
   
   private void EventOpenSlotMachine() {
-    PopupManager.Instance.OpenPopup(Popup.Type.POPUP_SLOT_MACHINE);
+    // PopupManager.Instance.OpenPopup(Popup.Type.POPUP_SLOT_MACHINE);
   }
 }

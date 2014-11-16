@@ -266,7 +266,6 @@ public class SmartfoxClient : MonoBehaviour {
 	  //   	}
   	User sender = ((User)e.Params["sender"]);
 		ISFSObject objIn = (SFSObject)e.Params["data"];
-		Debug.Log("---------- " + objIn.GetUtfString("cmd"));
 		string cmd = objIn.GetUtfString("cmd");
 		switch(cmd) {
 			case Command.USER.CHAT_IN_ROOM:

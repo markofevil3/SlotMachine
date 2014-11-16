@@ -56,7 +56,7 @@ public class PopupManager : MonoBehaviour {
 	}
 	
   public void FadeInScreen() {
-    dimBackground.SetActive(true);
+		Utils.SetActive(dimBackground, true);
     dimBackgroundSprite.color = Color.black;
     TweenAlpha tween = TweenAlpha.Begin(dimBackground, dimAlpha, 0);
 		tween.from = dimAlpha;
@@ -72,7 +72,7 @@ public class PopupManager : MonoBehaviour {
   public void ShowDim() {
     if (!isShowingDim) {
       isShowingDim = true;
-      dimBackground.SetActive(true);
+			Utils.SetActive(dimBackground, true);
       // dimBackgroundSprite.color = Color.white;
       TweenAlpha tween = TweenAlpha.Begin(dimBackground, dimAnimateSpeed, dimAlpha);
   		tween.from = 0;
@@ -102,7 +102,7 @@ public class PopupManager : MonoBehaviour {
   
   private void HideDimCallback() {
     isShowingDim = false;
-    dimBackground.SetActive(false);
+		Utils.SetActive(dimBackground, false);
   }
   
   public void OpenPopup(Popup.Type type, object[] data = null, bool shouldAnimate = true) {

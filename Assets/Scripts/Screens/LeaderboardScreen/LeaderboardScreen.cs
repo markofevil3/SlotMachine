@@ -94,7 +94,7 @@ public class LeaderboardScreen : BaseScreen {
     PopupManager.Instance.ShowLoadingPopup();
     isLoading = true;
     for (int i = 0; i < wrapContent.transform.childCount; i++) {
-      wrapContent.transform.GetChild(i).gameObject.SetActive(false);
+			Utils.SetActive(wrapContent.transform.GetChild(i).gameObject, false);
     }
     UserExtensionRequest.Instance.LoadLeaderboardData(selectedTab);
   }
@@ -161,7 +161,7 @@ public class LeaderboardScreen : BaseScreen {
     for (int i = 0; i < wrapContent.transform.childCount; i++) {
       tempGameObject = wrapContent.transform.GetChild(i);
       if (!tempGameObject.gameObject.activeSelf) {
-        tempGameObject.gameObject.SetActive(true);
+				Utils.SetActive(tempGameObject.gameObject, true);
       }
       TopPlayerRowScript tempRowScript = tempGameObject.GetComponent<TopPlayerRowScript>();
       tempRowScript.Init(scrollview);
@@ -172,10 +172,10 @@ public class LeaderboardScreen : BaseScreen {
         tempRowScript.dragScrollView.enabled = false;
       }
       if (i < targetList.Length) {
-        tempGameObject.gameObject.SetActive(true);
+				Utils.SetActive(tempGameObject.gameObject, true);
         tempRowScript.UpdateRowData(targetList[i].Obj, currentTab);
       } else {
-        tempGameObject.gameObject.SetActive(false);
+				Utils.SetActive(tempGameObject.gameObject, false);
       }
     }
   }

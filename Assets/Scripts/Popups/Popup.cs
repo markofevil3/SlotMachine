@@ -39,7 +39,7 @@ public class Popup : MonoBehaviour {
   }
   
   public virtual void OpenPopupNoAnimation() {
-    gameObject.SetActive(true);
+		Utils.SetActive(gameObject, true);
     PopupManager.Instance.ShowDim();
     HandleOpenPopupCallback();
   }
@@ -50,7 +50,7 @@ public class Popup : MonoBehaviour {
   			panel.alpha = 0;
   		}
   		transform.localScale = minScale;
-  		gameObject.SetActive(true);
+			Utils.SetActive(gameObject, true);
   		RunBeforeOpen();
   		BounceUpAnimation();
   		PopupManager.Instance.ShowDim();

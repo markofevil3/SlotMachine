@@ -40,12 +40,12 @@ public class TopPlayerRowScript : MonoBehaviour {
     }
     rank = rowData.GetInt("rank");
     if (rank <= 3) {
-      rankBackground.SetActive(false);
-      rankIcon.gameObject.SetActive(true);
+			Utils.SetActive(rankBackground, false);
+			Utils.SetActive(rankIcon.gameObject, true);
       rankIcon.spriteName = "Chat_RankIcon0" + rank;
     } else {
-      rankBackground.SetActive(true);
-      rankIcon.gameObject.SetActive(false);
+			Utils.SetActive(rankBackground, true);
+			Utils.SetActive(rankIcon.gameObject, false);
       rankLabel.text = rank.ToString();
     }
     eventTrigger.inputParams = new object[] {rowData.GetString("username")};
@@ -57,36 +57,4 @@ public class TopPlayerRowScript : MonoBehaviour {
       PopupManager.Instance.OpenPopup(Popup.Type.POPUP_USER_INFO, new object[] { username });
     }
   }
-  
-  // public void UpdateRicherData(JSONObject data) {
-  //   rowData = data;
-  //   playerNameLabel.text = data.GetString("displayName");
-  //   cashLabel.text = data.GetInt("cash").ToString("N0") + "$";
-  //   rank = data.GetInt("rank");
-  //   if (rank <= 3) {
-  //     rankBackground.SetActive(false);
-  //     rankIcon.gameObject.SetActive(true);
-  //     rankIcon.spriteName = "Chat_RankIcon0" + rank;
-  //   } else {
-  //     rankBackground.SetActive(true);
-  //     rankIcon.gameObject.SetActive(false);
-  //     rankLabel.text = rank.ToString();
-  //   }
-  // }
-  // 
-  // public void UpdateWinnerData(JSONObject data) {
-  //   rowData = data;
-  //   playerNameLabel.text = data.GetString("displayName");
-  //   cashLabel.text = Utils.Localize("Top_Winner_Match_Text", new string[1] {data.GetInt("winMatchNumb").ToString("N0")});
-  //   rank = data.GetInt("rank");
-  //   if (rank <= 3) {
-  //     rankBackground.SetActive(false);
-  //     rankIcon.gameObject.SetActive(true);
-  //     rankIcon.spriteName = "Chat_RankIcon0" + rank;
-  //   } else {
-  //     rankBackground.SetActive(true);
-  //     rankIcon.gameObject.SetActive(false);
-  //     rankLabel.text = rank.ToString();
-  //   }
-  // }
 }

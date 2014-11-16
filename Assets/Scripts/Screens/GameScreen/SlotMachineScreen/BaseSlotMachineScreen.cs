@@ -105,10 +105,13 @@ public class BaseSlotMachineScreen : BaseScreen {
 	// Set result after receive from server, then slot reel will display result
   public virtual void SetResults(JSONObject jsonData) {
     slotMachine.SetResults(jsonData);
+		SetSpecialData(jsonData.GetObject("specials"));
     AccountManager.Instance.UpdateUserCash(-jsonData.GetInt("cost"));
     UpdateUserCashLabel();
   }
   
+	public virtual void SetSpecialData(JSONObject jsonData) {}
+	
 	// Show animation when player got free spin
 	public void DisplayFreeSpinAnimation() {
 		

@@ -31,10 +31,10 @@ public class PopupUserInfo : Popup {
     }
     // Cached user and request user is the same -> show instantly
     if (user != null && user.GetString("username") == username && cachedSeconds <= CACHE_USER_SECONDS) {
-      userInfoPanel.SetActive(true);
+			Utils.SetActive(userInfoPanel, true);
       DisplayUserInfo(user);
     } else {
-      userInfoPanel.SetActive(false);
+			Utils.SetActive(userInfoPanel, false);
       // Loading user info from server
       PopupManager.Instance.ShowLoadingIndicator();
       UserExtensionRequest.Instance.LoadUserInfo(username);
@@ -48,16 +48,16 @@ public class PopupUserInfo : Popup {
   }
 
   public void DisplayUserInfo(JSONObject mUser) {
-    userInfoPanel.SetActive(true);
+		Utils.SetActive(userInfoPanel, true);
     user = mUser;
     displayNameLabel.text = user.GetString("displayName");
     cashLabel.text = user.GetString("cash");
-    btnAddFriend.gameObject.SetActive(!AccountManager.Instance.IsFriend(user.GetString("username")));
+		Utils.SetActive(btnAddFriend.gameObject, !AccountManager.Instance.IsFriend(user.GetString("username")));
   }
   
   public void AddFriendSuccess(string fUsername) {
     if (fUsername == user.GetString("username")) {
-      btnAddFriend.gameObject.SetActive(false);
+			Utils.SetActive(btnAddFriend.gameObject, false);
     }
   }
 }

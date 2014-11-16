@@ -66,7 +66,7 @@ public class LobbyScreen : BaseScreen {
 
 	private void OpenTab(Tab.TabType tabType) {
 		if (!loginRegisterPanel.activeSelf) {
-      loginRegisterPanel.SetActive(true);
+			Utils.SetActive(loginRegisterPanel, true);
     }
 		if (currentTab != null && currentTab.type == tabType) {
 			return;
@@ -124,11 +124,11 @@ public class LobbyScreen : BaseScreen {
   }
   
   public void EventLogoutSuccess() {
-    btnLogin.gameObject.SetActive(true);
-    btnRegister.gameObject.SetActive(true);
-    btnSelectGame.gameObject.SetActive(false);
-    btnLogout.gameObject.SetActive(false);
-    btnPlayAsGuest.gameObject.SetActive(true);
+		Utils.SetActive(btnLogin.gameObject, true);
+		Utils.SetActive(btnRegister.gameObject, true);
+		Utils.SetActive(btnRegister.gameObject, false);
+		Utils.SetActive(btnLogout.gameObject, false);
+		Utils.SetActive(btnPlayAsGuest.gameObject, true);
     buttonGrid.Reposition();
     userBottomBar.EventUserLoggedOut();
   }
@@ -137,13 +137,13 @@ public class LobbyScreen : BaseScreen {
     if (loginTab != null) {
       loginTab.Close();
     }
-    btnLogin.gameObject.SetActive(false);
-    btnRegister.gameObject.SetActive(false);
-    btnPlayAsGuest.gameObject.SetActive(false);
-    btnSelectGame.gameObject.SetActive(true);
-    btnLogout.gameObject.SetActive(true);
+		Utils.SetActive(btnLogin.gameObject, false);
+		Utils.SetActive(btnRegister.gameObject, false);
+		Utils.SetActive(btnPlayAsGuest.gameObject, false);
+		Utils.SetActive(btnSelectGame.gameObject, true);
+		Utils.SetActive(btnLogout.gameObject, true);
     buttonGrid.Reposition();
-    loginRegisterPanel.SetActive(false);
+		Utils.SetActive(loginRegisterPanel, false);
     userBottomBar.EventUserLoggedIn();
   }
 

@@ -101,7 +101,7 @@ public class TienLenMNScreen : BaseGameScreen {
     SortCardDepth(userSelectableCards);
     cardHolder.Reposition();
     for (int i = 0; i < userSelectableCards.Count; i++) {
-      userSelectableCards[i].gameObject.SetActive(false);
+			Utils.SetActive(userSelectableCards[i].gameObject, false);
       StartCoroutine(ShowCard(i));
     }
   }

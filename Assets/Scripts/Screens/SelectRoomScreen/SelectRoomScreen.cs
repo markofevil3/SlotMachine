@@ -80,10 +80,10 @@ public class SelectRoomScreen : BaseScreen {
         tempRowScript.dragScrollView.enabled = false;
       }
       if (i < targetList.Length) {
-        tempGameObject.gameObject.SetActive(true);
+				Utils.SetActive(tempGameObject.gameObject, true);
         tempRowScript.UpdateData(targetList[i].Obj);
       } else {
-        tempGameObject.gameObject.SetActive(false);
+				Utils.SetActive(tempGameObject.gameObject, false);
       }
     }
   }

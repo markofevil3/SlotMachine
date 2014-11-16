@@ -18,9 +18,11 @@ public class SlotMachine : MonoBehaviour {
   private bool isJackpot = false;
 	private int freeSpinLeft = 0;
 	private bool autoStart = false;
-	private bool canStart = true;
+	// private bool canStart = true;
 	private bool isBigWin = false;
 	private bool gotFreeSpin = false;
+	
+	private int pauseCount = 0;
 	
   public void Init() {
     slotCombination.Init();
@@ -88,11 +90,13 @@ public class SlotMachine : MonoBehaviour {
   }
   
 	public void Wait() {
-		canStart = false;
+		// canStart = false;
+		pauseCount++;
 	}
 	
 	public void Resume() {
-		canStart = true;
+		// canStart = true;
+		pauseCount = Mathf.Max(0, pauseCount - 1);
 	}
 	
 	void EnableAutoStart() {
@@ -104,7 +108,8 @@ public class SlotMachine : MonoBehaviour {
 	}
 	
 	void Update() {
-		if (canStart && autoStart) {
+		// if (canStart && autoStart) {
+		if (pauseCount == 0 && autoStart) {
 			StartMachine();
 		}
 	}

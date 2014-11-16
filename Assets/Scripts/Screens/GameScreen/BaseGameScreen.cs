@@ -39,9 +39,9 @@ public class BaseGameScreen : BaseScreen {
 
   public override void Init(object[] data) {    
     // cardTextures = Resources.LoadAll<Sprite>("Atlas/Cards");
-    GameObject tempGameObject = NGUITools.AddChild(gameObject, Resources.Load(Global.GAME_BOTTOM_BAR_PREFAB, typeof(GameObject)) as GameObject);
-   	tempGameObject.name = "GameBottomBar";
-   	bottomBarScript = tempGameObject.GetComponent<GameBottomBarScript>();
+    // GameObject tempGameObject = NGUITools.AddChild(gameObject, Resources.Load(Global.GAME_BOTTOM_BAR_PREFAB, typeof(GameObject)) as GameObject);
+    //    	tempGameObject.name = "GameBottomBar";
+    //    	bottomBarScript = tempGameObject.GetComponent<GameBottomBarScript>();
     // bottomBarScript.Init(this);
     base.Init(data);
   }

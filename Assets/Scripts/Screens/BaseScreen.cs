@@ -30,12 +30,12 @@ public class BaseScreen : MonoBehaviour {
 	
 	// Hide screen, dont destroy
 	public virtual void Hide() {
-	  gameObject.SetActive(false);
+		Utils.SetActive(gameObject, false);
 	}
 	
 	// Show hidden screen
 	public virtual void Show() {
-	  gameObject.SetActive(true);
+		Utils.SetActive(gameObject, true);
 	}
 	
 	public virtual void FadeIn() {
