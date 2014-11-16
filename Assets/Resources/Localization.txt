@@ -41,3 +41,8 @@ Btn_Send_Message,Message,Nhắn Tin
 USER_EXIST,Username existed!,Tên tài khoản đã tồn tại!
 USER_NOT_EXIST,User does not exist!,Tài khoản không tồn tại!
 PASSWORD_NOT_MATCH,Password does not match!,Mật khẩu không đúng!
+Tab_Friend_List,Friends,Bạn Bè
+Tab_Invite,Invite,Mời
+Btn_Send_Gift,Gift,Tặng Quà
+Btn_Reload_Game,Reload,Reload
+Message_Reload_Game,Connection lost.\nPlease reload game!,Ngắt kết nối.\nKhởi động lại!

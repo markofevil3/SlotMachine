@@ -126,7 +126,7 @@ public class LobbyScreen : BaseScreen {
   public void EventLogoutSuccess() {
 		Utils.SetActive(btnLogin.gameObject, true);
 		Utils.SetActive(btnRegister.gameObject, true);
-		Utils.SetActive(btnRegister.gameObject, false);
+		Utils.SetActive(btnSelectGame.gameObject, false);
 		Utils.SetActive(btnLogout.gameObject, false);
 		Utils.SetActive(btnPlayAsGuest.gameObject, true);
     buttonGrid.Reposition();
