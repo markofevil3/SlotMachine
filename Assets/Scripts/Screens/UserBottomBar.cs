@@ -5,7 +5,7 @@ public class UserBottomBar : MonoBehaviour {
 
   public UIButton btnLeaderboard;
   public UIButton btnFriends;
-  public UIButton btnSlotMachine;
+  public UIButton btnSetting;
   public UILabel usernameLabel;
   public UILabel cashLabel;
   public UITexture avatarTexture;
@@ -16,7 +16,7 @@ public class UserBottomBar : MonoBehaviour {
     this.currentScreen = currentScreen;
     EventDelegate.Set(btnLeaderboard.onClick, EventOpenLeaderboard);
     EventDelegate.Set(btnFriends.onClick, EventOpenFriendPopup);
-    EventDelegate.Set(btnSlotMachine.onClick, EventOpenSlotMachine);
+    EventDelegate.Set(btnSetting.onClick, EventOpenSetting);
     if (SmartfoxClient.Instance.IsLoggedIn) {
       EventUserLoggedIn();
     } else {
@@ -30,7 +30,7 @@ public class UserBottomBar : MonoBehaviour {
     
     btnLeaderboard.isEnabled = true;
     btnFriends.isEnabled = true;
-    btnSlotMachine.isEnabled = true;
+    btnSetting.isEnabled = true;
   }
   
   public void EventUserLoggedOut() {
@@ -38,7 +38,7 @@ public class UserBottomBar : MonoBehaviour {
     cashLabel.text = string.Empty;
     btnLeaderboard.isEnabled = false;
     btnFriends.isEnabled = false;
-    btnSlotMachine.isEnabled = false;
+    btnSetting.isEnabled = false;
   }
   
   private void EventOpenLeaderboard() {
@@ -48,8 +48,9 @@ public class UserBottomBar : MonoBehaviour {
   private void EventOpenFriendPopup() {
     PopupManager.Instance.OpenPopup(Popup.Type.POPUP_FRIENDS);
   }
-  
-  private void EventOpenSlotMachine() {
-    // PopupManager.Instance.OpenPopup(Popup.Type.POPUP_SLOT_MACHINE);
+
+  private void EventOpenSetting() {
+    PopupManager.Instance.OpenPopup(Popup.Type.POPUP_SETTING);
   }
+	
 }

@@ -34,6 +34,7 @@ public class SlotDragonScreen : BaseSlotMachineScreen {
 	
 	public override void OtherPlayerSpinResult(string username, JSONObject jsonData) {
 		PlayerSlotScript playerSlot = FindUserSlot(username);
+		SetSpecialData(jsonData);
 		SpawnSkill(jsonData.GetInt("totalWin"), playerSlot.transform.position);
 	}
 	

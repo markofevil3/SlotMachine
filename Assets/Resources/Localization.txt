@@ -46,3 +46,11 @@ Tab_Invite,Invite,Mời
 Btn_Send_Gift,Gift,Tặng Quà
 Btn_Reload_Game,Reload,Reload
 Message_Reload_Game,Connection lost.\nPlease reload game!,Ngắt kết nối.\nKhởi động lại!
+Title_Setting,Setting,Tuỳ Chỉnh
+Btn_Dragon_Game,Dragon Cave,Hang Rồng
+Btn_Fruit_Game,Fruits,Hoa Quả
+Btn_Halloween_Game,Halloween,Halloween
+Btn_Music,Music,Nhạc nền
+Btn_Sound,Sound,Âm Thanh
+Text_On,On,Bật
+Text_Off,Off,Tắt

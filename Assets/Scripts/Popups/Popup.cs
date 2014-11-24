@@ -12,7 +12,8 @@ public class Popup : MonoBehaviour {
 		POPUP_SLOT_MACHINE,
 		POPUP_INVITE_TO_GAME,
 		POPUP_INVITE_TO_GAME_CONFIRM,
-		POPUP_RELOAD_GAME
+		POPUP_RELOAD_GAME,
+		POPUP_SETTING,
   }
   
   private Vector3 maxScale = new Vector3(1f, 1f, 1.0f);
