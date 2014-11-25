@@ -56,8 +56,12 @@ public class ScreenManager : MonoBehaviour {
 	}
 	
 	public void Restart() {
-		currentScreen.FadeOutAndDestroy(gameObject, "RestartCallback");
-		currentScreen = null;
+		if (currentScreen != null) {
+			currentScreen.FadeOutAndDestroy(gameObject, "RestartCallback");
+			currentScreen = null;
+		} else {
+			RestartCallback();
+		}
 		if (previousScreen != null) {
 			previousScreen.Close();
 			previousScreen = null;
