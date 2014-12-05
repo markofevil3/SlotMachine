@@ -4,13 +4,14 @@ using System.Collections;
 public class ErrorCode {
   
   public enum USER {
-    NULL,
+    NULL = 0,
     USER_EXIST,
     USER_NOT_EXIST,
     PASSWORD_NOT_MATCH,
     MAX_FRIENDS,
     CANT_FIND_USER,
-    ALREADY_FRIEND
+    ALREADY_FRIEND,
+    UNKNOWN = 100
   }
   
 	public enum TLMB {
