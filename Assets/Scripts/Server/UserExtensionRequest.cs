@@ -36,11 +36,16 @@ public class UserExtensionRequest : MonoBehaviour {
   void LoadUserInfoSuccess(JSONObject data) {
     PopupManager.Instance.HideLoadingIndicator();
     JSONObject user = data.GetObject("user");
-    if (PopupManager.Instance.PopupUserInfo != null) {
-      PopupManager.Instance.PopupUserInfo.DisplayUserInfo(user);
-    } else {
-      PopupUserInfo.SetUser(user);
-    }
+		if (user.ContainsKey("errorCode")) {
+	    ErrorCode.USER errorCode = (ErrorCode.USER)user.GetInt("errorCode");
+      HUDManager.Instance.AddFlyText(errorCode.ToString(), Vector3.zero, 40, Color.red);
+		} else {
+	    if (PopupManager.Instance.PopupUserInfo != null) {
+	      PopupManager.Instance.PopupUserInfo.DisplayUserInfo(user);
+	    } else {
+	      PopupUserInfo.SetUser(user);
+	    }
+		}
   }
   
   public void AddFriend(string fUsername) {
