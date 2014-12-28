@@ -8,6 +8,7 @@ public class BaseSlotMachineScreen : BaseScreen {
     SLOT_FRUITS,
     SLOT_HALLOWEEN,
 		SLOT_DRAGON,
+		SLOT_PIRATE,
     TOTAL
   }
   [HideInInspector]
