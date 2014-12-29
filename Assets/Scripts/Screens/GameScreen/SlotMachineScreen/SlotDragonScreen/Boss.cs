@@ -11,9 +11,11 @@ public class Boss : MonoBehaviour {
   }
 	private string[] bossSpriteNames = new string[3] {"Battle_Portriat_Giant", "Battle_Portriat_Thief", "Battle_Portriat_Monkey"};
 
-	public UISprite bossSprite;
+	public UITexture bossSprite;
 	public UIProgressBar hpProgressBar;
 	public UILabel hpLabel;
+	public CFX_SpawnSystem cfxSpawnSystem;
+	public Transform middlePoint;
 
 	private BossType type;
 	private int maxHP;
@@ -38,7 +40,8 @@ public class Boss : MonoBehaviour {
 		this.type = (BossType)type;
 		this.maxHP = maxHP;
 		this.currentHP = currentHP;
-		bossSprite.spriteName = bossSpriteNames[type];
+		// TEST CODE -- commented
+		// bossSprite.spriteName = bossSpriteNames[type];
 		UpdateHPBar();
 	}
 	
@@ -82,5 +85,20 @@ public class Boss : MonoBehaviour {
 		if (progressTarget != hpProgressBar.value) {
 	    hpProgressBar.value = Mathf.Lerp(hpProgressBar.value, progressTarget, Time.deltaTime * 5f);
 		}
+	}
+	
+	// Partical effect for each boss
+	void SpawnEffect() {
+		Vector2 randomPos = Random.insideUnitCircle / 2.5f;		
+		GameObject effect = CFX_SpawnSystem.GetRandom();
+		effect.transform.position = new Vector3(middlePoint.position.x + randomPos.x, middlePoint.position.y + randomPos.y, 0);
+		effect.transform.parent = transform;
+		Invoke("SpawnEffect", Random.Range(1f, 15f));
+	}
+	
+	
+	// TEST CODe
+	void Awake() {
+		Invoke("SpawnEffect", Random.Range(1f, 15f));
 	}
 }
