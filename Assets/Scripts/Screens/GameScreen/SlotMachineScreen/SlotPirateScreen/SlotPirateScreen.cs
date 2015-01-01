@@ -40,9 +40,14 @@ public class SlotPirateScreen : BaseSlotMachineScreen {
 	
 	
 	private void SpawnSkill(int damage, Vector3 startPos) { // startPos is world position
-  	GameObject tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotDragonScreen/Lighting", typeof(GameObject)) as GameObject);
-		Skill skill = tempGameObject.GetComponent<Skill>();
-		skill.Init(boss, damage, startPos);
+		// TEST CODE -- commented
+		//   	GameObject tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotDragonScreen/Lighting", typeof(GameObject)) as GameObject);
+		// Skill skill = tempGameObject.GetComponent<Skill>();
+		// skill.Init(boss, damage, startPos);
+		//###########
+		GameObject tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotDragonScreen/SkillThunder", typeof(GameObject)) as GameObject);
+		SkillThunder skill = tempGameObject.GetComponent<SkillThunder>();
+		skill.Init(3, damage, boss);
 	}
 	
 	private void BossGetHitCallback() {

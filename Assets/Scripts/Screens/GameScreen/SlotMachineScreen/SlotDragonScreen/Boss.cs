@@ -14,7 +14,6 @@ public class Boss : MonoBehaviour {
 	public UITexture bossSprite;
 	public UIProgressBar hpProgressBar;
 	public UILabel hpLabel;
-	public CFX_SpawnSystem cfxSpawnSystem;
 	public Transform middlePoint;
 
 	private BossType type;
@@ -101,4 +100,22 @@ public class Boss : MonoBehaviour {
 	void Awake() {
 		Invoke("SpawnEffect", Random.Range(1f, 15f));
 	}
+	
+	// TEST CODE - need to refine
+	public void Shake() {
+		tween1 = LeanTween.rotateAroundLocal( gameObject, new Vector3(0,0,1f), 0.5f, 0.2f).setEase( LeanTweenType.easeShake ).setLoopClamp().setRepeat(-1);
+		tween2 = LeanTween.rotateAroundLocal( gameObject, new Vector3(0,0,-1f), 0.5f, 0.25f).setEase( LeanTweenType.easeShake ).setLoopClamp().setRepeat(-1).setDelay(0.05f);
+
+		LeanTween.delayedCall(gameObject, 0.5f, stopShake);
+	}
+	
+	LTDescr tween1;
+	LTDescr tween2;
+
+	void stopShake(){
+		tween1.setRepeat(1);
+		tween2.setRepeat(1);
+		transform.localRotation = Quaternion.Euler(0, 0, 0);
+	}
+	// $$$$$$$$$$
 }

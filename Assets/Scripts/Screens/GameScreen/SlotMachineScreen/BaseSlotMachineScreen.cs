@@ -120,11 +120,12 @@ public class BaseSlotMachineScreen : BaseScreen {
 	
 	// Slot reel stopped, displayed result, start display winning animation if should
 	public virtual void EventFinishSpin(bool isBigWin, int winningCash) {
-		if (isBigWin) {
-			slotMachine.Wait();
-			winningAnimation.SetData(winningCash);
-			winningAnimation.FadeIn(true, 2f);
-		}
+		// TEST CODE -- commented, should refine
+		// if (isBigWin) {
+		// 	slotMachine.Wait();
+		// 	winningAnimation.SetData(winningCash);
+		// 	winningAnimation.FadeIn(true, 2f);
+		// }
 	}
 
 	public virtual void OtherPlayerSpinResult(string username, JSONObject jsonData) {}

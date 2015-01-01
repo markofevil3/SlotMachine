@@ -3,6 +3,13 @@ using System.Collections;
 
 public class Skill : MonoBehaviour {
 
+  public enum Type {
+    FIRE_BALL,
+    THUNDER,
+		SWORD_ATTACK
+  }
+
+	public Type type;
 	public Animator animator;
 	public SpriteRenderer sprite;
 	
@@ -10,6 +17,8 @@ public class Skill : MonoBehaviour {
 	public Vector3 size = new Vector3(50f, 50f, 1);
   [HideInInspector]
 	public int damage;
+  [HideInInspector]
+	public int level;
   [HideInInspector]
 	public Boss boss;
 
