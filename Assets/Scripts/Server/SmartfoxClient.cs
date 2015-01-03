@@ -137,7 +137,7 @@ public class SmartfoxClient : MonoBehaviour {
     #if UNITY_EDITOR
     client.Connect("127.0.0.1", 9933);
     # else
-    client.Connect("14.162.93.160", 9933);
+    client.Connect("113.190.11.170", 9933);
     # endif
     // walk around for custom error code from server
     SFSErrorCodes.SetErrorMessage(2, "{0}");

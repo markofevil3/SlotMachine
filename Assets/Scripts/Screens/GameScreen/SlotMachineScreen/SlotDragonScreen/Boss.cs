@@ -113,8 +113,9 @@ public class Boss : MonoBehaviour {
 	LTDescr tween2;
 
 	void stopShake(){
-		tween1.setRepeat(1);
-		tween2.setRepeat(1);
+		// tween1.setRepeat(1);
+		// tween2.setRepeat(1);
+		LeanTween.cancel(gameObject);
 		transform.localRotation = Quaternion.Euler(0, 0, 0);
 	}
 	// $$$$$$$$$$

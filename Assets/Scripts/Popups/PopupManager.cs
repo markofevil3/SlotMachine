@@ -13,7 +13,6 @@ public class PopupManager : MonoBehaviour {
   private PopupCreateRoom popupCreateRoom;
   private PopupUserInfo popupUserInfo;
   private PopupFriends popupFriends;
-  private PopupSlotMachine popupSlotMachine;
   private PopupInviteToGame popupInviteToGame;
   private PopupInviteGameConfirm popupInviteGameConfirm;
   private PopupReloadGame popupReloadGame;
@@ -32,11 +31,7 @@ public class PopupManager : MonoBehaviour {
   public PopupInviteToGame PopupInviteToGame {
     get { return popupInviteToGame; }
   }
-  
-  public PopupSlotMachine PopupSlotMachine {
-    get { return popupSlotMachine; }
-  }
-  
+
   public static PopupManager Instance { get; private set; }
 	public GameObject root;
 	public Camera camera;
@@ -179,20 +174,6 @@ public class PopupManager : MonoBehaviour {
 	       	}
 	     	}
 	    break;
-	    case Popup.Type.POPUP_SLOT_MACHINE:
-	    	if (popupSlotMachine == null) {
-	      	GameObject tempGameObject = NGUITools.AddChild(root, Resources.Load(Global.POPUP_PATH + "/PopupSlotMachine/PopupSlotMachine", typeof(GameObject)) as GameObject);
-	       	tempGameObject.name = "PopupSlotMachine";
-	       	popupSlotMachine = tempGameObject.GetComponent<PopupSlotMachine>();
-	       	tempPopup = popupSlotMachine as Popup;
-	       	popupSlotMachine.Init(data);
-	       	if (shouldAnimate) {
-	       	  popupSlotMachine.Open();
-	       	} else {
-	       	  popupSlotMachine.OpenPopupNoAnimation();
-	       	}
-	     	}
-	    break;
 	    case Popup.Type.POPUP_INVITE_TO_GAME:
 	    	if (popupInviteToGame == null) {
 	      	GameObject tempGameObject = NGUITools.AddChild(root, Resources.Load(Global.POPUP_PATH + "/PopupInviteToGame/PopupInviteToGame", typeof(GameObject)) as GameObject);
@@ -273,9 +254,6 @@ public class PopupManager : MonoBehaviour {
 	    break;
 	    case Popup.Type.POPUP_FRIENDS:
 	      popupFriends = null;
-	    break;
-	    case Popup.Type.POPUP_SLOT_MACHINE:
-	      popupSlotMachine = null;
 	    break;
 	    case Popup.Type.POPUP_INVITE_TO_GAME:
 	      popupInviteToGame = null;

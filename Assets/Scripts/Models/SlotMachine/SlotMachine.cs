@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using Boomlagoon.JSON;
 
 public class SlotMachine : MonoBehaviour {
@@ -21,12 +22,29 @@ public class SlotMachine : MonoBehaviour {
 	// private bool canStart = true;
 	private bool isBigWin = false;
 	private bool gotFreeSpin = false;
+	private List<SlotItem> mSlotItems = new List<SlotItem>();
+	private List<SlotItem> slotItems {
+		get {
+			if (mSlotItems.Count == 0) {
+		    for (int i = 0; i < slotReels.Length; i++) {
+					for (int j = 0; j < slotReels[i].GetSlotItems().Count; j++) {
+						mSlotItems.Add(slotReels[i].GetSlotItems()[j]);
+					}
+		    }
+			}
+			return mSlotItems; 
+		}
+	}
 	
 	private int pauseCount = 0;
 	
   public void Init() {
     slotCombination.Init();
+		// slotItems.Clear();
     for (int i = 0; i < slotReels.Length; i++) {
+			// for (int j = 0; j < slotReels[i].GetSlotItems().Count; i++) {
+			// 	slotItems.Add(slotReels[i].GetSlotItems()[j]);
+			// }
       slotReels[i].onFinished = EventReelStop;
     }
   }
@@ -60,6 +78,14 @@ public class SlotMachine : MonoBehaviour {
 		freeSpinLeft = jsonData.GetInt("freeSpinLeft");
 		isBigWin = jsonData.GetBoolean("isBigWin");
 		gotFreeSpin = jsonData.GetInt("freeRunCount") > 0;
+		// bool[] winingItems = new bool[15];
+		// for (int i = 0; i < winningGold.Length; i++) {
+		// 	if (winningGold[i].Number > 0) {
+		// 		for (int j = 0; j < SlotCombination.NUM_REELS; j++) {
+		// 			winingItems[SlotCombination.COMBINATION[i, j]] = true;
+		// 		}
+		// 	}
+		// }
     for (int i = 0; i < slotReels.Length; i++) {
       slotReels[i].SetResults(new int[3] { (int)resultsData[i * 3].Number, (int)resultsData[i * 3 + 1].Number, (int)resultsData[i * 3 + 2].Number });
     }
@@ -70,6 +96,14 @@ public class SlotMachine : MonoBehaviour {
     if (reelStopCount >= slotReels.Length) {
       reelStopCount = 0;
       isRunning = false;
+			// Glow winning item
+			for (int i = 0; i < winningGold.Length; i++) {
+				if (winningGold[i].Number > 0) {
+					for (int j = 0; j < SlotCombination.NUM_REELS; j++) {
+						slotItems[SlotCombination.COMBINATION[i, j]].Glow();
+					}
+				}
+			}
       // int[] scoreArr = slotCombination.CalculateCombination(resultsData);
       int totalScore = 0;
       for (int i = 0; i < winningGold.Length; i++) {
@@ -109,9 +143,10 @@ public class SlotMachine : MonoBehaviour {
 	
 	void Update() {
 		// if (canStart && autoStart) {
-		if (pauseCount == 0 && autoStart) {
-			StartMachine();
-		}
+		// TEST CODE -- should refined
+		// if (pauseCount == 0 && autoStart) {
+		// 	StartMachine();
+		// }
 	}
 	
   public void UpdateJackpot(int score) {

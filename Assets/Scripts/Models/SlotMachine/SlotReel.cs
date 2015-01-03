@@ -71,6 +71,9 @@ public class SlotReel : MonoBehaviour {
   }
 
   public void StartMachine() {
+		for (int i = 0; i < slotItems.Count; i++) {
+			slotItems[i].StopGlow();
+		}
     stop = false;
   }
 
@@ -92,6 +95,20 @@ public class SlotReel : MonoBehaviour {
     STOP_ROUND_COUNT = UnityEngine.Random.Range(5, 8);
     startCount = true;
   }
+
+	public void StartGlowItems() {
+		for (int i = 0; i < slotItems.Count; i++) {
+			slotItems[i].Glow();
+		}
+	}
+
+	public List<SlotItem> GetSlotItems() {
+		List<SlotItem> temp = new List<SlotItem>();
+		temp.Add(slotItems[2]);
+		temp.Add(slotItems[3]);
+		temp.Add(slotItems[4]);
+		return temp;
+	}
 
 	/// <summary>
 	/// Callback triggered by the UIPanel when its clipping region moves (for example when it's being scrolled).
@@ -169,7 +186,6 @@ public class SlotReel : MonoBehaviour {
           crtBounce++;
         } else {
           stop = true;
-          // PopupManager.Instance.PopupSlotMachine.EventReelStop();
           SpringPosition sp = SpringPosition.Begin(gameObject,
                                                    new Vector3(transform.position.x, transform.position.y + Mathf.Abs(targetItem.position.y - stopLineSprite.position.y), transform.position.z),
                                                    8f);

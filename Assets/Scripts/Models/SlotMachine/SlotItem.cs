@@ -22,6 +22,7 @@ public class SlotItem : MonoBehaviour {
   private string[] baseSpriteNames = new string[10] {"wild", "apple", "strawberry", "radish", "broccoli", "eggplant", "bell_pepper", "chili_pepper", "mushroom", "fruits"};
   private Type type;
   private int index;
+	private TweenAlpha tweenAlpha;
 
   public virtual string GetSpriteName(int index) {
     return baseSpriteNames[index];
@@ -39,4 +40,15 @@ public class SlotItem : MonoBehaviour {
   public bool IsTarget(int targetIndex) {
     return targetIndex == index;
   }
+	
+	public virtual void Glow() {
+		tweenAlpha = TweenAlpha.Begin(gameObject, 0.8f, 0.2f);
+		tweenAlpha.from = 1f;
+		tweenAlpha.style = UITweener.Style.PingPong;
+	}
+	
+	public virtual void StopGlow() {
+		Destroy(tweenAlpha);
+		sprite.alpha = 1f;
+	}
 }
