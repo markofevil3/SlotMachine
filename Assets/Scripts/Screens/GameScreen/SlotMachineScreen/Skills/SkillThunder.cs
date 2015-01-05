@@ -1,13 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SkillThunder : MonoBehaviour {
+public class SkillThunder : Skill {
 
 	public Transform thunderPrefab;
-	
-	private Boss boss;
-	
-	public void Init(int level, int damage, Boss boss) {
+		
+	public override void Init(int level, int damage, Boss boss) {
+		Debug.Log("SkillThunder " + level + " " + damage);
 		this.boss = boss;
 		for (int i = 0; i < level; i++) {
 			StartCoroutine(SpawnParticle(i, 0.2f * i));

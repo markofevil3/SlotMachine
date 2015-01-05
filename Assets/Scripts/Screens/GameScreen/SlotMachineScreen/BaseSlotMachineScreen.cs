@@ -128,6 +128,8 @@ public class BaseSlotMachineScreen : BaseScreen {
 		// }
 	}
 
+	public virtual void SpawnSkill(int type, int level, int damage) {}
+
 	public virtual void OtherPlayerSpinResult(string username, JSONObject jsonData) {}
 
   public void UpdateUserCashLabel() {

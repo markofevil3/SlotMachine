@@ -15,6 +15,8 @@ public class SlotMachine : MonoBehaviour {
   private int reelStopCount = 0;
   private JSONArray resultsData;
   private JSONArray winningGold;
+  private JSONArray winningCount;
+  private JSONArray winningType;
   private JSONObject winResults;
   private bool isJackpot = false;
 	private int freeSpinLeft = 0;
@@ -73,11 +75,16 @@ public class SlotMachine : MonoBehaviour {
   public void SetResults(JSONObject jsonData) {
     resultsData = jsonData.GetArray("items");
     winResults = jsonData.GetObject("winResults");
-    winningGold = winResults.GetArray("winningGold");
-    isJackpot = winResults.GetBoolean("isJackpot");
-		freeSpinLeft = jsonData.GetInt("freeSpinLeft");
-		isBigWin = jsonData.GetBoolean("isBigWin");
-		gotFreeSpin = jsonData.GetInt("freeRunCount") > 0;
+    winningGold = winResults.GetArray("wGold");
+		// Calculate extra data (winning type, winning count from list result items)
+		JSONObject extraData = SlotCombination.CalculateCombination(resultsData);
+    winningCount = extraData.GetArray("wCount");
+    winningType = extraData.GetArray("wType");
+		//
+    isJackpot = winResults.GetBoolean("isJP");
+		freeSpinLeft = jsonData.GetInt("frLeft");
+		isBigWin = jsonData.GetBoolean("bWin");
+		gotFreeSpin = jsonData.GetInt("frCount") > 0;
 		// bool[] winingItems = new bool[15];
 		// for (int i = 0; i < winningGold.Length; i++) {
 		// 	if (winningGold[i].Number > 0) {
@@ -97,11 +104,12 @@ public class SlotMachine : MonoBehaviour {
       reelStopCount = 0;
       isRunning = false;
 			// Glow winning item
-			for (int i = 0; i < winningGold.Length; i++) {
-				if (winningGold[i].Number > 0) {
+			for (int i = 0; i < winningCount.Length; i++) {
+				if (winningCount[i].Number >= 3) {
 					for (int j = 0; j < SlotCombination.NUM_REELS; j++) {
 						slotItems[SlotCombination.COMBINATION[i, j]].Glow();
 					}
+					ScreenManager.Instance.CurrentSlotScreen.SpawnSkill((int)winningType[i].Number, (int)winningCount[i].Number, (int)winningGold[i].Number);
 				}
 			}
       // int[] scoreArr = slotCombination.CalculateCombination(resultsData);

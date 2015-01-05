@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Boomlagoon.JSON;
 
 // #### Slot item index
 // 0 3 6 9 12
@@ -98,26 +99,60 @@ public class SlotCombination : MonoBehaviour {
     return 1;
   }
   
-  // input data is array type of 15 items - output data is array winning gold of 9 lines
-  public int[] CalculateCombination(int[] reelData) {
-    int[] winningLineCount = new int[numLines];
-    int[] winningLineType = new int[numLines];
-    int[] winningGold = new int[numLines];
-    for (int i = 0; i < numLines; i++) {
+  // // input data is array type of 15 items - output data is array winning gold of 9 lines
+  // public int[] CalculateCombination(int[] reelData) {
+  //   int[] winningLineCount = new int[numLines];
+  //   int[] winningLineType = new int[numLines];
+  //   int[] winningGold = new int[numLines];
+  //   for (int i = 0; i < numLines; i++) {
+  //     for (int j = 0; j < NUM_REELS - 1; j++) {
+  //       if (j == 0 && reelData[COMBINATION[i, j]] != (int)SlotItem.Type.WILD) {
+  //         winningLineCount[i]++;
+  //         winningLineType[i] = reelData[COMBINATION[i, j]];
+  //         continue;
+  //       }
+  //       if (reelData[COMBINATION[i, j]] == (int)SlotItem.Type.WILD) {
+  //         winningLineCount[i]++;
+  //       } else {
+  //         if (winningLineType[i] == 0) {
+  //           winningLineCount[i]++;
+  //           winningLineType[i] = reelData[COMBINATION[i, j]];
+  //           continue;
+  //         } else if (reelData[COMBINATION[i, j]] == winningLineType[i]){
+  //           winningLineCount[i]++;
+  //           continue;
+  //         } else {
+  //           break;
+  //         }
+  //       }
+  //     }
+  //     winningGold[i] = PAYOUTS[winningLineType[i], winningLineCount[i] - 1] * betPerLine;
+  //   }
+  //   Debug.Log(Utils.ArrIntToString(winningLineCount));
+  //   Debug.Log(Utils.ArrIntToString(winningLineType));
+  //   Debug.Log(Utils.ArrIntToString(winningGold));
+  //   return winningGold;
+  // }
+	
+  public static JSONObject CalculateCombination(JSONArray reelData) {
+  	JSONObject results = new JSONObject();
+    int[] winningLineCount = new int[MAX_LINE];
+    int[] winningLineType = new int[MAX_LINE];
+    for (int i = 0; i < MAX_LINE; i++) {
       for (int j = 0; j < NUM_REELS - 1; j++) {
-        if (j == 0 && reelData[COMBINATION[i, j]] != (int)SlotItem.Type.WILD) {
+        if (j == 0 && (int)reelData[COMBINATION[i, j]].Number != (int)SlotItem.Type.WILD) {
           winningLineCount[i]++;
-          winningLineType[i] = reelData[COMBINATION[i, j]];
+          winningLineType[i] = (int)reelData[COMBINATION[i, j]].Number;
           continue;
         }
-        if (reelData[COMBINATION[i, j]] == (int)SlotItem.Type.WILD) {
+        if ((int)reelData[COMBINATION[i,j]].Number == (int)SlotItem.Type.WILD) {
           winningLineCount[i]++;
         } else {
           if (winningLineType[i] == 0) {
             winningLineCount[i]++;
-            winningLineType[i] = reelData[COMBINATION[i, j]];
+            winningLineType[i] = (int)reelData[COMBINATION[i,j]].Number;
             continue;
-          } else if (reelData[COMBINATION[i, j]] == winningLineType[i]){
+          } else if ((int)reelData[COMBINATION[i,j]].Number == winningLineType[i]){
             winningLineCount[i]++;
             continue;
           } else {
@@ -125,11 +160,9 @@ public class SlotCombination : MonoBehaviour {
           }
         }
       }
-      winningGold[i] = PAYOUTS[winningLineType[i], winningLineCount[i] - 1] * betPerLine;
     }
-    Debug.Log(Utils.ArrIntToString(winningLineCount));
-    Debug.Log(Utils.ArrIntToString(winningLineType));
-    Debug.Log(Utils.ArrIntToString(winningGold));
-    return winningGold;
+		results.Add("wCount", new JSONArray(winningLineCount));
+		results.Add("wType", new JSONArray(winningLineType));
+    return results;
   }
 }

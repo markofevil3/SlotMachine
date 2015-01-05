@@ -5,15 +5,16 @@ public class SlotItem : MonoBehaviour {
 
   public enum Type {
     WILD,               // 0
-    APPLE,              // 1
-    STRAWBERRY,         // 2
-    RADISH,             // 3
-    BROCCOLI,           // 4
-    EGGPLANT,           // 5
-    BELL_PEPPER,        // 6
-    CHILI_PEPPER,       // 7
-    MUSHROOM,           // 8
-    FRUIT_BASKET,       // 9
+    TILE_1,              // 1
+    TILE_2,         // 2
+    TILE_3,             // 3
+    TILE_4,           // 4
+    TILE_5,           // 5
+    TILE_6,        // 6
+    TILE_7,       // 7
+    TILE_8,           // 8
+    TILE_9,       // 9
+    TILE_10,       // 10 - JACKPOT ITEM
     TOTAL
   }
   

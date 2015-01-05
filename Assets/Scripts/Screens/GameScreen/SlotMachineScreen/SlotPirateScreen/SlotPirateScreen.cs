@@ -23,19 +23,52 @@ public class SlotPirateScreen : BaseSlotMachineScreen {
 	
 	// Slot reel stopped, displayed result, start display winning animation if should
 	public override void EventFinishSpin(bool isBigWin, int winningCash) {
-		if (winningCash > 0) {
-			if (specialData.GetInt("dHP") == 0) {
-				slotMachine.Wait();
-			}
-			SpawnSkill(winningCash, userAvatarPanel.position);
-		}
+		// TEST CODE -- commented for new spawn skill
+		// if (winningCash > 0) {
+		// 	if (specialData.GetInt("dHP") == 0) {
+		// 		slotMachine.Wait();
+		// 	}
+		// 	SpawnSkill(winningCash, userAvatarPanel.position);
+		// }
 		base.EventFinishSpin(isBigWin, winningCash);
 	}
 	
 	public override void OtherPlayerSpinResult(string username, JSONObject jsonData) {
 		PlayerSlotScript playerSlot = FindUserSlot(username);
 		SetSpecialData(jsonData);
-		SpawnSkill(jsonData.GetInt("totalWin"), playerSlot.transform.position);
+		// TEST CODE: commented - should remove
+		// SpawnSkill(jsonData.GetInt("totalWin"), playerSlot.transform.position);
+	}
+	
+	public override void SpawnSkill(int type, int level, int damage) {
+		// switch (type) {
+		// 	case SlotItemPirate.ITEM_CHOPPER:
+		// 	break;
+		// 	case SlotItemPirate.ITEM_USOOP:
+		// 	break;
+		// 	case SlotItemPirate.ITEM_NAMI:
+		// 		GameObject tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotDragonScreen/SkillThunder", typeof(GameObject)) as GameObject);
+		// 		SkillThunder skill = tempGameObject.GetComponent<SkillThunder>();
+		// 		skill.Init(3, damage, boss);
+		// 	break;
+		// 	case SlotItemPirate.ITEM_FRANKY:
+		// 	break;
+		// 	case SlotItemPirate.ITEM_BROOK:
+		// 	break;
+		// 	case SlotItemPirate.ITEM_NICO:
+		// 	break;
+		// 	case SlotItemPirate.ITEM_SANJI:
+		// 	break;
+		// 	case SlotItemPirate.ITEM_ZORO:
+		// 	break;
+		// 	case SlotItemPirate.ITEM_LUFFY:
+		// 	break;
+		// 	case SlotItemPirate.ITEM_RALLY:
+		// 	break;
+		// }
+		GameObject tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotDragonScreen/SkillThunder", typeof(GameObject)) as GameObject);
+		SkillThunder skill = tempGameObject.GetComponent<SkillThunder>();
+		skill.Init(3, damage, boss);
 	}
 	
 	
@@ -51,9 +84,7 @@ public class SlotPirateScreen : BaseSlotMachineScreen {
 	}
 	
 	private void BossGetHitCallback() {
-		Debug.Log("BossGetHitCallback");
 		if (specialData.GetInt("dHP") == 0) {
-			Debug.Log("Boss DEAD");
 			boss.ChangeBoss(specialData.GetObject("newBoss"), "EventFinishChangeBoss");
 			int dropCash = (int)specialData.GetArray("dropItems")[0].Number;
 			

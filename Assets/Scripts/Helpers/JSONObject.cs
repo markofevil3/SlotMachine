@@ -215,6 +215,14 @@ namespace Boomlagoon.JSON {
 			}
 		}
 
+		// Custom: create JSONArray from int array
+		public JSONArray(int[] array) {
+			values = new List<JSONValue>();
+			foreach (var v in array) {
+				values.Add(new JSONValue(v));
+			}
+		}
+
 		/// <summary>
 		/// Add a JSONValue to this array
 		/// </summary>
