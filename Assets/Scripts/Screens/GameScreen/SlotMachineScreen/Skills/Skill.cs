@@ -49,13 +49,4 @@ public class Skill : MonoBehaviour {
 	// public void Destroy() {
 	// 	Destroy(gameObject);
 	// }
-	
-	public IEnumerator CheckIfAlive () {
-		while(true) {
-			yield return new WaitForSeconds(0.5f);
-			if (transform.childCount == 0) {
-				GameObject.Destroy(this.gameObject);
-			}
-		}
-	}
 }
