@@ -57,7 +57,7 @@ public class SlotPirateScreen : BaseSlotMachineScreen {
 			case SlotItemPirate.ITEM_NAMI:
 				tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillThunder", typeof(GameObject)) as GameObject);
 				SkillThunder thunderSkill = tempGameObject.GetComponent<SkillThunder>();
-				thunderSkill.Init(3, damage, boss);
+				thunderSkill.Init(level, damage, boss);
 			break;
 			case SlotItemPirate.ITEM_FRANKY:
 				tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillFireBall", typeof(GameObject)) as GameObject);
@@ -65,21 +65,33 @@ public class SlotPirateScreen : BaseSlotMachineScreen {
 				skill.Init(level, damage, boss);
 			break;
 			case SlotItemPirate.ITEM_BROOK:
+				tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillDagger", typeof(GameObject)) as GameObject);
+				SkillDagger skillSword = tempGameObject.GetComponent<SkillDagger>();
+				skillSword.Init(level, damage, boss);
 			break;
 			case SlotItemPirate.ITEM_NICO:
 			break;
 			case SlotItemPirate.ITEM_SANJI:
 			break;
 			case SlotItemPirate.ITEM_ZORO:
+				tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillSwordBlue", typeof(GameObject)) as GameObject);
+				SkillSwordBlue skillSwordBlue = tempGameObject.GetComponent<SkillSwordBlue>();
+				skillSwordBlue.Init(level, damage, boss);
 			break;
 			case SlotItemPirate.ITEM_LUFFY:
+				tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillFireBall", typeof(GameObject)) as GameObject);
+				skill = tempGameObject.GetComponent<SkillFireBall>();
+				skill.Init(level, damage, boss);
 			break;
 			case SlotItemPirate.ITEM_RALLY:
+				tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillFireBall", typeof(GameObject)) as GameObject);
+				skill = tempGameObject.GetComponent<SkillFireBall>();
+				skill.Init(level, damage, boss);
 			break;
 		}
-		// GameObject tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillThunder", typeof(GameObject)) as GameObject);
-		// SkillThunder skill = tempGameObject.GetComponent<SkillThunder>();
-		// skill.Init(3, damage, boss);
+		// tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillSwordBlue", typeof(GameObject)) as GameObject);
+		// SkillSwordBlue skillSword = tempGameObject.GetComponent<SkillSwordBlue>();
+		// skillSword.Init(3, damage, boss);
 	}
 	
 	

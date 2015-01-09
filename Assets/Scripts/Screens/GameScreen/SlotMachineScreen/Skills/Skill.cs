@@ -6,7 +6,8 @@ public class Skill : MonoBehaviour {
   public enum Type {
     FIRE_BALL,
     THUNDER,
-		SWORD_ATTACK
+		SWORD_ATTACK_BLUE,
+		SWORD_DAGGER
   }
 
 	public Type type;
