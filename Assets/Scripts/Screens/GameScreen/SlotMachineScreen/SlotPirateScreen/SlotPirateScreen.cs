@@ -45,9 +45,9 @@ public class SlotPirateScreen : BaseSlotMachineScreen {
 		SkillFireBall skill;
 		switch (type) {
 			case SlotItemPirate.ITEM_CHOPPER:
-				tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillFireBall", typeof(GameObject)) as GameObject);
-				skill = tempGameObject.GetComponent<SkillFireBall>();
-				skill.Init(level, damage, boss);
+				tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillBite", typeof(GameObject)) as GameObject);
+				SkillBite skillBite = tempGameObject.GetComponent<SkillBite>();
+				skillBite.Init(level, damage, boss);
 			break;
 			case SlotItemPirate.ITEM_USOOP:
 				tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillFireBall", typeof(GameObject)) as GameObject);
@@ -70,8 +70,14 @@ public class SlotPirateScreen : BaseSlotMachineScreen {
 				skillSword.Init(level, damage, boss);
 			break;
 			case SlotItemPirate.ITEM_NICO:
+				tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillDagger", typeof(GameObject)) as GameObject);
+				SkillDagger skillDagger = tempGameObject.GetComponent<SkillDagger>();
+				skillDagger.Init(level, damage, boss);
 			break;
 			case SlotItemPirate.ITEM_SANJI:
+				tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillDagger", typeof(GameObject)) as GameObject);
+				SkillDagger skillDagger2 = tempGameObject.GetComponent<SkillDagger>();
+				skillDagger2.Init(level, damage, boss);
 			break;
 			case SlotItemPirate.ITEM_ZORO:
 				tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillSwordBlue", typeof(GameObject)) as GameObject);
@@ -89,8 +95,8 @@ public class SlotPirateScreen : BaseSlotMachineScreen {
 				skill.Init(level, damage, boss);
 			break;
 		}
-		// tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillSwordBlue", typeof(GameObject)) as GameObject);
-		// SkillSwordBlue skillSword = tempGameObject.GetComponent<SkillSwordBlue>();
+		// tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillBite", typeof(GameObject)) as GameObject);
+		// SkillBite skillSword = tempGameObject.GetComponent<SkillBite>();
 		// skillSword.Init(3, damage, boss);
 	}
 	

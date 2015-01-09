@@ -7,7 +7,8 @@ public class Skill : MonoBehaviour {
     FIRE_BALL,
     THUNDER,
 		SWORD_ATTACK_BLUE,
-		SWORD_DAGGER
+		SWORD_DAGGER,
+		BITE
   }
 
 	public Type type;
