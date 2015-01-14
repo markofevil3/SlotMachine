@@ -57,10 +57,11 @@ public class BaseSlotMachineScreen : BaseScreen {
   }
   
   public override void Init(object[] data) {    
-    GameObject tempGameObject = NGUITools.AddChild(gameObject, Resources.Load(Global.GAME_BOTTOM_BAR_PREFAB, typeof(GameObject)) as GameObject);
-   	tempGameObject.name = "GameBottomBar";
-   	bottomBarScript = tempGameObject.GetComponent<GameBottomBarScript>();
-   	bottomBarScript.Init(this);
+		// TEST CODE -- commented
+    // GameObject tempGameObject = NGUITools.AddChild(gameObject, Resources.Load(Global.GAME_BOTTOM_BAR_PREFAB, typeof(GameObject)) as GameObject);
+    //    	tempGameObject.name = "GameBottomBar";
+    //    	bottomBarScript = tempGameObject.GetComponent<GameBottomBarScript>();
+    //    	bottomBarScript.Init(this);
    	    
     EventDelegate.Set(btnBack.onClick, EventBackToSelectGame);
    	

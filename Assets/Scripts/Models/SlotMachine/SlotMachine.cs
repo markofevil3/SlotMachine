@@ -122,8 +122,9 @@ public class SlotMachine : MonoBehaviour {
 				ScreenManager.Instance.CurrentSlotScreen.DisplayFreeSpinAnimation();
 			}
 			if (freeSpinLeft > 0) {
-				machineHandler.DisableHandler();
-				Invoke("EnableAutoStart", 0.5f);
+				// TEST CODE -- commented
+				// machineHandler.DisableHandler();
+				// Invoke("EnableAutoStart", 0.5f);
 			} else {
 				DisableAutoStart();
 				machineHandler.EnableHandler();
