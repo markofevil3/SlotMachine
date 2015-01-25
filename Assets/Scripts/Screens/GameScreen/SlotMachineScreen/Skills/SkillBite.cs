@@ -5,14 +5,13 @@ public class SkillBite : Skill {
 
 	public Transform bitePrefab;
 	
-	private float[] size = new float[3] { 0.25f, 0.4f, 0.55f };
+	private float[] biteSize = new float[3] { 0.25f, 0.4f, 0.55f };
 	private int attackDamage;
-	private int level;
 
-	public override void Init(int level, int damage, Boss boss) {
+	public override void Init(int aLevel, int damage, Boss boss) {
 		this.boss = boss;
 		this.attackDamage = damage;
-		this.level = level;
+		this.level = aLevel;
 		SpawnParticle();
 		transform.position = boss.middlePoint.position;
 		StartCoroutine("CheckIfAlive");
@@ -20,11 +19,8 @@ public class SkillBite : Skill {
 	}
 	
 	void SpawnParticle() {
-		Transform bite = Instantiate(bitePrefab) as Transform;
-		bite.parent = transform;
-		bite.position = Vector3.zero;
-		bite.localPosition = new Vector3(0, 0, 0);
-		bite.GetComponent<ParticleSystem>().startSize = size[level - 1];
+		bitePrefab.gameObject.SetActive(true);
+		bitePrefab.GetComponent<ParticleSystem>().startSize = biteSize[level - 1];
 	}
 
 	IEnumerator BossGetHit() {

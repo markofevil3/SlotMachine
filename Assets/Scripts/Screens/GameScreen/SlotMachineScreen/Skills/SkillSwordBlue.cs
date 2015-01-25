@@ -3,7 +3,7 @@ using System.Collections;
 
 public class SkillSwordBlue : Skill {
 
-	public Transform swordPrefab;
+	public Transform[] particles;
 	
 	private float[] rotation = new float[3] { -45f, -135f, -90f };
 
@@ -20,10 +20,8 @@ public class SkillSwordBlue : Skill {
 	
 	IEnumerator SpawnParticle(int index, float delay) {
 		yield return new WaitForSeconds(delay);
-		Transform sword = Instantiate(swordPrefab) as Transform;
-		sword.parent = transform;
-		sword.position = Vector3.zero;
-		sword.localPosition = new Vector3(0, 0, 0);
+		Transform sword = particles[index];
+		sword.gameObject.SetActive(true);
 		sword.GetComponent<ParticleSystem>().startRotation = rotation[index] * Mathf.Deg2Rad;
 	}
 

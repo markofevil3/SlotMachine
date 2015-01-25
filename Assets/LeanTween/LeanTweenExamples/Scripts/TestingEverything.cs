@@ -45,10 +45,12 @@ public class TestingEverything : MonoBehaviour {
 	private int rotateRepeatAngle;
 
 	void Start () {
-		LeanTest.expected = 14;
+		LeanTest.expected = 17;
 
 		// add a listener
 		LeanTween.addListener(cube1, 0, eventGameObjectCalled);
+
+		LeanTest.debug("NOTHING TWEEENING AT BEGINNING", LeanTween.isTweening(cube1) == false );
 
 		// dispatch event that is received
 		LeanTween.dispatchEvent(0);
@@ -71,6 +73,7 @@ public class TestingEverything : MonoBehaviour {
 
 		lt1 = LeanTween.move( cube1, new Vector3(3f,2f,0.5f), 1.1f );
 		LeanTween.move( cube2, new Vector3(-3f,-2f,-0.5f), 1.1f );
+
 
 		// ping pong
 
@@ -107,6 +110,12 @@ public class TestingEverything : MonoBehaviour {
 		LeanTween.delayedCall(0.82f, groupTweensFinished);
 
 		LeanTest.debug("GROUP IDS MATCH", descriptionMatchCount==groupTweens.Length );
+		LeanTest.debug("MAX SEARCH OPTIMIZED", LeanTween.maxSearch<=groupTweens.Length+5, "maxSearch:"+LeanTween.maxSearch );
+
+		// resume item before calling pause should continue item along it's way
+		float previousXLT3 = cube3.transform.position.x;
+		lt3 = LeanTween.moveX( cube3, 5.0f, 1.1f);
+		lt3.resume();
 
 		yield return new WaitForEndOfFrame();
 		yield return new WaitForEndOfFrame();
@@ -126,6 +135,8 @@ public class TestingEverything : MonoBehaviour {
 				LeanTween.pause( groupTweens[i].id );
 		}
 		LeanTest.debug("GROUP ISTWEENING", tweenCount==groupTweens.Length, "expected "+groupTweens.Length+" tweens but got "+tweenCount );
+
+		LeanTest.debug("RESUME OUT OF ORDER", previousXLT3!=cube3.transform.position.x, "previousXLT3:"+previousXLT3+" cube3.transform.position.x:"+cube3.transform.position.x);
 
 		yield return new WaitForEndOfFrame();
 

@@ -78,10 +78,11 @@ public class PopupManager : MonoBehaviour {
   public void HideDim() {
     if (openingPopup.Count == 0) {
       LeanTween.cancel(dimBackground);
-  		LeanTween.value(dimBackground, DoUpdateDimAlpha, dimBackgroundSprite.alpha, 0, dimAnimateSpeed, new Hashtable() {
-  			{"onComplete", "HideDimCallback"},
-  			{"onCompleteTarget", gameObject}
-  		});
+  		// LeanTween.value(dimBackground, DoUpdateDimAlpha, dimBackgroundSprite.alpha, 0, dimAnimateSpeed, new Hashtable() {
+  		// 	{"onComplete", "HideDimCallback"},
+  		// 	{"onCompleteTarget", gameObject}
+  		// });
+  		LeanTween.value(dimBackground, DoUpdateDimAlpha, dimBackgroundSprite.alpha, 0, dimAnimateSpeed).setOnComplete(HideDimCallback);
     }
 	}
   

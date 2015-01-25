@@ -5,8 +5,6 @@ public class SkillFireBall : Skill {
 
 	public Transform fireBallPrefab;
 	public Transform explodePrefab;
-	private Transform ball;
-	private Transform explode;
 		
 	public override void Init(int level, int damage, Boss boss) {
 		this.boss = boss;
@@ -16,9 +14,9 @@ public class SkillFireBall : Skill {
 	}
 	
 	void SpawnParticle() {
-		ball = Instantiate(fireBallPrefab, ScreenManager.Instance.CurrentSlotScreen.userAvatarPanel.position, Quaternion.Euler(-90f,0,0)) as Transform;
-		ball.parent = transform;
-		LeanTween.move(ball.gameObject, boss.middlePoint.position, 0.8f).setEase(LeanTweenType.easeInQuad).setOnComplete(PreExplode);
+		fireBallPrefab.position = ScreenManager.Instance.CurrentSlotScreen.userAvatarPanel.position;
+		fireBallPrefab.gameObject.SetActive(true);
+		LeanTween.move(fireBallPrefab.gameObject, boss.middlePoint.position, 0.8f).setEase(LeanTweenType.easeInQuad).setOnComplete(PreExplode);
 	}
 	
 	void PreExplode() {
@@ -26,10 +24,10 @@ public class SkillFireBall : Skill {
 	}
 	
 	IEnumerator Explode() {
-		explode = Instantiate(explodePrefab, boss.middlePoint.position, Quaternion.Euler(-90f,0,0)) as Transform;
-		explode.parent = transform;
+		explodePrefab.position = boss.middlePoint.position;
+		explodePrefab.gameObject.SetActive(true);
 		yield return null;
-		GameObject.Destroy(ball.gameObject);
+		fireBallPrefab.gameObject.SetActive(false);
 		boss.Shake();
 		boss.GetHit(damage);
 		StartCoroutine("CheckIfAlive");
