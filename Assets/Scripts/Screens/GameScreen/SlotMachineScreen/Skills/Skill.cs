@@ -9,7 +9,8 @@ public class Skill : MonoBehaviour {
 		SWORD_ATTACK_BLUE,
 		SWORD_DAGGER,
 		BITE,
-		LUFFY_HAND
+		LUFFY_HAND,
+		SANJI_KICK
   }
 
 	public Type type;

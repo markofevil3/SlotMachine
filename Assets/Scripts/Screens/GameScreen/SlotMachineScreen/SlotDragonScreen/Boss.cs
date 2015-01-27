@@ -103,16 +103,17 @@ public class Boss : MonoBehaviour {
 	
 	// TEST CODE - need to refine
 	public void Shake() {
+		StopShake();
 		tween1 = LeanTween.rotateAroundLocal( gameObject, new Vector3(0,0,1f), 0.5f, 0.2f).setEase( LeanTweenType.easeShake ).setLoopClamp().setRepeat(-1);
 		tween2 = LeanTween.rotateAroundLocal( gameObject, new Vector3(0,0,-1f), 0.5f, 0.25f).setEase( LeanTweenType.easeShake ).setLoopClamp().setRepeat(-1).setDelay(0.05f);
 
-		LeanTween.delayedCall(gameObject, 0.5f, stopShake);
+		LeanTween.delayedCall(gameObject, 0.5f, StopShake);
 	}
 	
 	LTDescr tween1;
 	LTDescr tween2;
 
-	void stopShake(){
+	void StopShake(){
 		// tween1.setRepeat(1);
 		// tween2.setRepeat(1);
 		LeanTween.cancel(gameObject);

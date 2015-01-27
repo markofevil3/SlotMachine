@@ -78,9 +78,9 @@ public class SlotPirateScreen : BaseSlotMachineScreen {
 				skillDagger.Init(level, damage, boss);
 			break;
 			case SlotItemPirate.ITEM_SANJI:
-				tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillDagger", typeof(GameObject)) as GameObject);
-				SkillDagger skillDagger2 = tempGameObject.GetComponent<SkillDagger>();
-				skillDagger2.Init(level, damage, boss);
+				tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillSanji", typeof(GameObject)) as GameObject);
+				SkillSanji skillSanji = tempGameObject.GetComponent<SkillSanji>();
+				skillSanji.Init(level, damage, boss);
 			break;
 			case SlotItemPirate.ITEM_ZORO:
 				tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillSwordBlue", typeof(GameObject)) as GameObject);
@@ -98,9 +98,9 @@ public class SlotPirateScreen : BaseSlotMachineScreen {
 				skill.Init(level, damage, boss);
 			break;
 		}
-				// tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillLuffy", typeof(GameObject)) as GameObject);
-				// SkillLuffy skillLuffy = tempGameObject.GetComponent<SkillLuffy>();
-				// skillLuffy.Init(level, damage, boss);
+			// tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillSanji", typeof(GameObject)) as GameObject);
+			// SkillSanji skillLuffy = tempGameObject.GetComponent<SkillSanji>();
+			// skillLuffy.Init(level, damage, boss);
 	}
 	
 	
