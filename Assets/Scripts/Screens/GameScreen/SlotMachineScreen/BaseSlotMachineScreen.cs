@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using Boomlagoon.JSON;
 
 public class BaseSlotMachineScreen : BaseScreen {
@@ -47,7 +48,12 @@ public class BaseSlotMachineScreen : BaseScreen {
   
   private string roomId = string.Empty;
 	private WinningAnimation mWinningAnimation;
-  
+	
+	private List<SpawnableSkill> listSpawnSkills = new List<SpawnableSkill>();
+  private bool canSpawnSkill = true;
+  private float lastSkillTime;
+	private float MAX_SKILL_DURATION = 2f;
+	
   public string GetRoomId() {
     return roomId;
   }
@@ -56,6 +62,21 @@ public class BaseSlotMachineScreen : BaseScreen {
     return gameType;
   }
   
+	// Add Skill to queue for spawn
+	public void AddSkillToQueue(SpawnableSkill mSkill) {
+		listSpawnSkills.Add(mSkill);
+	}
+	
+	// Spawn skill if avaiable in queue
+	void Update() {
+		if (listSpawnSkills.Count > 0 && (canSpawnSkill || Time.time - lastSkillTime > MAX_SKILL_DURATION)) {
+			lastSkillTime = Time.time;
+			canSpawnSkill = false;
+			SpawnSkill(listSpawnSkills[0]);
+			listSpawnSkills.RemoveAt(0);
+		}
+	}
+	
   public override void Init(object[] data) {    
 		// TEST CODE -- commented
     // GameObject tempGameObject = NGUITools.AddChild(gameObject, Resources.Load(Global.GAME_BOTTOM_BAR_PREFAB, typeof(GameObject)) as GameObject);
@@ -130,6 +151,7 @@ public class BaseSlotMachineScreen : BaseScreen {
 	}
 
 	public virtual void SpawnSkill(int type, int level, int damage) {}
+	public virtual void SpawnSkill(SpawnableSkill skill) {}
 
 	public virtual void OtherPlayerSpinResult(string username, JSONObject jsonData) {}
 
@@ -218,5 +240,19 @@ public class BaseSlotMachineScreen : BaseScreen {
   public override void Close() {
 		ScreenManager.Instance.CurrentGameScreen = null;
 		base.Close();
+	}
+}
+
+public class SpawnableSkill {
+	public int type;
+	public int level;
+	public int damage;
+	public bool isYou;
+	
+	public SpawnableSkill(int type, int level, int damage, bool isYou) {
+		this.type = type;
+		this.level = level - 2;
+		this.damage = damage;
+		this.isYou = isYou;
 	}
 }

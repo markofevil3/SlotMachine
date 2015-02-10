@@ -19,6 +19,7 @@ public class SlotItem : MonoBehaviour {
   }
   
   public UISprite sprite;
+  public UISprite glowSprite;
   
   private string[] baseSpriteNames = new string[10] {"wild", "apple", "strawberry", "radish", "broccoli", "eggplant", "bell_pepper", "chili_pepper", "mushroom", "fruits"};
   private Type type;
@@ -33,6 +34,11 @@ public class SlotItem : MonoBehaviour {
     if (sprite == null) {
       sprite = GetComponent<UISprite>();
     }
+		if (glowSprite == null) {
+			glowSprite = transform.Find("Glow").GetComponent<UISprite>();
+			glowSprite.color = Color.red;
+			NGUITools.SetActive(glowSprite.gameObject, false);
+		}
     this.type = type;
     this.index = index;
     sprite.spriteName = GetSpriteName((int)type);
@@ -43,6 +49,8 @@ public class SlotItem : MonoBehaviour {
   }
 	
 	public virtual void Glow() {
+		NGUITools.SetActive(glowSprite.gameObject, true);
+		sprite.color = Color.red;
 		tweenAlpha = TweenAlpha.Begin(gameObject, 0.8f, 0.2f);
 		tweenAlpha.from = 1f;
 		tweenAlpha.style = UITweener.Style.PingPong;
@@ -50,6 +58,8 @@ public class SlotItem : MonoBehaviour {
 	
 	public virtual void StopGlow() {
 		Destroy(tweenAlpha);
+		NGUITools.SetActive(glowSprite.gameObject, false);
 		sprite.alpha = 1f;
+		sprite.color = Color.white;
 	}
 }

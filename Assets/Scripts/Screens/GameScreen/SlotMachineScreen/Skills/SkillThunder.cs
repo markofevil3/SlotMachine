@@ -6,7 +6,6 @@ public class SkillThunder : Skill {
 	public Transform[] particles;
 		
 	public override void Init(int level, int damage, Boss boss) {
-		Debug.Log("SkillThunder " + level + " " + damage);
 		this.boss = boss;
 		for (int i = 0; i < level; i++) {
 			StartCoroutine(SpawnParticle(i, 0.2f * i));

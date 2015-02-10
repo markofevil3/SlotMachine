@@ -23,7 +23,6 @@ public class SkillSanji : Skill {
 	
 	IEnumerator SpawnParticle(int index, float delay, int smallDamage) {
 		yield return new WaitForSeconds(delay);
-		Debug.Log(kicks.Length + " " + index);
 		kicks[index].SetActive(true);
 		boss.Shake();
 		boss.GetHit(smallDamage);

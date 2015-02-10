@@ -43,6 +43,10 @@ public class SlotPirateScreen : BaseSlotMachineScreen {
 		// SpawnSkill(jsonData.GetInt("totalWin"), playerSlot.transform.position);
 	}
 	
+	public override void SpawnSkill(SpawnableSkill skill) {
+		SpawnSkill(skill.type, skill.level, skill.damage);
+	}
+	
 	public override void SpawnSkill(int type, int level, int damage) {
 		GameObject tempGameObject;
 		SkillFireBall skill;

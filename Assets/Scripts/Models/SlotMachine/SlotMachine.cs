@@ -109,7 +109,9 @@ public class SlotMachine : MonoBehaviour {
 					for (int j = 0; j < SlotCombination.NUM_REELS; j++) {
 						slotItems[SlotCombination.COMBINATION[i, j]].Glow();
 					}
-					ScreenManager.Instance.CurrentSlotScreen.SpawnSkill((int)winningType[i].Number, (int)winningCount[i].Number, (int)winningGold[i].Number);
+					// TEST CODE - use skill queue
+					// ScreenManager.Instance.CurrentSlotScreen.SpawnSkill((int)winningType[i].Number, (int)winningCount[i].Number, (int)winningGold[i].Number);
+					ScreenManager.Instance.CurrentSlotScreen.AddSkillToQueue(new SpawnableSkill((int)winningType[i].Number, (int)winningCount[i].Number, (int)winningGold[i].Number, true));
 				}
 			}
       // int[] scoreArr = slotCombination.CalculateCombination(resultsData);
