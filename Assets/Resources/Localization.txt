@@ -1,7 +1,7 @@
 KEY,English,Vietnamese
 Btn_Login,Login,Đăng Nhập
 Btn_Register,Register,Đăng Ký
-Btn_Play_As_Guest,Play As Guest,Khách
+Btn_Play_As_Guest,I'm Guest,Khách
 Btn_ForgetPassword,Forget\nPassword,Quên\nMật Khẩu
 Btn_Policy,Policy,Điều Khoản
 Username_Text,Username:,Tên Đăng Nhập:
@@ -54,3 +54,6 @@ Btn_Music,Music,Nhạc nền
 Btn_Sound,Sound,Âm Thanh
 Text_On,On,Bật
 Text_Off,Off,Tắt
+Btn_Help,Help,Trợ Giúp
+Btn_Credit,Credit,Credit
+Btn_Close,Close,Close

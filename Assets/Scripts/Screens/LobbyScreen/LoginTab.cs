@@ -4,13 +4,14 @@ using System.Collections;
 public class LoginTab : Tab {
   
   public UIButton btnLogin;
-  public UIButton btnLoginFacebook;
+  public UIButton btnClose;
   public UIInput usernameInput;
   public UIInput passwordInput;
   
   public override void Init() {
     EventDelegate.Set(btnLogin.onClick, EventLogin);
-    EventDelegate.Set(btnLoginFacebook.onClick, EventLoginFacebook);
+    EventDelegate.Set(btnClose.onClick, Close);
+    // EventDelegate.Set(btnLoginFacebook.onClick, EventLoginFacebook);
   }
   
   public void ClearInput() {
@@ -24,9 +25,5 @@ public class LoginTab : Tab {
       PopupManager.Instance.ShowLoadingPopup();
       SmartfoxClient.Instance.LoginUser(usernameInput.value.ToLower(), passwordInput.value);
     }
-  }
-  
-  private void EventLoginFacebook() {
-    
   }
 }

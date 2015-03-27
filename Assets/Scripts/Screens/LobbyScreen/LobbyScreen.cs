@@ -12,12 +12,10 @@ public class LobbyScreen : BaseScreen {
   public UIButton btnLogout;
   public UIGridExtent buttonGrid;
   public GameObject loginRegisterPanel;
-	public UIButton[] tabBars = new UIButton[3];
   
   private LoginTab loginTab = null;
   private RegisterTab registerTab = null;
   private Tab currentTab = null;
-  private UserBottomBar userBottomBar;
   
   // Test Data
   // public int testIndex = 1;
@@ -28,27 +26,18 @@ public class LobbyScreen : BaseScreen {
   }
 
   public override void Init(object[] data) {
-    EventDelegate.Set(btnLogin.onClick, delegate() { OpenTab(Tab.TabType.LOGIN_TAB); });
+    EventDelegate.Set(btnLogin.onClick, OpenLoginPanel);
     EventDelegate.Set(btnRegister.onClick, delegate() { OpenTab(Tab.TabType.REGISTER_TAB); });
     EventDelegate.Set(btnPlayAsGuest.onClick, EventPlayAsGuest);
     EventDelegate.Set(btnSelectGame.onClick, EventMoveToSelectGameScreen);
     // TEST - for test slot game
     // EventDelegate.Set(btnSelectGame.onClick, EventMoveToSlotScreen);
     EventDelegate.Set(btnLogout.onClick, EventLogout);
-
-    GameObject tempGameObject = NGUITools.AddChild(gameObject, Resources.Load(Global.USER_BOTTOM_BAR_PREFAB, typeof(GameObject)) as GameObject);
-   	tempGameObject.name = "UserBottomBar";
-   	userBottomBar = tempGameObject.GetComponent<UserBottomBar>();
-   	userBottomBar.Init(this);
-   	
-    EventDelegate.Set(tabBars[0].onClick, delegate() { OpenTab(Tab.TabType.LOGIN_TAB); });
-   	EventDelegate.Set(tabBars[1].onClick, delegate() { OpenTab(Tab.TabType.REGISTER_TAB); });
-   	EventDelegate.Set(tabBars[2].onClick, delegate() { OpenTab(Tab.TabType.POLICY_TAB); });
-    
+		Utils.SetActive(buttonGrid.gameObject, true);
+		Utils.SetActive(loginRegisterPanel, false);		
     if (SmartfoxClient.Instance.IsLoggedIn) {
       EventLoggedIn();
     }
-    
     Invoke("TestDropdown", 2.0f);
   }
 
@@ -57,11 +46,35 @@ public class LobbyScreen : BaseScreen {
     PopupManager.Instance.ShowNotification(string.Empty, "toi dang test");
   }
   
-  public override void Open() {}
+  public override void Open() {
+  }
 
   public override void Close() {
 		ScreenManager.Instance.LobbyScreen = null;
 		base.Close();
+	}
+
+	public void EventCloseSubPanel() {
+		if (NGUITools.GetActive(loginRegisterPanel)) {
+			Utils.SetActive(loginRegisterPanel, false);
+    }
+		Utils.SetActive(buttonGrid.gameObject, true);
+	}
+
+	private void OpenLoginPanel() {
+		if (!NGUITools.GetActive(loginRegisterPanel)) {
+			Utils.SetActive(loginRegisterPanel, true);
+    }
+		Utils.SetActive(buttonGrid.gameObject, false);
+		if (loginTab == null) {
+    	GameObject tempGameObject = NGUITools.AddChild(loginRegisterPanel, Resources.Load(Global.SCREEN_PATH + "/LobbyScreen/LoginTab", typeof(GameObject)) as GameObject);
+     	tempGameObject.name = "LoginTab";
+     	loginTab = tempGameObject.GetComponent<LoginTab>();
+     	loginTab.Init();
+     	loginTab.Open();
+   	} else {
+   	  loginTab.Open();
+   	}
 	}
 
 	private void OpenTab(Tab.TabType tabType) {
@@ -73,13 +86,6 @@ public class LobbyScreen : BaseScreen {
 		}
 		if (currentTab != null) {
 		  currentTab.Close(false);
-		}
-		for (int i = 0; i < tabBars.Length; i++) {
-			if (i == (int)tabType) {
-				tabBars[i].isEnabled = false;
-			} else {
-				tabBars[i].isEnabled = true;
-			}
 		}
 		switch(tabType) {
 			case Tab.TabType.LOGIN_TAB:
@@ -130,7 +136,7 @@ public class LobbyScreen : BaseScreen {
 		Utils.SetActive(btnLogout.gameObject, false);
 		Utils.SetActive(btnPlayAsGuest.gameObject, true);
     buttonGrid.Reposition();
-    userBottomBar.EventUserLoggedOut();
+    // userBottomBar.EventUserLoggedOut();
   }
   
   public void EventLoggedIn() {
@@ -144,7 +150,7 @@ public class LobbyScreen : BaseScreen {
 		Utils.SetActive(btnLogout.gameObject, true);
     buttonGrid.Reposition();
 		Utils.SetActive(loginRegisterPanel, false);
-    userBottomBar.EventUserLoggedIn();
+    // userBottomBar.EventUserLoggedIn();
   }
 
   public void EventLoginFail() {

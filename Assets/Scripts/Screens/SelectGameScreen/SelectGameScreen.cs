@@ -7,22 +7,22 @@ public class SelectGameScreen : BaseScreen {
   private UserBottomBar userBottomBar;
 
   public UIButton btnBack;
-  public UIButton btnFruitGame;
-  public UIButton btnHalloweenGame;
+  public UIButton btnLeaderboard;
+  public UIButton btnDailyBonus;
+  public UIButton btnZombieGame;
   public UIButton btnDragonGame;
   public UIButton btnPirateGame;
 
   public override void Init(object[] data) {
     EventDelegate.Set(btnBack.onClick, BackToLobbyScreen);
-    EventDelegate.Set(btnFruitGame.onClick, delegate() { EventOpenSlotGame(BaseSlotMachineScreen.GameType.SLOT_FRUITS); });
-    EventDelegate.Set(btnHalloweenGame.onClick, delegate() { EventOpenSlotGame(BaseSlotMachineScreen.GameType.SLOT_HALLOWEEN); });
+    EventDelegate.Set(btnZombieGame.onClick, delegate() { EventOpenSlotGame(BaseSlotMachineScreen.GameType.SLOT_HALLOWEEN); });
     EventDelegate.Set(btnDragonGame.onClick, delegate() { EventOpenSlotGame(BaseSlotMachineScreen.GameType.SLOT_DRAGON); });
     EventDelegate.Set(btnPirateGame.onClick, delegate() { EventOpenSlotGame(BaseSlotMachineScreen.GameType.SLOT_PIRATE); });
     
-    GameObject tempGameObject = NGUITools.AddChild(gameObject, Resources.Load(Global.USER_BOTTOM_BAR_PREFAB, typeof(GameObject)) as GameObject);
-   	tempGameObject.name = "UserBottomBar";
-   	userBottomBar = tempGameObject.GetComponent<UserBottomBar>();
-   	userBottomBar.Init(this);
+    // GameObject tempGameObject = NGUITools.AddChild(gameObject, Resources.Load(Global.USER_BOTTOM_BAR_PREFAB, typeof(GameObject)) as GameObject);
+    //    	tempGameObject.name = "UserBottomBar";
+    //    	userBottomBar = tempGameObject.GetComponent<UserBottomBar>();
+    //    	userBottomBar.Init(this);
   }
 
   void EventOpenSlotGame(BaseSlotMachineScreen.GameType type) {

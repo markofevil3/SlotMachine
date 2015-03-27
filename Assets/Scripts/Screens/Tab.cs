@@ -25,5 +25,8 @@ public class Tab : MonoBehaviour {
 		} else {
 			Utils.SetActive(gameObject, false);
 		}
+		if (LobbyScreen.Instance != null) {
+			LobbyScreen.Instance.EventCloseSubPanel();
+		}
 	}
 }
