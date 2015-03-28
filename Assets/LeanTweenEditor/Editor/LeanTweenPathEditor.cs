@@ -508,7 +508,7 @@
 			static void CreateLeanTweenPath()
 			{
 				GameObject go = new GameObject("LeanTweenPath");
-				go.AddComponent("LeanTweenPath");
+				go.AddComponent<LeanTweenPath>();
 			}
 			
 		}

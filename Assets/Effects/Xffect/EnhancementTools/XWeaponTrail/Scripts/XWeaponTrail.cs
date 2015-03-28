@@ -417,7 +417,7 @@ namespace Xft
             MeshRenderer mr = mMeshObj.AddComponent<MeshRenderer>();
             mr.castShadows = false;
             mr.receiveShadows = false;
-            mr.renderer.sharedMaterial = MyMaterial;
+            mr.GetComponent<Renderer>().sharedMaterial = MyMaterial;
             mf.sharedMesh = new Mesh();
 
             //init vertexpool

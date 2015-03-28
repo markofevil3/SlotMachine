@@ -19,7 +19,7 @@ public class EventListenersScattered : MonoBehaviour {
 		LeanTween.LISTENERS_MAX = 100; // This is the maximum of event listeners you will have added as listeners
 		LeanTween.EVENTS_MAX = (int)MyEvents.LENGTH; // The maximum amount of events you will be dispatching
 
-		fromColor = new Vector3(renderer.material.color.r, renderer.material.color.g, renderer.material.color.b);
+		fromColor = new Vector3(GetComponent<Renderer>().material.color.r, GetComponent<Renderer>().material.color.g, GetComponent<Renderer>().material.color.b);
 	}
 
 	void Start () {
@@ -31,7 +31,7 @@ public class EventListenersScattered : MonoBehaviour {
 	// ****** Event Listening Methods
 
 	void jumpUp( LTEvent e ){
-		rigidbody.AddRelativeForce(Vector3.forward * 300f);
+		GetComponent<Rigidbody>().AddRelativeForce(Vector3.forward * 300f);
 	}
 
 	void changeColor( LTEvent e ){
@@ -42,7 +42,7 @@ public class EventListenersScattered : MonoBehaviour {
 	}
 
 	void updateColor( Vector3 v ){
-		renderer.material.color = new Color( v.x, v.y, v.z );
+		GetComponent<Renderer>().material.color = new Color( v.x, v.y, v.z );
 	}
 
 	// ****** Physics / AI Stuff
@@ -61,11 +61,11 @@ public class EventListenersScattered : MonoBehaviour {
 
 	void FixedUpdate(){
 		if(turnForIter < turnForLength){
-			rigidbody.MoveRotation( rigidbody.rotation * Quaternion.Euler(towardsRotation * Time.deltaTime ) );
+			GetComponent<Rigidbody>().MoveRotation( GetComponent<Rigidbody>().rotation * Quaternion.Euler(towardsRotation * Time.deltaTime ) );
 			turnForIter += Time.deltaTime;
 		}
 
-		rigidbody.AddRelativeForce(Vector3.down * 4.5f);
+		GetComponent<Rigidbody>().AddRelativeForce(Vector3.down * 4.5f);
 	}
 
 	// ****** Key and clicking detection

@@ -39,7 +39,7 @@ function Update () {
 	if(state == BusCarState.running /*&& renderer.isVisible*/){
 		// print("Time.frameCount%10:"+(Time.frameCount%10)+" charId%10:"+(charId%10));
 		if(camDistance<8000 || Time.frameCount%3==charId%3){
-			if(renderer.isVisible){
+			if(GetComponent.<Renderer>().isVisible){
 				wasUpdated = true;
 				roadPath.place( transform, ptIter, Vector3.up);
 			}else{

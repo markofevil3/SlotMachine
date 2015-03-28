@@ -413,7 +413,7 @@ public class XffectComponentCustom : Editor
 		
 		if (GUILayout.Button ("Add Layer")) {
 			GameObject layer = new GameObject (LayerName);
-			EffectLayer efl = (EffectLayer)layer.AddComponent ("EffectLayer");
+			EffectLayer efl = (EffectLayer)layer.AddComponent <EffectLayer>();
 			layer.transform.parent = Selection.activeTransform;
 			efl.transform.localPosition = Vector3.zero;
 			//default to effect layer object.
@@ -436,7 +436,7 @@ public class XffectComponentCustom : Editor
 		
 		if (GUILayout.Button ("Add Event")) {
 			GameObject obj = new GameObject ("_Event");
-			XftEventComponent xevent = (XftEventComponent)obj.AddComponent ("XftEventComponent");
+			XftEventComponent xevent = (XftEventComponent)obj.AddComponent <XftEventComponent>();
 			xevent.transform.parent = Selection.activeTransform;
 			xevent.transform.localPosition = Vector3.zero;
 			xevent.RadialBlurShader = Shader.Find ("Xffect/PP/radial_blur");
@@ -524,7 +524,7 @@ public class XffectComponentCustom : Editor
 		Selection.activeGameObject = go;
 
 		GameObject layer = new GameObject ("EffectLayer");
-		EffectLayer efl = (EffectLayer)layer.AddComponent ("EffectLayer");
+		EffectLayer efl = (EffectLayer)layer.AddComponent <EffectLayer>();
 		layer.transform.parent = go.transform;
 
 		efl.transform.localPosition = Vector3.zero;

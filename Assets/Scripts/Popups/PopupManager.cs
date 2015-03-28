@@ -289,9 +289,9 @@ public class PopupManager : MonoBehaviour {
   public void ShowLoadingIndicator() {
     #if UNITY_IPHONE
 			if (Global.isTablet) {
-				Handheld.SetActivityIndicatorStyle(iOSActivityIndicatorStyle.WhiteLarge);
+				Handheld.SetActivityIndicatorStyle(UnityEngine.iOS.ActivityIndicatorStyle.WhiteLarge);
 			} else {
-				Handheld.SetActivityIndicatorStyle(iOSActivityIndicatorStyle.White);
+				Handheld.SetActivityIndicatorStyle(UnityEngine.iOS.ActivityIndicatorStyle.White);
 			}
     #elif UNITY_ANDROID
       Handheld.SetActivityIndicatorStyle(AndroidActivityIndicatorStyle.Large);

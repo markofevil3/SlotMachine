@@ -45,7 +45,7 @@ public class LeanTweenPathControl : MonoBehaviour {
 
 	public void init( bool isPoint, LeanTweenPathControl[] controlRef ){
 		createMaterials();
-		gameObject.renderer.material = isPoint ? matPoints : matControls;
+		gameObject.GetComponent<Renderer>().material = isPoint ? matPoints : matControls;
 
 		lastPos = transform.position;
 		this.controlRef = controlRef;
@@ -58,7 +58,7 @@ public class LeanTweenPathControl : MonoBehaviour {
 
 	public void init( LeanTweenPathControl[] controlRef ){
 		createMaterials();
-		gameObject.renderer.material = matPoints;
+		gameObject.GetComponent<Renderer>().material = matPoints;
 	}
 
 	void OnDrawGizmos(){

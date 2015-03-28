@@ -36,7 +36,7 @@ namespace Xft
 
             	if (m_Listener != null)
             	{
-                	AudioSource source = m_Listener.audio;
+                	AudioSource source = m_Listener.GetComponent<AudioSource>();
                 	if (source == null) source = m_Listener.gameObject.AddComponent<AudioSource>();
                 	source.pitch = pitch;
                     
@@ -68,8 +68,8 @@ namespace Xft
         {
             base.Reset ();
             
-            if (m_Listener != null && m_Listener.audio != null && m_owner.IsSoundLoop)
-                m_Listener.audio.Stop();
+            if (m_Listener != null && m_Listener.GetComponent<AudioSource>() != null && m_owner.IsSoundLoop)
+                m_Listener.GetComponent<AudioSource>().Stop();
         }
 		
 		public override void OnBegin ()

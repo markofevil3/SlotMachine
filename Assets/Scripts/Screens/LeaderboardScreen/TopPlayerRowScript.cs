@@ -26,9 +26,9 @@ public class TopPlayerRowScript : MonoBehaviour {
     rowData = data;
     
     if (AccountManager.Instance.IsYou(rowData.GetString("username"))) {
-      background.spriteName = "MainPanel_Subpanel_dark";
+      background.spriteName = "PopupBackground";
     } else {
-      background.spriteName = "MainPanel_Subpanel";
+      background.spriteName = "Global_Window_Paper";
     }
     
     playerNameLabel.text = rowData.GetString("displayName");

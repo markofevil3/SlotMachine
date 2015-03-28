@@ -16,11 +16,11 @@ namespace Xft
                 if (m_shaderCamera == null)
                 {
                     m_shaderCamera = new GameObject("ShaderCamera", typeof(Camera));
-                    m_shaderCamera.camera.enabled = false;
+                    m_shaderCamera.GetComponent<Camera>().enabled = false;
                     m_shaderCamera.hideFlags = HideFlags.HideAndDontSave;
                 }
 
-                return m_shaderCamera.camera;
+                return m_shaderCamera.GetComponent<Camera>();
             }
         }
 

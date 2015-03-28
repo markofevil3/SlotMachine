@@ -135,7 +135,7 @@ namespace Xft
         {
             mShowGUI = false;
 
-            MainCamera.camera.backgroundColor = Color.black;
+            MainCamera.GetComponent<Camera>().backgroundColor = Color.black;
             mElapsedTime += Time.deltaTime;
 
             if (mElapsedTime > 0.5f)
