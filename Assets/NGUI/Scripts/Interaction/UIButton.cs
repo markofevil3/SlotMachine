@@ -253,24 +253,25 @@ public class UIButton : UIButtonColor
 	protected virtual void OnClick ()
 	{
 		if (current == null && isEnabled)
-		{
+		{			
 			current = this;
 			EventDelegate.Execute(onClick);
 			current = null;
 		}
 	}
 
-  void OnPress (bool isPressed)
-  {
-    if (current == null && isEnabled)
-		{
-		  if (!isPressed && UICamera.hoveredObject == gameObject && UICamera.currentTouch.dragStarted) {
-        current = this;
-  			EventDelegate.Execute(onClick);
-  			current = null;
-      }
-		}
-  }
+  // void OnPress (bool isPressed)
+  // {
+  //   if (current == null && isEnabled)
+  // 		{
+  // 		  if (!isPressed && UICamera.hoveredObject == gameObject && UICamera.currentTouch.dragStarted) {
+  // 				Debug.Log("#######");
+  //       current = this;
+  // 			EventDelegate.Execute(onClick);
+  // 			current = null;
+  //     }
+  // 		}
+  // }
 
 	/// <summary>
 	/// Change the visual state.

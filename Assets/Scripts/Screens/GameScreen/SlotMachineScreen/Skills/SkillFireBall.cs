@@ -8,6 +8,7 @@ public class SkillFireBall : Skill {
 		
 	public override void Init(int level, int damage, Boss boss) {
 		this.boss = boss;
+		this.damage = damage;
 		SpawnParticle();
 		// transform.position = ScreenManager.Instance.CurrentSlotScreen.userAvatarPanel.position;
 

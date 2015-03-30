@@ -76,7 +76,7 @@ public class AccountManager : MonoBehaviour {
 	
 	private bool CanAddFriend(string username) {
 		int count = SmartfoxClient.Instance.GetBuddyList().Count;
-	  return count > 0 && count < Global.MAX_FRIEND_NUMB;
+	  return count < Global.MAX_FRIEND_NUMB;
 	}
 	
 	public void AddFriend(string username) {

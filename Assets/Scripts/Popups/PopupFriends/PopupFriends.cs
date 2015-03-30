@@ -30,8 +30,11 @@ public class PopupFriends : Popup {
 					friend.Add("displayName", buddyList[i].GetVariable("displayName").GetStringValue());
 					friend.Add("cash", buddyList[i].GetVariable("cash").GetIntValue());
 				} else {
-					friend.Add("displayName", buddyList[i].GetVariable("$displayName").GetStringValue());
-					friend.Add("cash", buddyList[i].GetVariable("$cash").GetIntValue());
+					// friend.Add("displayName", buddyList[i].GetVariable("$displayName").GetStringValue());
+					// friend.Add("cash", buddyList[i].GetVariable("$cash").GetIntValue());
+					// TEST CODE
+					friend.Add("displayName", "offline");
+					friend.Add("cash", "offline2");
 				}
 				friend.Add("username", buddyList[i].Name);
 				friendList.Add(friend);

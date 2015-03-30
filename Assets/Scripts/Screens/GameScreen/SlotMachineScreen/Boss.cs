@@ -5,12 +5,11 @@ using Boomlagoon.JSON;
 public class Boss : MonoBehaviour {
 
   public enum BossType {
-		DRAGON_FIRE,
-		DRAGON_ICE,
-		DRAGON_DARK
+		DRAGON_FIRE, // Boa
+		DRAGON_ICE, // Crocodile
+		DRAGON_DARK // Hawk Eye
   }
-	private string[] bossSpriteNames = new string[3] {"Battle_Portriat_Giant", "Battle_Portriat_Thief", "Battle_Portriat_Monkey"};
-
+	
 	public UITexture bossSprite;
 	public UIProgressBar hpProgressBar;
 	public UILabel hpLabel;
@@ -29,18 +28,22 @@ public class Boss : MonoBehaviour {
 	private string fadeInCallback = string.Empty;
 	private JSONObject newBossData;
 
-	public void Init(int type, int currentHP, int maxHP, GameObject handler, string callback) {
+	public virtual string GetBossImage(int type) {
+		return string.Empty;
+	}
+
+	public virtual void Init(int type, int currentHP, int maxHP, GameObject handler, string callback) {
 		Init(type, currentHP, maxHP);
 		this.handler = handler;
 		this.callback = callback;
 	}
 	
-	public void Init(int type, int currentHP, int maxHP) {
+	public virtual void Init(int type, int currentHP, int maxHP) {
 		this.type = (BossType)type;
 		this.maxHP = maxHP;
 		this.currentHP = currentHP;
-		// TEST CODE -- commented
-		// bossSprite.spriteName = bossSpriteNames[type];
+		this.bossSprite.mainTexture = Resources.Load(GetBossImage(type)) as Texture2D;
+		Debug.Log("Init boss " + type);
 		UpdateHPBar();
 	}
 	
@@ -92,13 +95,13 @@ public class Boss : MonoBehaviour {
 		GameObject effect = CFX_SpawnSystem.GetRandom();
 		effect.transform.position = new Vector3(middlePoint.position.x + randomPos.x, middlePoint.position.y + randomPos.y, 0);
 		effect.transform.parent = transform;
-		Invoke("SpawnEffect", Random.Range(1f, 15f));
+		Invoke("SpawnEffect", Random.Range(1f, 10f));
 	}
 	
 	
 	// TEST CODe
 	void Awake() {
-		Invoke("SpawnEffect", Random.Range(1f, 15f));
+		Invoke("SpawnEffect", Random.Range(1f, 10f));
 	}
 	
 	// TEST CODE - need to refine
