@@ -26,6 +26,28 @@ public class Skill : MonoBehaviour {
   [HideInInspector]
 	public Boss boss;
 
+	private ParticleSystem[] listParticles;
+
+	public virtual void Init() {
+		listParticles = gameObject.GetComponentsInChildren<ParticleSystem>(true);
+		StartCoroutine("CheckIfAlive");
+	}
+
+	IEnumerator CheckIfAlive () {
+		yield return new WaitForSeconds(0.5f);
+		bool isAlive = false;
+		for (int i = 0; i < listParticles.Length; i++) {
+			if (listParticles[i].IsAlive(true)) {
+				isAlive = true;
+			}
+		}
+		if (!isAlive) {
+			MyPoolManager.Instance.Despawn(transform);
+		} else {
+			StartCoroutine("CheckIfAlive");
+		}
+	}
+
 	// example of fireball 
 	public virtual void Init(int level, int damage, Boss boss) {
 		// transform.localScale = size;
@@ -50,7 +72,8 @@ public class Skill : MonoBehaviour {
 	// 	animator.SetBool("explode", true);
 	// }
 	//
-	// public void Destroy() {
-	// 	Destroy(gameObject);
-	// }
+	
+	public virtual void Destroy() {
+		MyPoolManager.Instance.Despawn(transform);
+	}
 }

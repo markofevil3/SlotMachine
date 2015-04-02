@@ -14,8 +14,9 @@ public class SkillBite : Skill {
 		this.level = aLevel;
 		SpawnParticle();
 		transform.position = boss.middlePoint.position;
-		StartCoroutine("CheckIfAlive");
+		// StartCoroutine("CheckIfAlive");
 		StartCoroutine("BossGetHit");
+		base.Init();
 	}
 	
 	void SpawnParticle() {
@@ -29,12 +30,12 @@ public class SkillBite : Skill {
 		boss.GetHit(attackDamage);
 	}
 
-	IEnumerator CheckIfAlive () {
-		while(true) {
-			yield return new WaitForSeconds(0.5f);
-			if (transform.childCount == 0) {
-				GameObject.Destroy(this.gameObject);
-			}
-		}
-	}
+	// IEnumerator CheckIfAlive () {
+	// 	while(true) {
+	// 		yield return new WaitForSeconds(0.5f);
+	// 		if (transform.childCount == 0) {
+	// 			GameObject.Destroy(this.gameObject);
+	// 		}
+	// 	}
+	// }
 }

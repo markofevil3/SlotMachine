@@ -13,9 +13,10 @@ public class SkillDagger : Skill {
 			StartCoroutine(SpawnParticle(i, 0.2f * i));
 		}
 		transform.position = boss.middlePoint.position;
-		StartCoroutine("CheckIfAlive");
+		// StartCoroutine("CheckIfAlive");
 		boss.Shake();
 		boss.GetHit(damage);
+		base.Init();
 	}
 	
 	IEnumerator SpawnParticle(int index, float delay) {
@@ -28,12 +29,12 @@ public class SkillDagger : Skill {
 		sword.GetComponent<ParticleSystem>().startRotation = rotation[index] * Mathf.Deg2Rad;
 	}
 
-	IEnumerator CheckIfAlive () {
-		while(true) {
-			yield return new WaitForSeconds(0.5f);
-			if (transform.childCount == 0) {
-				GameObject.Destroy(this.gameObject);
-			}
-		}
-	}
+	// IEnumerator CheckIfAlive () {
+	// 	while(true) {
+	// 		yield return new WaitForSeconds(0.5f);
+	// 		if (transform.childCount == 0) {
+	// 			GameObject.Destroy(this.gameObject);
+	// 		}
+	// 	}
+	// }
 }

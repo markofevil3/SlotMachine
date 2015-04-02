@@ -27,8 +27,4 @@ public class SkillLuffy : Skill {
 		hand.gameObject.SetActive(true);
 		hand.Init(this.boss, smallDamage);
 	}
-	
-	void Destroy() {
-		Destroy(gameObject);
-	}
 }

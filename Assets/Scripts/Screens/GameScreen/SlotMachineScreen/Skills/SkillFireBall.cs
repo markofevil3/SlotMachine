@@ -9,7 +9,9 @@ public class SkillFireBall : Skill {
 	public override void Init(int level, int damage, Boss boss) {
 		this.boss = boss;
 		this.damage = damage;
+		explodePrefab.gameObject.SetActive(false);
 		SpawnParticle();
+		base.Init();
 		// transform.position = ScreenManager.Instance.CurrentSlotScreen.userAvatarPanel.position;
 
 	}
@@ -31,16 +33,6 @@ public class SkillFireBall : Skill {
 		fireBallPrefab.gameObject.SetActive(false);
 		boss.Shake();
 		boss.GetHit(damage);
-		StartCoroutine("CheckIfAlive");
 		// GameObject.Destroy(this.gameObject);
-	}
-	
-	IEnumerator CheckIfAlive () {
-		while(true) {
-			yield return new WaitForSeconds(0.5f);
-			if (transform.childCount == 0) {
-				GameObject.Destroy(this.gameObject);
-			}
-		}
 	}
 }

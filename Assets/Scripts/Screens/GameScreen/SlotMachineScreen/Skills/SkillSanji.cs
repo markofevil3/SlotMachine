@@ -27,8 +27,4 @@ public class SkillSanji : Skill {
 		boss.Shake();
 		boss.GetHit(smallDamage);
 	}
-	
-	void Destroy() {
-		Destroy(gameObject);
-	}
 }

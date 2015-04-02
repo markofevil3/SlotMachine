@@ -1,20 +1,26 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Boomlagoon.JSON;
-using PathologicalGames;
 
 public class SlotPirateScreen : BaseSlotMachineScreen {
 	
-	private JSONObject specialData;
-
+	private JSONObject specialData;	
 	public Boss boss;
 
   public override void Init(object[] data) {
 		WINNING_ANIMATION_PREFAB = Global.SCREEN_PATH + "/GameScreen/WinningAnimation/FruitWinningAnimation";
     base.Init(data);
 		boss.Init(roomData.GetInt("dIndex"), roomData.GetInt("dHP"), roomData.GetInt("dMaxHP"), gameObject, "BossGetHitCallback");
-
+		// TEST CODE - spawn a skill
+		// InvokeRepeating("Test", 2f, 3f);
   }
+	
+	// int count = 0;
+	//
+	// void Test() {
+	// 	SpawnSkill(SlotItemPirate.ITEM_RALLY, 1, 10);
+	// 	count++;
+	// }
 	
 	// Set game special data after each spin success
 	public override void SetSpecialData(JSONObject jsonData) {
@@ -52,52 +58,62 @@ public class SlotPirateScreen : BaseSlotMachineScreen {
 		SkillFireBall skill;
 		switch (type) {
 			case SlotItemPirate.ITEM_CHOPPER:
-				tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillBite", typeof(GameObject)) as GameObject);
+				tempGameObject = MyPoolManager.Instance.Spawn("SkillBite", skillCamera.transform).gameObject;
+				// tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillBite", typeof(GameObject)) as GameObject);
 				SkillBite skillBite = tempGameObject.GetComponent<SkillBite>();
 				skillBite.Init(level, damage, boss);
 			break;
 			case SlotItemPirate.ITEM_USOOP:
-				tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillFireBall", typeof(GameObject)) as GameObject);
+				tempGameObject = MyPoolManager.Instance.Spawn("SkillFireBall", skillCamera.transform).gameObject;
+				// tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillFireBall", typeof(GameObject)) as GameObject);
 				skill = tempGameObject.GetComponent<SkillFireBall>();
 				skill.Init(level, damage, boss);
 			break;
 			case SlotItemPirate.ITEM_NAMI:
-				tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillThunder", typeof(GameObject)) as GameObject);
+				tempGameObject = MyPoolManager.Instance.Spawn("SkillThunder", skillCamera.transform).gameObject;
+				// tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillThunder", typeof(GameObject)) as GameObject);
 				SkillThunder thunderSkill = tempGameObject.GetComponent<SkillThunder>();
 				thunderSkill.Init(level, damage, boss);
 			break;
 			case SlotItemPirate.ITEM_FRANKY:
-				tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillFireBall", typeof(GameObject)) as GameObject);
+				tempGameObject = MyPoolManager.Instance.Spawn("SkillFireBall", skillCamera.transform).gameObject;
+				// tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillFireBall", typeof(GameObject)) as GameObject);
 				skill = tempGameObject.GetComponent<SkillFireBall>();
 				skill.Init(level, damage, boss);
 			break;
 			case SlotItemPirate.ITEM_BROOK:
-				tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillDagger", typeof(GameObject)) as GameObject);
+				tempGameObject = MyPoolManager.Instance.Spawn("SkillDagger", skillCamera.transform).gameObject;
+				// tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillDagger", typeof(GameObject)) as GameObject);
 				SkillDagger skillSword = tempGameObject.GetComponent<SkillDagger>();
 				skillSword.Init(level, damage, boss);
 			break;
 			case SlotItemPirate.ITEM_NICO:
-				tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillDagger", typeof(GameObject)) as GameObject);
+				tempGameObject = MyPoolManager.Instance.Spawn("SkillDagger", skillCamera.transform).gameObject;
+				// tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillDagger", typeof(GameObject)) as GameObject);
 				SkillDagger skillDagger = tempGameObject.GetComponent<SkillDagger>();
 				skillDagger.Init(level, damage, boss);
 			break;
 			case SlotItemPirate.ITEM_SANJI:
-				tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillSanji", typeof(GameObject)) as GameObject);
+				tempGameObject = MyPoolManager.Instance.Spawn("SkillSanji", skillCamera.transform).gameObject;
+				// tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillSanji", typeof(GameObject)) as GameObject);
 				SkillSanji skillSanji = tempGameObject.GetComponent<SkillSanji>();
 				skillSanji.Init(level, damage, boss);
 			break;
 			case SlotItemPirate.ITEM_ZORO:
-				tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillSwordBlue", typeof(GameObject)) as GameObject);
+				tempGameObject = MyPoolManager.Instance.Spawn("SkillSwordBlue", skillCamera.transform).gameObject;
+				// tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillSwordBlue", typeof(GameObject)) as GameObject);
 				SkillSwordBlue skillSwordBlue = tempGameObject.GetComponent<SkillSwordBlue>();
 				skillSwordBlue.Init(level, damage, boss);
 			break;
 			case SlotItemPirate.ITEM_LUFFY:
-				tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillLuffy", typeof(GameObject)) as GameObject);
+				tempGameObject = MyPoolManager.Instance.Spawn("SkillLuffy", skillCamera.transform).gameObject;
+				// tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillLuffy", typeof(GameObject)) as GameObject);
 				SkillLuffy skillLuffy = tempGameObject.GetComponent<SkillLuffy>();
 				skillLuffy.Init(level, damage, boss);
 			break;
 			case SlotItemPirate.ITEM_RALLY:
-				tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillFireBall", typeof(GameObject)) as GameObject);
+				tempGameObject = MyPoolManager.Instance.Spawn("SkillFireBall", skillCamera.transform).gameObject;
+				// tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillFireBall", typeof(GameObject)) as GameObject);
 				skill = tempGameObject.GetComponent<SkillFireBall>();
 				skill.Init(level, damage, boss);
 			break;
@@ -120,7 +136,7 @@ public class SlotPirateScreen : BaseSlotMachineScreen {
 	}
 	
 	private void BossGetHitCallback() {
-		if (specialData.ContainsKey("dHP") && specialData.GetInt("dHP") == 0) {
+		if (specialData != null && specialData.ContainsKey("dHP") && specialData.GetInt("dHP") == 0) {
 			boss.ChangeBoss(specialData.GetObject("newBoss"), "EventFinishChangeBoss");
 			int dropCash = (int)specialData.GetArray("dropItems")[0].Number;
 			
