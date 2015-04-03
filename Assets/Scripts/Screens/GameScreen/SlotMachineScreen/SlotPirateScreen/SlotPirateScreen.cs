@@ -134,6 +134,7 @@ public class SlotPirateScreen : BaseSlotMachineScreen {
 		skill.Init(3, damage, bossManager);
 	}
 	
+	// TO DO: change boss 1 time only
 	private void BossGetHitCallback() {
 		if (specialData != null && specialData.ContainsKey("dHP") && specialData.GetInt("dHP") == 0) {
 			bossManager.ChangeBoss(specialData.GetObject("newBoss"), "EventFinishChangeBoss");

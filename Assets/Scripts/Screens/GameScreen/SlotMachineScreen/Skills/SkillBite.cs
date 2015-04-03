@@ -13,7 +13,7 @@ public class SkillBite : Skill {
 		this.attackDamage = damage;
 		this.level = aLevel;
 		SpawnParticle();
-		transform.position = bossManager.middlePoint.position;
+		transform.position = bossManager.GetBossMiddlePoint();
 		// StartCoroutine("CheckIfAlive");
 		StartCoroutine("BossGetHit");
 		base.Init();

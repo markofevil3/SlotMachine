@@ -10,7 +10,7 @@ public class SkillThunder : Skill {
 		for (int i = 0; i < level; i++) {
 			StartCoroutine(SpawnParticle(i, 0.2f * i));
 		}
-		transform.position = bossManager.middlePoint.position;
+		transform.position = bossManager.GetBossMiddlePoint();
 		// StartCoroutine("CheckIfAlive");
 		bossManager.Shake();
 		bossManager.GetHit(damage);

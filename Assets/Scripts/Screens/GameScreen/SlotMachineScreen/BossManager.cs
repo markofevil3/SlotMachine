@@ -45,6 +45,10 @@ public class BossManager : MonoBehaviour {
 		return string.Empty;
 	}
 
+	public virtual Vector3 GetBossMiddlePoint() {
+		return boss.middlePoint.position;
+	}
+
 	public virtual void Init(int type, int currentHP, int maxHP, BaseSlotMachineScreen slotMachineScreen, string callback) {
 		this.slotMachineScreen = slotMachineScreen;
 		this.handler = slotMachineScreen.gameObject;
@@ -56,7 +60,7 @@ public class BossManager : MonoBehaviour {
 		this.type = type;
 		this.maxHP = maxHP;
 		this.currentHP = currentHP;
-		Transform bossTrans = MyPoolManager.Instance.Spawn(GetBossPrefabName(slotMachineScreen.gameType, type), transform);
+		Transform bossTrans = MyPoolManager.Instance.Spawn(GetBossPrefabName(slotMachineScreen.gameType, 1), transform);
 		boss = bossTrans.GetComponent<Boss>();
 		boss.Init();
 		Debug.Log("Init boss " + type);

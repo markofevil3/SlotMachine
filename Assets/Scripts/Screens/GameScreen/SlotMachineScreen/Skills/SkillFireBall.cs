@@ -19,7 +19,7 @@ public class SkillFireBall : Skill {
 	void SpawnParticle() {
 		fireBallPrefab.position = ScreenManager.Instance.CurrentSlotScreen.userAvatarPanel.position;
 		fireBallPrefab.gameObject.SetActive(true);
-		LeanTween.move(fireBallPrefab.gameObject, bossManager.middlePoint.position, 0.8f).setEase(LeanTweenType.easeInQuad).setOnComplete(PreExplode);
+		LeanTween.move(fireBallPrefab.gameObject, bossManager.GetBossMiddlePoint(), 0.8f).setEase(LeanTweenType.easeInQuad).setOnComplete(PreExplode);
 	}
 	
 	void PreExplode() {
@@ -27,7 +27,7 @@ public class SkillFireBall : Skill {
 	}
 	
 	IEnumerator Explode() {
-		explodePrefab.position = bossManager.middlePoint.position;
+		explodePrefab.position = bossManager.GetBossMiddlePoint();
 		explodePrefab.gameObject.SetActive(true);
 		yield return null;
 		fireBallPrefab.gameObject.SetActive(false);
