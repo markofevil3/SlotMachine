@@ -8,12 +8,12 @@ public class SkillBite : Skill {
 	private float[] biteSize = new float[3] { 0.25f, 0.4f, 0.55f };
 	private int attackDamage;
 
-	public override void Init(int aLevel, int damage, Boss boss) {
-		this.boss = boss;
+	public override void Init(int aLevel, int damage, BossManager bossManager) {
+		this.bossManager = bossManager;
 		this.attackDamage = damage;
 		this.level = aLevel;
 		SpawnParticle();
-		transform.position = boss.middlePoint.position;
+		transform.position = bossManager.middlePoint.position;
 		// StartCoroutine("CheckIfAlive");
 		StartCoroutine("BossGetHit");
 		base.Init();
@@ -26,8 +26,8 @@ public class SkillBite : Skill {
 
 	IEnumerator BossGetHit() {
 		yield return new WaitForSeconds(0.3f);
-		boss.Shake();
-		boss.GetHit(attackDamage);
+		bossManager.Shake();
+		bossManager.GetHit(attackDamage);
 	}
 
 	// IEnumerator CheckIfAlive () {

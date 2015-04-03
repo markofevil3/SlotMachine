@@ -7,8 +7,8 @@ public class SkillSanji : Skill {
 	
 	private int attackDamage;
 
-	public override void Init(int level, int damage, Boss boss) {
-		this.boss = boss;
+	public override void Init(int level, int damage, BossManager bossManager) {
+		this.bossManager = bossManager;
 		this.attackDamage = damage;
 		int smallDamage = (int)(damage / level);
 		for (int i = 0; i < level; i++) {
@@ -24,7 +24,7 @@ public class SkillSanji : Skill {
 	IEnumerator SpawnParticle(int index, float delay, int smallDamage) {
 		yield return new WaitForSeconds(delay);
 		kicks[index].SetActive(true);
-		boss.Shake();
-		boss.GetHit(smallDamage);
+		bossManager.Shake();
+		bossManager.GetHit(smallDamage);
 	}
 }

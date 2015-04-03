@@ -5,15 +5,15 @@ public class SkillThunder : Skill {
 
 	public Transform[] particles;
 		
-	public override void Init(int level, int damage, Boss boss) {
-		this.boss = boss;
+	public override void Init(int level, int damage, BossManager bossManager) {
+		this.bossManager = bossManager;
 		for (int i = 0; i < level; i++) {
 			StartCoroutine(SpawnParticle(i, 0.2f * i));
 		}
-		transform.position = boss.middlePoint.position;
+		transform.position = bossManager.middlePoint.position;
 		// StartCoroutine("CheckIfAlive");
-		boss.Shake();
-		boss.GetHit(damage);
+		bossManager.Shake();
+		bossManager.GetHit(damage);
 		base.Init();
 	}
 	

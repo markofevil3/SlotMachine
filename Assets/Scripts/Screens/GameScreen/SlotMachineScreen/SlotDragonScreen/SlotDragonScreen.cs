@@ -6,12 +6,10 @@ public class SlotDragonScreen : BaseSlotMachineScreen {
 	
 	private JSONObject specialData;
 
-	public Boss boss;
-
   public override void Init(object[] data) {
 		WINNING_ANIMATION_PREFAB = Global.SCREEN_PATH + "/GameScreen/WinningAnimation/FruitWinningAnimation";
     base.Init(data);
-		boss.Init(roomData.GetInt("dIndex"), roomData.GetInt("dHP"), roomData.GetInt("dMaxHP"), gameObject, "BossGetHitCallback");
+		bossManager.Init(roomData.GetInt("dIndex"), roomData.GetInt("dHP"), roomData.GetInt("dMaxHP"), this, "BossGetHitCallback");
   }
 	
 	// Set game special data after each spin success
@@ -42,15 +40,15 @@ public class SlotDragonScreen : BaseSlotMachineScreen {
 	private void SpawnSkill(int damage, Vector3 startPos) { // startPos is world position
   	GameObject tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotDragonScreen/Lighting", typeof(GameObject)) as GameObject);
 		Skill skill = tempGameObject.GetComponent<Skill>();
-		// skill.Init(boss, damage, startPos);
-		skill.Init(3, damage, boss);
+		// skill.Init(bossManager, damage, startPos);
+		skill.Init(3, damage, bossManager);
 	}
 	
 	private void BossGetHitCallback() {
 		Debug.Log("BossGetHitCallback");
 		if (specialData.GetInt("dHP") == 0) {
 			Debug.Log("Boss DEAD");
-			boss.ChangeBoss(specialData.GetObject("newBoss"), "EventFinishChangeBoss");
+			bossManager.ChangeBoss(specialData.GetObject("newBoss"), "EventFinishChangeBoss");
 			int dropCash = (int)specialData.GetArray("dropItems")[0].Number;
 			
 			slotMachine.Wait();

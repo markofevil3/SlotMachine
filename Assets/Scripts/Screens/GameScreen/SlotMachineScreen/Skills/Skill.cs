@@ -24,7 +24,7 @@ public class Skill : MonoBehaviour {
   [HideInInspector]
 	public int level;
   [HideInInspector]
-	public Boss boss;
+	public BossManager bossManager;
 
 	private ParticleSystem[] listParticles;
 
@@ -49,7 +49,7 @@ public class Skill : MonoBehaviour {
 	}
 
 	// example of fireball 
-	public virtual void Init(int level, int damage, Boss boss) {
+	public virtual void Init(int level, int damage, BossManager bossManager) {
 		// transform.localScale = size;
 		// transform.position = startPos;
 		// Vector3 target = boss.bossSprite.transform.position;

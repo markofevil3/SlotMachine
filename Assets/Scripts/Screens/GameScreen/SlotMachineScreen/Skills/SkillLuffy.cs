@@ -7,8 +7,8 @@ public class SkillLuffy : Skill {
 	
 	private int attackDamage;
 
-	public override void Init(int level, int damage, Boss boss) {
-		this.boss = boss;
+	public override void Init(int level, int damage, BossManager bossManager) {
+		this.bossManager = bossManager;
 		this.attackDamage = damage;
 		int smallDamage = (int)(damage / level);
 		for (int i = 0; i < level; i++) {
@@ -22,9 +22,8 @@ public class SkillLuffy : Skill {
 	}
 	
 	void SpawnParticle(int index, int smallDamage) {
-		Debug.Log(smallDamage);
 		LuffyHand hand = hands[index];
 		hand.gameObject.SetActive(true);
-		hand.Init(this.boss, smallDamage);
+		hand.Init(this.bossManager, smallDamage);
 	}
 }

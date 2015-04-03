@@ -10,6 +10,7 @@ public class BaseSlotMachineScreen : BaseScreen {
     SLOT_HALLOWEEN,
 		SLOT_DRAGON,
 		SLOT_PIRATE,
+		SLOT_ZOMBIE,
     TOTAL
   }
   [HideInInspector]
@@ -45,6 +46,7 @@ public class BaseSlotMachineScreen : BaseScreen {
   public PlayerSlotScript[] otherPlayers = new PlayerSlotScript[4];
 	public Transform userAvatarPanel;
 	public GameObject skillCamera;
+	public BossManager bossManager;
   
   private string roomId = string.Empty;
 	private WinningAnimation mWinningAnimation;

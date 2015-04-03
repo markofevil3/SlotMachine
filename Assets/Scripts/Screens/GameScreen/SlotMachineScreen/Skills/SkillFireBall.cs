@@ -6,8 +6,8 @@ public class SkillFireBall : Skill {
 	public Transform fireBallPrefab;
 	public Transform explodePrefab;
 		
-	public override void Init(int level, int damage, Boss boss) {
-		this.boss = boss;
+	public override void Init(int level, int damage, BossManager bossManager) {
+		this.bossManager = bossManager;
 		this.damage = damage;
 		explodePrefab.gameObject.SetActive(false);
 		SpawnParticle();
@@ -19,7 +19,7 @@ public class SkillFireBall : Skill {
 	void SpawnParticle() {
 		fireBallPrefab.position = ScreenManager.Instance.CurrentSlotScreen.userAvatarPanel.position;
 		fireBallPrefab.gameObject.SetActive(true);
-		LeanTween.move(fireBallPrefab.gameObject, boss.middlePoint.position, 0.8f).setEase(LeanTweenType.easeInQuad).setOnComplete(PreExplode);
+		LeanTween.move(fireBallPrefab.gameObject, bossManager.middlePoint.position, 0.8f).setEase(LeanTweenType.easeInQuad).setOnComplete(PreExplode);
 	}
 	
 	void PreExplode() {
@@ -27,12 +27,12 @@ public class SkillFireBall : Skill {
 	}
 	
 	IEnumerator Explode() {
-		explodePrefab.position = boss.middlePoint.position;
+		explodePrefab.position = bossManager.middlePoint.position;
 		explodePrefab.gameObject.SetActive(true);
 		yield return null;
 		fireBallPrefab.gameObject.SetActive(false);
-		boss.Shake();
-		boss.GetHit(damage);
+		bossManager.Shake();
+		bossManager.GetHit(damage);
 		// GameObject.Destroy(this.gameObject);
 	}
 }
