@@ -60,7 +60,8 @@ public class BossManager : MonoBehaviour {
 		this.type = type;
 		this.maxHP = maxHP;
 		this.currentHP = currentHP;
-		Transform bossTrans = MyPoolManager.Instance.Spawn(GetBossPrefabName(slotMachineScreen.gameType, 1), transform);
+		// TEST CODE - fixed boss
+		Transform bossTrans = MyPoolManager.Instance.Spawn(GetBossPrefabName(slotMachineScreen.gameType, type), transform);
 		boss = bossTrans.GetComponent<Boss>();
 		boss.Init();
 		Debug.Log("Init boss " + type);

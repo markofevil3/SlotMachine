@@ -7,7 +7,6 @@ public class SlotDragonScreen : BaseSlotMachineScreen {
 	private JSONObject specialData;
 
   public override void Init(object[] data) {
-		WINNING_ANIMATION_PREFAB = Global.SCREEN_PATH + "/GameScreen/WinningAnimation/FruitWinningAnimation";
     base.Init(data);
 		bossManager.Init(roomData.GetInt("dIndex"), roomData.GetInt("dHP"), roomData.GetInt("dMaxHP"), this, "BossGetHitCallback");
   }
@@ -19,16 +18,16 @@ public class SlotDragonScreen : BaseSlotMachineScreen {
 	}
 	
 	
-	// Slot reel stopped, displayed result, start display winning animation if should
-	public override void EventFinishSpin(bool isBigWin, int winningCash) {
-		if (winningCash > 0) {
-			if (specialData.GetInt("dHP") == 0) {
-				slotMachine.Wait();
-			}
-			SpawnSkill(winningCash, userAvatarPanel.position);
-		}
-		base.EventFinishSpin(isBigWin, winningCash);
-	}
+	// // Slot reel stopped, displayed result, start display winning animation if should
+	// public override void EventFinishSpin(bool isBigWin, int winningCash) {
+	// 	if (winningCash > 0) {
+	// 		if (specialData.GetInt("dHP") == 0) {
+	// 			slotMachine.Wait();
+	// 		}
+	// 		SpawnSkill(winningCash, userAvatarPanel.position);
+	// 	}
+	// 	base.EventFinishSpin(isBigWin, winningCash);
+	// }
 	
 	public override void OtherPlayerSpinResult(string username, JSONObject jsonData) {
 		PlayerSlotScript playerSlot = FindUserSlot(username);
@@ -52,11 +51,9 @@ public class SlotDragonScreen : BaseSlotMachineScreen {
 			int dropCash = (int)specialData.GetArray("dropItems")[0].Number;
 			
 			slotMachine.Wait();
-			winningAnimation.SetData(dropCash);
-			winningAnimation.FadeIn(true, 2f);
 			
-	    AccountManager.Instance.UpdateUserCash(dropCash);
-	    UpdateUserCashLabel();
+	    // AccountManager.Instance.UpdateUserCash(dropCash);
+	    UpdateUserCashLabel(dropCash);
 		}
 	}
 	

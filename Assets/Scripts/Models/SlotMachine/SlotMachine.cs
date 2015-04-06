@@ -98,11 +98,22 @@ public class SlotMachine : MonoBehaviour {
     }
   }
   
-  public void EventReelStop() {
+  private void EventReelStop() {
     reelStopCount++;
     if (reelStopCount >= slotReels.Length) {
       reelStopCount = 0;
       isRunning = false;
+			
+      int totalScore = 0;
+      for (int i = 0; i < winningGold.Length; i++) {
+        totalScore += (int)winningGold[i].Number;
+      }
+			if (isBigWin || gotFreeSpin) {
+				ScreenManager.Instance.CurrentSlotScreen.FadeInBigWin(totalScore);
+			} else {
+	      UpdateScore(totalScore);
+			}
+			
 			// Glow winning item
 			for (int i = 0; i < winningCount.Length; i++) {
 				if (winningCount[i].Number >= 3) {
@@ -113,15 +124,6 @@ public class SlotMachine : MonoBehaviour {
 					// ScreenManager.Instance.CurrentSlotScreen.SpawnSkill((int)winningType[i].Number, (int)winningCount[i].Number, (int)winningGold[i].Number);
 					ScreenManager.Instance.CurrentSlotScreen.AddSkillToQueue(new SpawnableSkill((int)winningType[i].Number, (int)winningCount[i].Number, (int)winningGold[i].Number, true));
 				}
-			}
-      // int[] scoreArr = slotCombination.CalculateCombination(resultsData);
-      int totalScore = 0;
-      for (int i = 0; i < winningGold.Length; i++) {
-        totalScore += (int)winningGold[i].Number;
-      }
-      UpdateScore(totalScore);
-			if (gotFreeSpin) {
-				ScreenManager.Instance.CurrentSlotScreen.DisplayFreeSpinAnimation();
 			}
 			if (freeSpinLeft > 0) {
 				// TEST CODE -- commented
@@ -166,9 +168,9 @@ public class SlotMachine : MonoBehaviour {
   
   public void UpdateScore(int score) {
     scoreLabel.text = score.ToString("N0");
-    AccountManager.Instance.UpdateUserCash(score);
-    ScreenManager.Instance.CurrentSlotScreen.UpdateUserCashLabel();
-    ScreenManager.Instance.CurrentSlotScreen.EventFinishSpin(isBigWin, score);
+    // AccountManager.Instance.UpdateUserCash(score);
+    ScreenManager.Instance.CurrentSlotScreen.UpdateUserCashLabel(score);
+    // ScreenManager.Instance.CurrentSlotScreen.EventFinishSpin(isBigWin, score);
   }
   
   public void SetBetPerLine(int betVal) {

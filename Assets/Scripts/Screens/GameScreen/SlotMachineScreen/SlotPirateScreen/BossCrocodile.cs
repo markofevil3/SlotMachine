@@ -33,4 +33,9 @@ public class BossCrocodile : Boss {
 	void MoveGlowEffect() {
 		StartCoroutine(StartGlowEffect());
 	}
+	
+	public override void Destroy() {
+		StopCoroutine(StartGlowEffect());
+		base.Destroy();
+	}
 }

@@ -18,18 +18,6 @@ public class BaseSlotMachineScreen : BaseScreen {
   [HideInInspector]
   public GameBottomBarScript bottomBarScript;
   [HideInInspector]
-  public WinningAnimation winningAnimation {
-  	get { 
-			if (mWinningAnimation == null) {
-		    GameObject tempGameObject = NGUITools.AddChild(gameObject, Resources.Load(WINNING_ANIMATION_PREFAB, typeof(GameObject)) as GameObject);
-		   	tempGameObject.name = "WinningAnimation";
-		   	mWinningAnimation = tempGameObject.GetComponent<WinningAnimation>();
-		   	mWinningAnimation.Init(slotMachine);
-			}
-			return mWinningAnimation;
-		}
-  }
-  [HideInInspector]
 	public JSONObject roomData;
 	
   public GameType gameType;
@@ -47,13 +35,12 @@ public class BaseSlotMachineScreen : BaseScreen {
 	public Transform userAvatarPanel;
 	public GameObject skillCamera;
 	public BossManager bossManager;
-  
+  public BigWinPanel bigWinPanel;
+	
   private string roomId = string.Empty;
-	private WinningAnimation mWinningAnimation;
 	
 	private List<SpawnableSkill> listSpawnSkills = new List<SpawnableSkill>();
   private bool canSpawnSkill = true;
-  private float lastSkillTime;
 	private float MAX_SKILL_DURATION = 2f;
 	
   public string GetRoomId() {
@@ -69,10 +56,17 @@ public class BaseSlotMachineScreen : BaseScreen {
 		listSpawnSkills.Add(mSkill);
 	}
 	
+	public void PauseSpawnSkill() {
+		canSpawnSkill = false;
+	}
+	
+	public void ResumeSpawnSkill() {
+		canSpawnSkill = true;
+	}
+	
 	// Spawn skill if avaiable in queue
 	void Update() {
-		if (listSpawnSkills.Count > 0 && (canSpawnSkill || Time.time - lastSkillTime > MAX_SKILL_DURATION)) {
-			lastSkillTime = Time.time;
+		if (listSpawnSkills.Count > 0 && canSpawnSkill) {
 			canSpawnSkill = false;
 			SpawnSkill(listSpawnSkills[0]);
 			listSpawnSkills.RemoveAt(0);
@@ -116,11 +110,11 @@ public class BaseSlotMachineScreen : BaseScreen {
     
     roomId = jsonData.GetString("roomId");
     
-    UpdateUserCashLabel();
-    
+    UpdateUserCashLabel(0);
+    bigWinPanel.Hide();
     base.Init(data);
   }
-  
+
   private void EventBackToSelectGame() {
     PopupManager.Instance.OpenPopup(Popup.Type.POPUP_LEAVE_GAME, new object[] { gameType });
   }
@@ -131,8 +125,8 @@ public class BaseSlotMachineScreen : BaseScreen {
   public virtual void SetResults(JSONObject jsonData) {
     slotMachine.SetResults(jsonData);
 		SetSpecialData(jsonData.GetObject("specials"));
-    AccountManager.Instance.UpdateUserCash(-jsonData.GetInt("cost"));
-    UpdateUserCashLabel();
+    // AccountManager.Instance.UpdateUserCash(-jsonData.GetInt("cost"));
+    UpdateUserCashLabel(-jsonData.GetInt("cost"));
   }
   
 	public virtual void SetSpecialData(JSONObject jsonData) {}
@@ -142,25 +136,42 @@ public class BaseSlotMachineScreen : BaseScreen {
 		
 	}
 	
-	// Slot reel stopped, displayed result, start display winning animation if should
-	public virtual void EventFinishSpin(bool isBigWin, int winningCash) {
-		// TEST CODE -- commented, should refine
-		// if (isBigWin) {
-		// 	slotMachine.Wait();
-		// 	winningAnimation.SetData(winningCash);
-		// 	winningAnimation.FadeIn(true, 2f);
-		// }
+	public virtual void FadeInBigWin(int numb) {
+		bigWinPanel.FadeIn(numb);
 	}
+	
+	// // Slot reel stopped, displayed result, start display winning animation if should
+	// public virtual void EventFinishSpin(bool isBigWin, int winningCash) {
+	// 	// TEST CODE -- commented, should refine
+	// 	// if (isBigWin) {
+	// 	// 	slotMachine.Wait();
+	// 	// }
+	// }
 
 	public virtual void SpawnSkill(int type, int level, int damage) {}
 	public virtual void SpawnSkill(SpawnableSkill skill) {}
 
 	public virtual void OtherPlayerSpinResult(string username, JSONObject jsonData) {}
 
-  public void UpdateUserCashLabel() {
-    userCashLabel.text = AccountManager.Instance.cash.ToString("N0");
+  public void UpdateUserCashLabel(int addValue) {
+		if (addValue == 0) {
+			UpdateUserCashLabelFinished();
+			return;
+		}
+		int fromVal = AccountManager.Instance.cash;
+		AccountManager.Instance.UpdateUserCash(addValue);
+		Debug.Log("UpdateUserCash " + fromVal + " " + AccountManager.Instance.cash + " " + addValue);
+		LeanTween.value(gameObject, UpdateUserCashLabelCallback, fromVal, AccountManager.Instance.cash, 1f).setOnComplete(UpdateUserCashLabelFinished);
   }
   
+	void UpdateUserCashLabelCallback(float val) {
+    userCashLabel.text = Mathf.Floor(val).ToString("N0");
+	}
+	
+	void UpdateUserCashLabelFinished() {
+    userCashLabel.text = AccountManager.Instance.cash.ToString("N0");
+	}
+	
   public virtual void UpdateJackpot(int score) {
     slotMachine.UpdateJackpot(score);
   }
