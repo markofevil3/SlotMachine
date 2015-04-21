@@ -23,7 +23,6 @@ public class SlotPirateScreen : BaseSlotMachineScreen {
 	// Set game special data after each spin success
 	public override void SetSpecialData(JSONObject jsonData) {
 		specialData = jsonData;
-		Debug.Log("SetSpecialData " + specialData.ToString());
 	}
 	
 	
@@ -42,6 +41,19 @@ public class SlotPirateScreen : BaseSlotMachineScreen {
 	public override void OtherPlayerSpinResult(string username, JSONObject jsonData) {
 		PlayerSlotScript playerSlot = FindUserSlot(username);
 		SetSpecialData(jsonData);
+		
+		
+		// for (int i = 0; i < winningCount.Length; i++) {
+		// 	if (winningCount[i].Number >= 3) {
+		// 		for (int j = 0; j < SlotCombination.NUM_REELS; j++) {
+		// 			slotItems[SlotCombination.COMBINATION[i, j]].Glow();
+		// 		}
+		// 		// TEST CODE - use skill queue
+		// 		// ScreenManager.Instance.CurrentSlotScreen.SpawnSkill((int)winningType[i].Number, (int)winningCount[i].Number, (int)winningGold[i].Number);
+		// 		ScreenManager.Instance.CurrentSlotScreen.AddSkillToQueue(new SpawnableSkill((int)winningType[i].Number, (int)winningCount[i].Number, (int)winningGold[i].Number, true));
+		// 	}
+		// }
+		
 		Debug.Log("OtherPlayerSpinResult " + jsonData.ToString());
 		// TEST CODE: commented - should remove
 		// SpawnSkill(jsonData.GetInt("totalWin"), playerSlot.transform.position);
@@ -122,25 +134,23 @@ public class SlotPirateScreen : BaseSlotMachineScreen {
 	}
 	
 	
-	private void SpawnSkill(int damage, Vector3 startPos) { // startPos is world position
-		// TEST CODE -- commented
-		//   	GameObject tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotDragonScreen/Lighting", typeof(GameObject)) as GameObject);
-		// Skill skill = tempGameObject.GetComponent<Skill>();
-		// skill.Init(bossManager, damage, startPos);
-		//###########
-		GameObject tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillThunder", typeof(GameObject)) as GameObject);
-		SkillThunder skill = tempGameObject.GetComponent<SkillThunder>();
-		skill.Init(3, damage, bossManager);
-	}
+	// private void SpawnSkill(int damage, Vector3 startPos) { // startPos is world position
+	// 	// TEST CODE -- commented
+	// 	//   	GameObject tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotDragonScreen/Lighting", typeof(GameObject)) as GameObject);
+	// 	// Skill skill = tempGameObject.GetComponent<Skill>();
+	// 	// skill.Init(bossManager, damage, startPos);
+	// 	//###########
+	// 	GameObject tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillThunder", typeof(GameObject)) as GameObject);
+	// 	SkillThunder skill = tempGameObject.GetComponent<SkillThunder>();
+	// 	skill.Init(3, damage, bossManager);
+	// }
 	
 	// TO DO: change boss 1 time only
 	private void BossGetHitCallback() {
 		if (specialData != null && specialData.ContainsKey("dHP") && specialData.GetInt("dHP") == 0) {
 			bossManager.ChangeBoss(specialData.GetObject("newBoss"), "EventFinishChangeBoss");
-			int dropCash = (int)specialData.GetArray("dropItems")[0].Number;
-			
-			slotMachine.Wait();
-			
+			int dropCash = (int)specialData.GetArray("dropItems")[0].Number;			
+			// slotMachine.Wait();
 	    // AccountManager.Instance.UpdateUserCash(dropCash);
 	    UpdateUserCashLabel(dropCash);
 		}

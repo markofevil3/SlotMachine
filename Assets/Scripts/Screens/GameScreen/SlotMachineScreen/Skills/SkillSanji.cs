@@ -18,7 +18,7 @@ public class SkillSanji : Skill {
 				StartCoroutine(SpawnParticle(i, i * 0.15f, smallDamage));
 			}
 		}
-		Invoke("Destroy", 5f);
+		Invoke("Destroy", 2f);
 	}
 	
 	IEnumerator SpawnParticle(int index, float delay, int smallDamage) {

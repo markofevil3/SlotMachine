@@ -19,11 +19,11 @@ public class SlotMachine : MonoBehaviour {
   private JSONArray winningType;
   private JSONObject winResults;
   private bool isJackpot = false;
-	private int freeSpinLeft = 0;
+	public int freeSpinLeft = 0;
 	private bool autoStart = false;
 	// private bool canStart = true;
 	private bool isBigWin = false;
-	private bool gotFreeSpin = false;
+	public bool gotFreeSpin = false;
 	private List<SlotItem> mSlotItems = new List<SlotItem>();
 	private List<SlotItem> slotItems {
 		get {
@@ -52,7 +52,7 @@ public class SlotMachine : MonoBehaviour {
   }
 
   public void StartMachine() {
-    if (!isRunning) {
+    if (!isRunning && pauseCount == 0) {
       isRunning = true;
       string log = "";
       // for (int i = 0; i < SlotCombination.MAX_DISPLAY_ITEMS; i++) {
@@ -84,7 +84,7 @@ public class SlotMachine : MonoBehaviour {
     isJackpot = winResults.GetBoolean("isJP");
 		freeSpinLeft = jsonData.GetInt("frLeft");
 		isBigWin = jsonData.GetBoolean("bWin");
-		gotFreeSpin = jsonData.GetInt("frCount") > 0;
+		gotFreeSpin = winResults.GetInt("frCount") > 0;
 		// bool[] winingItems = new bool[15];
 		// for (int i = 0; i < winningGold.Length; i++) {
 		// 	if (winningGold[i].Number > 0) {
@@ -108,8 +108,10 @@ public class SlotMachine : MonoBehaviour {
       for (int i = 0; i < winningGold.Length; i++) {
         totalScore += (int)winningGold[i].Number;
       }
-			if (isBigWin || gotFreeSpin) {
+			if (isBigWin) {
 				ScreenManager.Instance.CurrentSlotScreen.FadeInBigWin(totalScore);
+			} else if (gotFreeSpin) {
+				ScreenManager.Instance.CurrentSlotScreen.FadeInFreeSpin(freeSpinLeft);
 			} else {
 	      UpdateScore(totalScore);
 			}
@@ -120,15 +122,12 @@ public class SlotMachine : MonoBehaviour {
 					for (int j = 0; j < SlotCombination.NUM_REELS; j++) {
 						slotItems[SlotCombination.COMBINATION[i, j]].Glow();
 					}
-					// TEST CODE - use skill queue
-					// ScreenManager.Instance.CurrentSlotScreen.SpawnSkill((int)winningType[i].Number, (int)winningCount[i].Number, (int)winningGold[i].Number);
 					ScreenManager.Instance.CurrentSlotScreen.AddSkillToQueue(new SpawnableSkill((int)winningType[i].Number, (int)winningCount[i].Number, (int)winningGold[i].Number, true));
 				}
 			}
 			if (freeSpinLeft > 0) {
-				// TEST CODE -- commented
-				// machineHandler.DisableHandler();
-				// Invoke("EnableAutoStart", 0.5f);
+				machineHandler.DisableHandler();
+				Invoke("EnableAutoStart", 0.5f);
 			} else {
 				DisableAutoStart();
 				machineHandler.EnableHandler();
@@ -141,7 +140,7 @@ public class SlotMachine : MonoBehaviour {
 		pauseCount++;
 	}
 	
-	public void Resume() {
+	public void Resume() {		
 		// canStart = true;
 		pauseCount = Mathf.Max(0, pauseCount - 1);
 	}
@@ -155,11 +154,12 @@ public class SlotMachine : MonoBehaviour {
 	}
 	
 	void Update() {
-		// if (canStart && autoStart) {
-		// TEST CODE -- should refined
-		// if (pauseCount == 0 && autoStart) {
-		// 	StartMachine();
-		// }
+		// TEST CODE -- should refined - auto start in free spin
+		if (autoStart) {
+			// if (autoStart) {
+				StartMachine();
+			// }
+		}
 	}
 	
   public void UpdateJackpot(int score) {

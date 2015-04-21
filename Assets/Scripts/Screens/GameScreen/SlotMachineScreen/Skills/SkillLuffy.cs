@@ -18,7 +18,7 @@ public class SkillLuffy : Skill {
 				SpawnParticle(i, smallDamage);
 			}
 		}
-		Invoke("Destroy", 3f);
+		Invoke("Destroy", 2f);
 	}
 	
 	void SpawnParticle(int index, int smallDamage) {

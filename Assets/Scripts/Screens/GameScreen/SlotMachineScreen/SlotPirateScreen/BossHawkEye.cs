@@ -31,7 +31,9 @@ public class BossHawkEye : Boss {
 	}
 	
 	void MoveGlowEffect() {
-		StartCoroutine(StartGlowEffect());
+		if (gameObject != null) {
+			StartCoroutine(StartGlowEffect());
+		}
 	}
 	
 	public override void Destroy() {

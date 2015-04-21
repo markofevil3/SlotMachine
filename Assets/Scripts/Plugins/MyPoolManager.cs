@@ -29,10 +29,26 @@ public class MyPoolManager : MonoBehaviour {
 		return spawnPool.Spawn(prefabName, parent);
 	}
 	
+  public Transform Spawn(string prefabName, Vector3 pos, Quaternion rot, Transform parent) {
+		if (spawnPool == null) {
+			spawnPool = PoolManager.Pools[poolName];
+		}
+		return spawnPool.Spawn(prefabName, pos, rot, parent);
+  }
+	
+	
 	public void Despawn(Transform prefab) {
 		if (spawnPool == null) {
 			spawnPool = PoolManager.Pools[poolName];
 		}
 		spawnPool.Despawn(prefab);
 	}
+	
+  public void Despawn(Transform prefab, float seconds) {
+		if (spawnPool == null) {
+			spawnPool = PoolManager.Pools[poolName];
+		}
+		spawnPool.Despawn(prefab, seconds);
+	}
+	
 }

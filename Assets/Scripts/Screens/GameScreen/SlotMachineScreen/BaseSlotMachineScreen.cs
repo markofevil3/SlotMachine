@@ -62,6 +62,9 @@ public class BaseSlotMachineScreen : BaseScreen {
 	
 	public void ResumeSpawnSkill() {
 		canSpawnSkill = true;
+		if (listSpawnSkills.Count == 0) {
+			slotMachine.Resume();
+		}
 	}
 	
 	// Spawn skill if avaiable in queue
@@ -139,14 +142,10 @@ public class BaseSlotMachineScreen : BaseScreen {
 	public virtual void FadeInBigWin(int numb) {
 		bigWinPanel.FadeIn(numb);
 	}
-	
-	// // Slot reel stopped, displayed result, start display winning animation if should
-	// public virtual void EventFinishSpin(bool isBigWin, int winningCash) {
-	// 	// TEST CODE -- commented, should refine
-	// 	// if (isBigWin) {
-	// 	// 	slotMachine.Wait();
-	// 	// }
-	// }
+
+	public virtual void FadeInFreeSpin(int numb, bool shouldPause = true) {
+		bigWinPanel.FadeInFreeSpin(numb, shouldPause);
+	}
 
 	public virtual void SpawnSkill(int type, int level, int damage) {}
 	public virtual void SpawnSkill(SpawnableSkill skill) {}

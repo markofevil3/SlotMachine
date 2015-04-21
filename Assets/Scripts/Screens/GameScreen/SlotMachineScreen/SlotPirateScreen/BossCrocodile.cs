@@ -31,7 +31,9 @@ public class BossCrocodile : Boss {
 	}
 	
 	void MoveGlowEffect() {
-		StartCoroutine(StartGlowEffect());
+		if (gameObject != null && gameObject.activeSelf) {
+			StartCoroutine(StartGlowEffect());
+		}
 	}
 	
 	public override void Destroy() {
