@@ -55,6 +55,22 @@ public class SlotPirateScreen : BaseSlotMachineScreen {
 		// }
 		
 		Debug.Log("OtherPlayerSpinResult " + jsonData.ToString());
+		
+		JSONObject extraData = SlotCombination.CalculateCombination(jsonData.GetArray("items"));
+    JSONArray winningCount = extraData.GetArray("wCount");
+    JSONArray winningType = extraData.GetArray("wType");
+    JSONArray winningGold = jsonData.GetArray("wGold");
+		
+		for (int i = 0; i < winningCount.Length; i++) {
+			if (winningCount[i].Number >= 3) {
+				ScreenManager.Instance.CurrentSlotScreen.AddSkillToQueue(new SpawnableSkill((int)winningType[i].Number, (int)winningCount[i].Number, (int)winningGold[i].Number, false));
+			}
+		}
+
+		extraData = null;
+		winningCount = null;
+		winningType = null;
+		winningGold = null;
 		// TEST CODE: commented - should remove
 		// SpawnSkill(jsonData.GetInt("totalWin"), playerSlot.transform.position);
 	}

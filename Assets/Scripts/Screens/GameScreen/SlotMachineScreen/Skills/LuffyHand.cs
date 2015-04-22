@@ -27,7 +27,6 @@ public class LuffyHand : MonoBehaviour {
 	}
 	
 	void HitTarget() {
-		Debug.Log("HitTarget");
 		hitEffect.transform.position = new Vector3(hand.transform.position.x, hand.transform.position.y + 0.15f, hand.transform.position.z);
 		hitEffect.SetActive(true);
 		bossManager.Shake();

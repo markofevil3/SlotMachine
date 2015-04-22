@@ -263,7 +263,7 @@ public class SpawnableSkill {
 	
 	public SpawnableSkill(int type, int level, int damage, bool isYou) {
 		this.type = type;
-		this.level = level - 2;
+		this.level = level - 2 >= 1 ? level - 2 : 1;
 		this.damage = damage;
 		this.isYou = isYou;
 	}

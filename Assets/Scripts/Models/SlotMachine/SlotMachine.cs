@@ -118,7 +118,7 @@ public class SlotMachine : MonoBehaviour {
 			
 			// Glow winning item
 			for (int i = 0; i < winningCount.Length; i++) {
-				if (winningCount[i].Number >= 3) {
+				if (winningCount[i].Number >= 3 || ((int)winningType[i].Number == (int)SlotItem.Type.TILE_1 && winningCount[i].Number >= 2)) {
 					for (int j = 0; j < SlotCombination.NUM_REELS; j++) {
 						slotItems[SlotCombination.COMBINATION[i, j]].Glow();
 					}

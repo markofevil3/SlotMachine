@@ -20,7 +20,6 @@ public class SkillSwordBlue : Skill {
 	}
 	
 	IEnumerator SpawnParticle(int index, float delay) {
-		Debug.Log("### " + index + " " + level);
 		yield return new WaitForSeconds(delay);
 		Transform sword = particles[index];
 		sword.gameObject.SetActive(true);
