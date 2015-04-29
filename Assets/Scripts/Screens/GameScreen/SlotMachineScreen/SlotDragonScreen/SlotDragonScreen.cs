@@ -11,13 +11,6 @@ public class SlotDragonScreen : BaseSlotMachineScreen {
 		bossManager.Init(roomData.GetInt("dIndex"), roomData.GetInt("dHP"), roomData.GetInt("dMaxHP"), this, "BossGetHitCallback");
   }
 	
-	// Set game special data after each spin success
-	public override void SetSpecialData(JSONObject jsonData) {
-		specialData = jsonData;
-		Debug.Log("SetSpecialData " + specialData.ToString());
-	}
-	
-	
 	// // Slot reel stopped, displayed result, start display winning animation if should
 	// public override void EventFinishSpin(bool isBigWin, int winningCash) {
 	// 	if (winningCash > 0) {
@@ -31,7 +24,6 @@ public class SlotDragonScreen : BaseSlotMachineScreen {
 	
 	public override void OtherPlayerSpinResult(string username, JSONObject jsonData) {
 		PlayerSlotScript playerSlot = FindUserSlot(username);
-		SetSpecialData(jsonData);
 		SpawnSkill(jsonData.GetInt("totalWin"), playerSlot.transform.position);
 	}
 	

@@ -13,11 +13,11 @@ public class SlotMachine : MonoBehaviour {
   
   private bool isRunning = false;
   private int reelStopCount = 0;
+	private JSONObject spinDataResult;
   private JSONArray resultsData;
   private JSONArray winningGold;
   private JSONArray winningCount;
   private JSONArray winningType;
-  private JSONObject winResults;
   private bool isJackpot = false;
 	public int freeSpinLeft = 0;
 	private bool autoStart = false;
@@ -73,18 +73,18 @@ public class SlotMachine : MonoBehaviour {
   }
   
   public void SetResults(JSONObject jsonData) {
+		spinDataResult = jsonData;
     resultsData = jsonData.GetArray("items");
-    winResults = jsonData.GetObject("winResults");
-    winningGold = winResults.GetArray("wGold");
+    winningGold = jsonData.GetArray("wGold");
 		// Calculate extra data (winning type, winning count from list result items)
 		JSONObject extraData = SlotCombination.CalculateCombination(resultsData);
     winningCount = extraData.GetArray("wCount");
     winningType = extraData.GetArray("wType");
 		//
-    isJackpot = winResults.GetBoolean("isJP");
+    isJackpot = jsonData.GetBoolean("isJP");
 		freeSpinLeft = jsonData.GetInt("frLeft");
 		isBigWin = jsonData.GetBoolean("bWin");
-		gotFreeSpin = winResults.GetInt("frCount") > 0;
+		gotFreeSpin = jsonData.GetInt("frCount") > 0;
 		// bool[] winingItems = new bool[15];
 		// for (int i = 0; i < winningGold.Length; i++) {
 		// 	if (winningGold[i].Number > 0) {
@@ -122,9 +122,13 @@ public class SlotMachine : MonoBehaviour {
 					for (int j = 0; j < SlotCombination.NUM_REELS; j++) {
 						slotItems[SlotCombination.COMBINATION[i, j]].Glow();
 					}
-					ScreenManager.Instance.CurrentSlotScreen.AddSkillToQueue(new SpawnableSkill((int)winningType[i].Number, (int)winningCount[i].Number, (int)winningGold[i].Number, true));
+					// ScreenManager.Instance.CurrentSlotScreen.AddSkillToQueue(new SpawnableSkill((int)winningType[i].Number, (int)winningCount[i].Number, (int)winningGold[i].Number, true));
 				}
 			}
+			if (totalScore > 0) {
+				ScreenManager.Instance.CurrentSlotScreen.AddSpinDataToQueue(new SpinData(string.Empty, spinDataResult, true));
+			}
+			
 			if (freeSpinLeft > 0) {
 				machineHandler.DisableHandler();
 				Invoke("EnableAutoStart", 0.5f);
@@ -138,11 +142,13 @@ public class SlotMachine : MonoBehaviour {
 	public void Wait() {
 		// canStart = false;
 		pauseCount++;
+		Debug.Log("###### Wait");
 	}
 	
 	public void Resume() {		
 		// canStart = true;
 		pauseCount = Mathf.Max(0, pauseCount - 1);
+		Debug.Log("####### Resume");
 	}
 	
 	void EnableAutoStart() {

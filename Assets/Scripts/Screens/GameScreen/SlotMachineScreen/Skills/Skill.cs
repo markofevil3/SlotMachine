@@ -43,7 +43,8 @@ public class Skill : MonoBehaviour {
 		}
 		if (!isAlive) {
 			MyPoolManager.Instance.Despawn(transform);
-			ScreenManager.Instance.CurrentSlotScreen.ResumeSpawnSkill();
+			// TEST CODE - comment for new method
+			// ScreenManager.Instance.CurrentSlotScreen.ResumeSpawnSkill();
 		} else {
 			StartCoroutine("CheckIfAlive");
 		}
@@ -76,6 +77,7 @@ public class Skill : MonoBehaviour {
 	
 	public virtual void Destroy() {
 		MyPoolManager.Instance.Despawn(transform);
-		ScreenManager.Instance.CurrentSlotScreen.ResumeSpawnSkill();
+		// TEST CODE - comment for new method
+		// ScreenManager.Instance.CurrentSlotScreen.ResumeSpawnSkill();
 	}
 }

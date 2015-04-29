@@ -28,7 +28,6 @@ public class BigWinPanel : MonoBehaviour {
 		LeanTween.scale(gameObject, Vector3.one, 0.5f).setEase(LeanTweenType.easeInOutCubic);
 		Invoke("FadeOutBigWin", 2f);
 		ScreenManager.Instance.CurrentSlotScreen.PauseSpawnSkill();
-		ScreenManager.Instance.CurrentSlotScreen.slotMachine.Wait();
 	}
 
 	public void FadeOutBigWin() {
@@ -54,7 +53,6 @@ public class BigWinPanel : MonoBehaviour {
 		Invoke("FadeOutFreeSpin", 2f);
 		if (shouldPause) {
 			ScreenManager.Instance.CurrentSlotScreen.PauseSpawnSkill();
-			ScreenManager.Instance.CurrentSlotScreen. slotMachine.Wait();
 		}
 	}
 

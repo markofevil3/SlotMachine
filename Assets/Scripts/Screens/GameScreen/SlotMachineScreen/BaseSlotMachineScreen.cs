@@ -39,9 +39,11 @@ public class BaseSlotMachineScreen : BaseScreen {
 	
   private string roomId = string.Empty;
 	
-	private List<SpawnableSkill> listSpawnSkills = new List<SpawnableSkill>();
+	// private List<SpawnableSkill> listSpawnSkills = new List<SpawnableSkill>();
+	private List<SpinData> listSpinDatas = new List<SpinData>();
   private bool canSpawnSkill = true;
-	private float MAX_SKILL_DURATION = 2f;
+	private double MAX_SKILL_DURATION = 2.0;
+	private double lastProcessSpin = 0;
 	
   public string GetRoomId() {
     return roomId;
@@ -51,28 +53,72 @@ public class BaseSlotMachineScreen : BaseScreen {
     return gameType;
   }
   
-	// Add Skill to queue for spawn
-	public void AddSkillToQueue(SpawnableSkill mSkill) {
-		listSpawnSkills.Add(mSkill);
+	public void AddSpinDataToQueue(SpinData mSpinData) {
+		listSpinDatas.Add(mSpinData);
 	}
 	
+	IEnumerator ProcessSpinData(SpinData spinData) {
+		Debug.Log("ProcessSpinData " + spinData.spawnSkills.Count);
+		if (spinData.newBossData != null) {
+			Debug.Log("ProcessSpinData~~~~~~~~~ ");
+			PauseSpawnSkill();
+		}
+		for (int i = 0; i < spinData.spawnSkills.Count; i++) {
+			SpawnSkill(spinData.spawnSkills[i]);
+			yield return new WaitForSeconds(0.5f);
+		}
+		if (spinData.newBossData != null) {
+			yield return new WaitForSeconds(2f);
+			DisPlayBossDrop(spinData.dropCash, spinData.dropGem, spinData.newBossData);
+		}
+	}
+	
+	public virtual void DisPlayBossDrop(int dropCash, int dropGem, JSONObject newBossData) {
+		Debug.Log("DisPlayBossDrop " + dropCash + " " + dropGem);
+    UpdateUserCashLabel(dropCash);
+		// TO DO - display boss drops
+		bossManager.ChangeBoss(newBossData, "EventFinishChangeBoss");
+	}
+	
+	public virtual void EventFinishChangeBoss() {
+		ResumeSpawnSkill();
+	}
+	
+	// Add Skill to queue for spawn
+	// public void AddSkillToQueue(SpawnableSkill mSkill) {
+	// 	listSpawnSkills.Add(mSkill);
+	// }
+	
 	public void PauseSpawnSkill() {
+		Debug.Log("PauseSpawnSkill");
 		canSpawnSkill = false;
+		slotMachine.Wait();
 	}
 	
 	public void ResumeSpawnSkill() {
+		Debug.Log("ResumeSpawnSkill");
+		
 		canSpawnSkill = true;
-		if (listSpawnSkills.Count == 0) {
-			slotMachine.Resume();
-		}
+		slotMachine.Resume();
+		// if (listSpawnSkills.Count == 0) {
+		// 	slotMachine.Resume();
+		// }
 	}
 	
 	// Spawn skill if avaiable in queue
 	void Update() {
-		if (listSpawnSkills.Count > 0 && canSpawnSkill) {
-			canSpawnSkill = false;
-			SpawnSkill(listSpawnSkills[0]);
-			listSpawnSkills.RemoveAt(0);
+		// TEST CODE - commented to use new SpinData queue
+		// if (listSpawnSkills.Count > 0 && canSpawnSkill) {
+		// 	canSpawnSkill = false;
+		// 	SpawnSkill(listSpawnSkills[0]);
+		// 	listSpawnSkills.RemoveAt(0);
+		// }
+		
+		if (listSpinDatas.Count > 0 && canSpawnSkill) {
+		// if (listSpinDatas.Count > 0 && (canSpawnSkill || Network.time - lastProcessSpin > MAX_SKILL_DURATION)) {
+			lastProcessSpin = Network.time;
+			StartCoroutine(ProcessSpinData(listSpinDatas[0]));
+			listSpinDatas.RemoveAt(0);
 		}
 	}
 	
@@ -127,13 +173,10 @@ public class BaseSlotMachineScreen : BaseScreen {
 	// Set result after receive from server, then slot reel will display result
   public virtual void SetResults(JSONObject jsonData) {
     slotMachine.SetResults(jsonData);
-		SetSpecialData(jsonData.GetObject("specials"));
     // AccountManager.Instance.UpdateUserCash(-jsonData.GetInt("cost"));
     UpdateUserCashLabel(-jsonData.GetInt("cost"));
   }
-  
-	public virtual void SetSpecialData(JSONObject jsonData) {}
-	
+  	
 	// Show animation when player got free spin
 	public void DisplayFreeSpinAnimation() {
 		
@@ -151,6 +194,10 @@ public class BaseSlotMachineScreen : BaseScreen {
 	public virtual void SpawnSkill(SpawnableSkill skill) {}
 
 	public virtual void OtherPlayerSpinResult(string username, JSONObject jsonData) {}
+	
+	public virtual void ProcessSpinData(string username, JSONObject jsonData) {
+		
+	}
 
   public void UpdateUserCashLabel(int addValue) {
 		if (addValue == 0) {
@@ -267,4 +314,54 @@ public class SpawnableSkill {
 		this.damage = damage;
 		this.isYou = isYou;
 	}
+}
+
+// Used for spawn skills of each player
+public class SpinData {
+
+	public bool isYou;
+	public string username;
+	public int totalDamage = 0;
+
+	public JSONObject newBossData = null;
+	public int dropCash = 0;
+	public int dropGem = 0;
+	public List<SpawnableSkill> spawnSkills = new List<SpawnableSkill>();
+		
+		
+	public SpinData(string username, JSONObject jsonData, bool isYou) {
+		Debug.Log("SpinData: " + jsonData.ToString());
+		this.isYou = isYou;
+		this.username = username;
+		JSONArray resultsData = jsonData.GetArray("items");
+		JSONObject extraData = SlotCombination.CalculateCombination(resultsData);
+	  JSONArray winningCount = extraData.GetArray("wCount");  
+	  JSONArray winningType = extraData.GetArray("wType");
+    JSONArray winningGold = jsonData.GetArray("wGold");
+		
+    for (int i = 0; i < winningGold.Length; i++) {
+      totalDamage += (int)winningGold[i].Number;
+    }
+		
+		if (jsonData.ContainsKey("newBoss")) {
+			newBossData = jsonData.GetObject("newBoss");
+			JSONArray bossDrops = jsonData.GetArray("dropItems");
+			dropCash = (int)bossDrops[0].Number;
+			dropGem = (int)bossDrops[1].Number;
+			bossDrops = null;
+		}
+		
+
+		for (int i = 0; i < winningCount.Length; i++) {
+			if (winningCount[i].Number >= 3 || ((int)winningType[i].Number == (int)SlotItem.Type.TILE_1 && winningCount[i].Number >= 2)) {
+				spawnSkills.Add(new SpawnableSkill((int)winningType[i].Number, (int)winningCount[i].Number, (int)winningGold[i].Number, isYou));
+			}
+		}
+		extraData = null;
+		resultsData = null;
+		winningCount = null;
+		winningType = null;
+		winningGold = null;
+	}
+	
 }

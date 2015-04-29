@@ -4,8 +4,6 @@ using Boomlagoon.JSON;
 
 public class SlotPirateScreen : BaseSlotMachineScreen {
 	
-	private JSONObject specialData;	
-
   public override void Init(object[] data) {
     base.Init(data);
 		bossManager.Init(roomData.GetInt("dIndex"), roomData.GetInt("dHP"), roomData.GetInt("dMaxHP"), this, "BossGetHitCallback");
@@ -19,11 +17,6 @@ public class SlotPirateScreen : BaseSlotMachineScreen {
 	// 	SpawnSkill(SlotItemPirate.ITEM_RALLY, 1, 10);
 	// 	count++;
 	// }
-	
-	// Set game special data after each spin success
-	public override void SetSpecialData(JSONObject jsonData) {
-		specialData = jsonData;
-	}
 	
 	
 	// // Slot reel stopped, displayed result, start display winning animation if should
@@ -39,40 +32,24 @@ public class SlotPirateScreen : BaseSlotMachineScreen {
 	// }
 	
 	public override void OtherPlayerSpinResult(string username, JSONObject jsonData) {
+		Debug.Log("OtherPlayerSpinResult " + jsonData.ToString());
 		PlayerSlotScript playerSlot = FindUserSlot(username);
-		SetSpecialData(jsonData);
+		ScreenManager.Instance.CurrentSlotScreen.AddSpinDataToQueue(new SpinData(username, jsonData, false));
 		
-		
+		// JSONObject extraData = SlotCombination.CalculateCombination(jsonData.GetArray("items"));
+		//     JSONArray winningCount = extraData.GetArray("wCount");
+		//     JSONArray winningType = extraData.GetArray("wType");
+		//     JSONArray winningGold = jsonData.GetArray("wGold");
+		//
 		// for (int i = 0; i < winningCount.Length; i++) {
-		// 	if (winningCount[i].Number >= 3) {
-		// 		for (int j = 0; j < SlotCombination.NUM_REELS; j++) {
-		// 			slotItems[SlotCombination.COMBINATION[i, j]].Glow();
-		// 		}
-		// 		// TEST CODE - use skill queue
-		// 		// ScreenManager.Instance.CurrentSlotScreen.SpawnSkill((int)winningType[i].Number, (int)winningCount[i].Number, (int)winningGold[i].Number);
-		// 		ScreenManager.Instance.CurrentSlotScreen.AddSkillToQueue(new SpawnableSkill((int)winningType[i].Number, (int)winningCount[i].Number, (int)winningGold[i].Number, true));
+		// 	if (winningCount[i].Number >= 3 || ((int)winningType[i].Number == (int)SlotItem.Type.TILE_1 && winningCount[i].Number >= 2)) {
+		// 		ScreenManager.Instance.CurrentSlotScreen.AddSkillToQueue(new SpawnableSkill((int)winningType[i].Number, (int)winningCount[i].Number, (int)winningGold[i].Number, false));
 		// 	}
 		// }
-		
-		Debug.Log("OtherPlayerSpinResult " + jsonData.ToString());
-		
-		JSONObject extraData = SlotCombination.CalculateCombination(jsonData.GetArray("items"));
-    JSONArray winningCount = extraData.GetArray("wCount");
-    JSONArray winningType = extraData.GetArray("wType");
-    JSONArray winningGold = jsonData.GetArray("wGold");
-		
-		for (int i = 0; i < winningCount.Length; i++) {
-			if (winningCount[i].Number >= 3) {
-				ScreenManager.Instance.CurrentSlotScreen.AddSkillToQueue(new SpawnableSkill((int)winningType[i].Number, (int)winningCount[i].Number, (int)winningGold[i].Number, false));
-			}
-		}
-
-		extraData = null;
-		winningCount = null;
-		winningType = null;
-		winningGold = null;
-		// TEST CODE: commented - should remove
-		// SpawnSkill(jsonData.GetInt("totalWin"), playerSlot.transform.position);
+		// extraData = null;
+		// winningCount = null;
+		// winningType = null;
+		// winningGold = null;
 	}
 	
 	public override void SpawnSkill(SpawnableSkill skill) {
@@ -161,18 +138,14 @@ public class SlotPirateScreen : BaseSlotMachineScreen {
 	// 	skill.Init(3, damage, bossManager);
 	// }
 	
-	// TO DO: change boss 1 time only
 	private void BossGetHitCallback() {
-		if (specialData != null && specialData.ContainsKey("dHP") && specialData.GetInt("dHP") == 0) {
-			bossManager.ChangeBoss(specialData.GetObject("newBoss"), "EventFinishChangeBoss");
-			int dropCash = (int)specialData.GetArray("dropItems")[0].Number;			
-			// slotMachine.Wait();
-	    // AccountManager.Instance.UpdateUserCash(dropCash);
-	    UpdateUserCashLabel(dropCash);
-		}
-	}
-	
-	private void EventFinishChangeBoss() {
-		slotMachine.Resume();
+		// TEST CODE - commented to new method
+		// if (specialData != null && specialData.ContainsKey("dHP") && specialData.GetInt("dHP") == 0) {
+		// 	bossManager.ChangeBoss(specialData.GetObject("newBoss"), "EventFinishChangeBoss");
+		// 	int dropCash = (int)specialData.GetArray("dropItems")[0].Number;
+		// 	// slotMachine.Wait();
+		// 	    // AccountManager.Instance.UpdateUserCash(dropCash);
+		// 	    UpdateUserCashLabel(dropCash);
+		// }
 	}
 }
