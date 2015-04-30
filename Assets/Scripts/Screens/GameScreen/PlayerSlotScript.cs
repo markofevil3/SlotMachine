@@ -7,6 +7,7 @@ public class PlayerSlotScript : MonoBehaviour {
   public UILabel cashLabel;
   public UISprite avatarSprite;
   public UIEventTriggerExtent eventTrigger;
+	public GameObject glowBackground;
   // public UISprite circleSprite;
   // public UIButton btnThrowCard;
   // public UIButton btnSit;
@@ -29,7 +30,7 @@ public class PlayerSlotScript : MonoBehaviour {
     }
     eventTrigger.inputParams = new object[] {username};
     EventDelegate.Set(eventTrigger.onClick, delegate() { EventShowUserInfo((string)eventTrigger.inputParams[0]); });
-    
+    HideGlow();
     // circleSprite.gameObject.SetActive(false);
     // btnSit.gameObject.SetActive(false);
     // btnThrowCard.gameObject.SetActive(true);
@@ -40,6 +41,7 @@ public class PlayerSlotScript : MonoBehaviour {
     usernameLabel.text = string.Empty;
     cashLabel.text = string.Empty;
     EventDelegate.Set(eventTrigger.onClick, OpenInvitePlayerPopup);
+    HideGlow();
     // btnThrowCard.gameObject.SetActive(false);
     // 
     // btnSit.gameObject.SetActive(true);
@@ -70,28 +72,18 @@ public class PlayerSlotScript : MonoBehaviour {
     TLMBClient.Instance.Sit(seatIndex);
   }
   
-  // public void StopCircle() {
-  //   LeanTween.cancel(gameObject);
-  //   HideCircle();
-  // }
-  // 
-  // public void ShowCircle(float duration) {
-  //   circleSprite.gameObject.SetActive(true);
-  //   TweenAlpha tween = TweenAlpha.Begin(circleSprite.gameObject, 0.5f, 1f);
-  //   tween.from = 0;
-  //   LeanTween.value(gameObject, UpdateCircleValue, 0, 1, duration).setOnComplete(HideCircle);
-  // }
-  // 
-  // public void HideCircle() {
-  //   TweenAlpha tween = TweenAlpha.Begin(circleSprite.gameObject, 0.2f, 0);
-  //   EventDelegate.Add(tween.onFinished, HideCallback, true);
-  // }
-  // 
-  // private void HideCallback() {
-  //   circleSprite.gameObject.SetActive(false);
-  // }
-  // 
-  // void UpdateCircleValue(float updateVal) {
-  //   circleSprite.fillAmount = updateVal;
-  // }
+	public void ShowGlow() {
+		NGUITools.SetActive(glowBackground, true);
+		CancelInvoke("FadeOutGlow");
+		Invoke("FadeOutGlow", 3.0f);
+	}
+	
+	private void HideGlow() {
+		NGUITools.SetActive(glowBackground, false);
+	}
+
+	private void FadeOutGlow() {
+		TweenAlpha tween = TweenAlpha.Begin(glowBackground, 0.5f, 0);
+    EventDelegate.Add(tween.onFinished, HideGlow, true);
+	}
 }

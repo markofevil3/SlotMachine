@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Boomlagoon.JSON;
 
 public class BigWinPanel : MonoBehaviour {
 
@@ -8,18 +9,23 @@ public class BigWinPanel : MonoBehaviour {
 	
 	public GameObject bigWinView;
 	public GameObject freeSpinView;
+	public GameObject treasureView;
 	public UILabel winNumbLabel;
 	public UILabel freeSpinNumbLabel;
+	public UILabel treasureCashLabel;
+	public UILabel treasureGemLabel;
+	public UITable treasureTable;
 	public Transform effectPoint1;
 	public Transform effectPoint2;
 	public Transform effectPoint3;
 
 	// Fade in Big Win
-	public void FadeIn(int numb) {
+	public void FadeInBigWin(int numb) {
 		totalScore = numb;
 		NGUITools.SetActive(gameObject, true);
 		NGUITools.SetActive(bigWinView, true);
 		NGUITools.SetActive(freeSpinView, false);
+		NGUITools.SetActive(treasureView, false);
 		winNumbLabel.text = numb.ToString("N0");
 		TweenAlpha tween = TweenAlpha.Begin(gameObject, 0.5f, 1);
 		tween.from = 0;
@@ -44,6 +50,7 @@ public class BigWinPanel : MonoBehaviour {
 	public void FadeInFreeSpin(int numb, bool shouldPause = true) {
 		NGUITools.SetActive(gameObject, true);
 		NGUITools.SetActive(bigWinView, false);
+		NGUITools.SetActive(treasureView, false);
 		NGUITools.SetActive(freeSpinView, true);
 		freeSpinNumbLabel.text = numb.ToString("N0") + "\nFREE SPIN";
 		TweenAlpha tween = TweenAlpha.Begin(gameObject, 0.5f, 1);
@@ -62,6 +69,36 @@ public class BigWinPanel : MonoBehaviour {
 		// ScreenManager.Instance.CurrentSlotScreen.slotMachine.UpdateScore(totalScore);
 	}
 
+	// Fade in Treasure
+	public void FadeInTreasure(int cash, int gem, JSONObject newBossData, bool shouldPause = true) {
+		NGUITools.SetActive(gameObject, true);
+		NGUITools.SetActive(bigWinView, false);
+		NGUITools.SetActive(freeSpinView, false);
+		NGUITools.SetActive(treasureView, true);
+		treasureCashLabel.text = cash.ToString("N0");
+		treasureGemLabel.text = gem.ToString("N0");
+		treasureTable.Reposition();
+		TweenAlpha tween = TweenAlpha.Begin(gameObject, 0.5f, 1);
+		tween.from = 0;
+		transform.localScale = Vector3.one * 3;
+		LeanTween.scale(gameObject, Vector3.one, 0.5f).setEase(LeanTweenType.easeInOutCubic);
+		StartCoroutine(FadeOutTreasure(cash, gem, newBossData));
+		if (shouldPause) {
+			ScreenManager.Instance.CurrentSlotScreen.PauseSpawnSkill();
+		}
+	}
+
+	IEnumerator FadeOutTreasure(int dropCash, int dropGem, JSONObject newBossData) {
+		yield return new WaitForSeconds(2.0f);
+		TweenAlpha tween = TweenAlpha.Begin(gameObject, 0.5f, 0);
+    EventDelegate.Add(tween.onFinished, Hide, true);
+		if (ScreenManager.Instance.CurrentSlotScreen != null) {
+			ScreenManager.Instance.CurrentSlotScreen.DisplayBossDropCallback(dropCash, dropGem, newBossData);
+		}
+		// ScreenManager.Instance.CurrentSlotScreen.slotMachine.UpdateScore(totalScore);
+	}
+
+	// Spawn effect of Big win panel
 	void EventFinishFadeIn() {
 		StartCoroutine(SpawnEffect());
 	}

@@ -63,20 +63,31 @@ public class BaseSlotMachineScreen : BaseScreen {
 			Debug.Log("ProcessSpinData~~~~~~~~~ ");
 			PauseSpawnSkill();
 		}
+		// Show Glow on user slot if not you
+		if (!spinData.isYou) {
+			PlayerSlotScript playerSlot = FindUserSlot(spinData.username);
+			if (playerSlot != null) {
+				playerSlot.ShowGlow();
+			}
+		}
 		for (int i = 0; i < spinData.spawnSkills.Count; i++) {
 			SpawnSkill(spinData.spawnSkills[i]);
 			yield return new WaitForSeconds(0.5f);
 		}
 		if (spinData.newBossData != null) {
 			yield return new WaitForSeconds(2f);
-			DisPlayBossDrop(spinData.dropCash, spinData.dropGem, spinData.newBossData);
+			DisplayBossDrop(spinData.dropCash, spinData.dropGem, spinData.newBossData);
 		}
 	}
 	
-	public virtual void DisPlayBossDrop(int dropCash, int dropGem, JSONObject newBossData) {
+	public virtual void DisplayBossDrop(int dropCash, int dropGem, JSONObject newBossData) {
 		Debug.Log("DisPlayBossDrop " + dropCash + " " + dropGem);
+		bigWinPanel.FadeInTreasure(dropCash, dropGem, newBossData);
+	}
+	
+	public virtual void DisplayBossDropCallback(int dropCash, int dropGem, JSONObject newBossData) {
+		// TO DO: update user gem
     UpdateUserCashLabel(dropCash);
-		// TO DO - display boss drops
 		bossManager.ChangeBoss(newBossData, "EventFinishChangeBoss");
 	}
 	
@@ -183,7 +194,7 @@ public class BaseSlotMachineScreen : BaseScreen {
 	}
 	
 	public virtual void FadeInBigWin(int numb) {
-		bigWinPanel.FadeIn(numb);
+		bigWinPanel.FadeInBigWin(numb);
 	}
 
 	public virtual void FadeInFreeSpin(int numb, bool shouldPause = true) {

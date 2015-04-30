@@ -31,7 +31,7 @@ public class BossHawkEye : Boss {
 	}
 	
 	void MoveGlowEffect() {
-		if (gameObject != null) {
+		if (gameObject != null && gameObject.activeSelf) {
 			StartCoroutine(StartGlowEffect());
 		}
 	}
