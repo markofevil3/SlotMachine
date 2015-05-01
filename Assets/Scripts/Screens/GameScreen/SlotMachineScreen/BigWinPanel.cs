@@ -21,6 +21,7 @@ public class BigWinPanel : MonoBehaviour {
 
 	// Fade in Big Win
 	public void FadeInBigWin(int numb) {
+		Debug.Log("FadeInBigWin");
 		totalScore = numb;
 		NGUITools.SetActive(gameObject, true);
 		NGUITools.SetActive(bigWinView, true);
@@ -48,6 +49,8 @@ public class BigWinPanel : MonoBehaviour {
 
 	// Fade in Free Spin
 	public void FadeInFreeSpin(int numb, bool shouldPause = true) {
+		Debug.Log("FadeInFreeSpin");
+		
 		NGUITools.SetActive(gameObject, true);
 		NGUITools.SetActive(bigWinView, false);
 		NGUITools.SetActive(treasureView, false);
@@ -71,6 +74,9 @@ public class BigWinPanel : MonoBehaviour {
 
 	// Fade in Treasure
 	public void FadeInTreasure(int cash, int gem, JSONObject newBossData, bool shouldPause = true) {
+		if (shouldPause) {
+			ScreenManager.Instance.CurrentSlotScreen.PauseSpawnSkill();
+		}
 		NGUITools.SetActive(gameObject, true);
 		NGUITools.SetActive(bigWinView, false);
 		NGUITools.SetActive(freeSpinView, false);
@@ -83,19 +89,12 @@ public class BigWinPanel : MonoBehaviour {
 		transform.localScale = Vector3.one * 3;
 		LeanTween.scale(gameObject, Vector3.one, 0.5f).setEase(LeanTweenType.easeInOutCubic);
 		StartCoroutine(FadeOutTreasure(cash, gem, newBossData));
-		if (shouldPause) {
-			ScreenManager.Instance.CurrentSlotScreen.PauseSpawnSkill();
-		}
 	}
 
 	IEnumerator FadeOutTreasure(int dropCash, int dropGem, JSONObject newBossData) {
 		yield return new WaitForSeconds(2.0f);
 		TweenAlpha tween = TweenAlpha.Begin(gameObject, 0.5f, 0);
-    EventDelegate.Add(tween.onFinished, Hide, true);
-		if (ScreenManager.Instance.CurrentSlotScreen != null) {
-			ScreenManager.Instance.CurrentSlotScreen.DisplayBossDropCallback(dropCash, dropGem, newBossData);
-		}
-		// ScreenManager.Instance.CurrentSlotScreen.slotMachine.UpdateScore(totalScore);
+    EventDelegate.Add(tween.onFinished, HideNoResumeSkill, true);
 	}
 
 	// Spawn effect of Big win panel
@@ -115,9 +114,15 @@ public class BigWinPanel : MonoBehaviour {
 		MyPoolManager.Instance.Despawn(hpny3, 2f);
 	}
 	
+	// Hide Treasure panel but dont resume skill - will resume after boss changed
+	private void HideNoResumeSkill() {
+		NGUITools.SetActive(gameObject, false);
+	}
+	
+	// Hide Big win, free spin panel and resume skill
 	public void Hide() {
 		NGUITools.SetActive(gameObject, false);
-		if (ScreenManager.Instance.CurrentSlotScreen != null) {
+		if (ScreenManager.Instance.CurrentSlotScreen != null && !ScreenManager.Instance.CurrentSlotScreen.isChangingBoss) {
 			ScreenManager.Instance.CurrentSlotScreen.ResumeSpawnSkill();
 		}
 	}

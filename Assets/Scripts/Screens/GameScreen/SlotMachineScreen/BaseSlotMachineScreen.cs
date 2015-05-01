@@ -19,6 +19,8 @@ public class BaseSlotMachineScreen : BaseScreen {
   public GameBottomBarScript bottomBarScript;
   [HideInInspector]
 	public JSONObject roomData;
+  [HideInInspector]
+	public bool isChangingBoss = false;
 	
   public GameType gameType;
   public UIButton btnBack;
@@ -36,6 +38,7 @@ public class BaseSlotMachineScreen : BaseScreen {
 	public GameObject skillCamera;
 	public BossManager bossManager;
   public BigWinPanel bigWinPanel;
+
 	
   private string roomId = string.Empty;
 	
@@ -83,16 +86,20 @@ public class BaseSlotMachineScreen : BaseScreen {
 	public virtual void DisplayBossDrop(int dropCash, int dropGem, JSONObject newBossData) {
 		Debug.Log("DisPlayBossDrop " + dropCash + " " + dropGem);
 		bigWinPanel.FadeInTreasure(dropCash, dropGem, newBossData);
+		StartCoroutine(DisplayBossDropCallback(dropCash, dropGem, newBossData));
 	}
 	
-	public virtual void DisplayBossDropCallback(int dropCash, int dropGem, JSONObject newBossData) {
+	IEnumerator DisplayBossDropCallback(int dropCash, int dropGem, JSONObject newBossData) {
+		yield return new WaitForSeconds(2.5f);
 		// TO DO: update user gem
     UpdateUserCashLabel(dropCash);
+		isChangingBoss = true;
 		bossManager.ChangeBoss(newBossData, "EventFinishChangeBoss");
 	}
 	
 	public virtual void EventFinishChangeBoss() {
 		ResumeSpawnSkill();
+		isChangingBoss = false;
 	}
 	
 	// Add Skill to queue for spawn

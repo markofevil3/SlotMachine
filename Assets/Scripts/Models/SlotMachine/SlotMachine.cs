@@ -38,7 +38,7 @@ public class SlotMachine : MonoBehaviour {
 		}
 	}
 	
-	private int pauseCount = 0;
+	private bool pauseCount = false;
 	
   public void Init() {
     slotCombination.Init();
@@ -52,7 +52,7 @@ public class SlotMachine : MonoBehaviour {
   }
 
   public void StartMachine() {
-    if (!isRunning && pauseCount == 0) {
+    if (!isRunning && !pauseCount) {
       isRunning = true;
       string log = "";
       // for (int i = 0; i < SlotCombination.MAX_DISPLAY_ITEMS; i++) {
@@ -141,14 +141,13 @@ public class SlotMachine : MonoBehaviour {
   
 	public void Wait() {
 		// canStart = false;
-		pauseCount++;
-		Debug.Log("###### Wait");
+		pauseCount = true;
 	}
 	
 	public void Resume() {		
 		// canStart = true;
-		pauseCount = Mathf.Max(0, pauseCount - 1);
-		Debug.Log("####### Resume");
+		// pauseCount = Mathf.Max(0, pauseCount - 1);
+		pauseCount = false;
 	}
 	
 	void EnableAutoStart() {
