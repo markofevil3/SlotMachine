@@ -164,6 +164,7 @@ public class UIInput : MonoBehaviour
 	/// </summary>
 
 	public OnValidate onValidate;
+	public bool keepOpenWhenTouchOutside = false;
 
 	/// <summary>
 	/// Input field's value.
@@ -513,7 +514,9 @@ public class UIInput : MonoBehaviour
 				mOnGUI = null;
 			}
 #endif
-			OnDeselectEvent();
+			if (!keepOpenWhenTouchOutside) {
+				OnDeselectEvent();
+			}
 		}
 	}
 

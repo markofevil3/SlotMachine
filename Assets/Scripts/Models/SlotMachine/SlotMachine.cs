@@ -10,6 +10,7 @@ public class SlotMachine : MonoBehaviour {
   public UILabel scoreLabel;
   public UILabel jackpotLabel;
 	public MachineHandler machineHandler;
+  public UIToggle autoPlayCheckbox;
   
   private bool isRunning = false;
   private int reelStopCount = 0;
@@ -160,7 +161,7 @@ public class SlotMachine : MonoBehaviour {
 	
 	void Update() {
 		// TEST CODE -- should refined - auto start in free spin
-		if (autoStart) {
+		if (autoStart || autoPlayCheckbox.value) {
 			// if (autoStart) {
 				StartMachine();
 			// }

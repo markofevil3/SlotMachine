@@ -16,8 +16,6 @@ public class BaseSlotMachineScreen : BaseScreen {
   [HideInInspector]
 	public string WINNING_ANIMATION_PREFAB = "";
   [HideInInspector]
-  public GameBottomBarScript bottomBarScript;
-  [HideInInspector]
 	public JSONObject roomData;
   [HideInInspector]
 	public bool isChangingBoss = false;
@@ -141,12 +139,6 @@ public class BaseSlotMachineScreen : BaseScreen {
 	}
 	
   public override void Init(object[] data) {    
-		// TEST CODE -- commented
-    // GameObject tempGameObject = NGUITools.AddChild(gameObject, Resources.Load(Global.GAME_BOTTOM_BAR_PREFAB, typeof(GameObject)) as GameObject);
-    //    	tempGameObject.name = "GameBottomBar";
-    //    	bottomBarScript = tempGameObject.GetComponent<GameBottomBarScript>();
-    //    	bottomBarScript.Init(this);
-   	    
     EventDelegate.Set(btnBack.onClick, EventBackToSelectGame);
    	
    	slotMachine.Init();

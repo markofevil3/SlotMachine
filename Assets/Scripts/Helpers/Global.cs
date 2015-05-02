@@ -16,7 +16,6 @@ public class Global {
 	public static string SCREEN_PATH = "Prefabs/Screens";
 	public static string POPUP_PATH = "Prefabs/Popups";
 	public static string USER_BOTTOM_BAR_PREFAB = Global.SCREEN_PATH + "/UserBottomBar";
-  public static string GAME_BOTTOM_BAR_PREFAB = Global.SCREEN_PATH + "/GameScreen/GameBottomBar";
   
   public static bool isOpenPopup = false;
   public static bool isAnimatingPopup = false;
