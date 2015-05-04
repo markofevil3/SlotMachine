@@ -33,7 +33,7 @@ public class SlotPirateScreen : BaseSlotMachineScreen {
 	
 	public override void OtherPlayerSpinResult(string username, JSONObject jsonData) {
 		Debug.Log("OtherPlayerSpinResult " + jsonData.ToString());
-		ScreenManager.Instance.CurrentSlotScreen.AddSpinDataToQueue(new SpinData(username, jsonData, false));
+		ScreenManager.Instance.CurrentSlotScreen.AddSpinDataToQueue(new SpinData(username, jsonData, false, slotMachine.GetNumLine()));
 		
 		// JSONObject extraData = SlotCombination.CalculateCombination(jsonData.GetArray("items"));
 		//     JSONArray winningCount = extraData.GetArray("wCount");

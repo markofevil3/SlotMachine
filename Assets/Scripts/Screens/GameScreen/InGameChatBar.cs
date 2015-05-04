@@ -20,6 +20,7 @@ public class InGameChatBar : MonoBehaviour {
 	private bool isOpen = false;
 	private Vector3 closePos;
 	private Vector3 openPos = Vector3.zero;
+	private float keyboardHeight;
 
 	// TEST CODE -- asda
 	void Start() {
@@ -31,6 +32,13 @@ public class InGameChatBar : MonoBehaviour {
     EventDelegate.Set(btnOpenChat.onClick, Open);
 		chatPanelAnchor.Reset();
 		closePos = transform.localPosition;
+		#if UNITY_EDITOR
+			chatInput.transform.GetComponent<UISprite>().depth = 2;
+			chatInput.label.depth = 20;
+		#else
+			chatInput.transform.GetComponent<UISprite>().depth = -1;
+			chatInput.label.depth = -1;
+		#endif
 	}
 	
 	public void SendChat() {
@@ -54,8 +62,18 @@ public class InGameChatBar : MonoBehaviour {
 	}
 	
 	public void AddChatToList(JSONObject jsonData) {
-		string message = jsonData.GetString("senderName") + ":" + Utils.ChatUnescape(jsonData.GetString("message"));
-		recentChatMes.text = message;
+		string message = "";
+		string newestMes = "";
+    if (AccountManager.Instance.IsYou(jsonData.GetString("senderId"))) {
+			message += "[999999]You:[-] ";
+			newestMes += "[999999]You:[-] ";
+		} else {
+			message += "[999999]" + jsonData.GetString("senderName") + ":[-] ";
+			newestMes += "[999999]" + jsonData.GetString("senderName") + ":[-] ";
+		}
+		message += "[000000]" + Utils.ChatUnescape(jsonData.GetString("message")) + "[-]";
+		newestMes += "[FFFFFF]" + Utils.ChatUnescape(jsonData.GetString("message")) + "[-]";
+		recentChatMes.text = newestMes;
 		textList.Add(message);
 	}
 	
@@ -67,7 +85,7 @@ public class InGameChatBar : MonoBehaviour {
 			isOpen = true;
 			// float pos = Mathf.Abs(transform.localPosition.y * 2) * 634f / 2048f;
 			// openPos = new Vector3(transform.localPosition.x, pos - Mathf.Abs(transform.localPosition.y) + 150f, transform.localPosition.z);
-			openPos = new Vector3(transform.localPosition.x, NGUIMath.ScreenToPixels(new Vector2(0, TouchScreenKeyboard.area.height), ScreenManager.Instance.camera.transform).y + textListBackground.height, transform.localPosition.z);
+			openPos = new Vector3(transform.localPosition.x, NGUIMath.ScreenToPixels(new Vector2(0, TouchScreenKeyboard.area.height), ScreenManager.Instance.camera.transform).y + textListBackground.height + 72f, transform.localPosition.z);
 			TweenPosition tween = TweenPosition.Begin(gameObject, 0.3f, openPos, false);
 		} else {
 			isOpen = false;
@@ -83,10 +101,17 @@ public class InGameChatBar : MonoBehaviour {
 	void Update() {
     #if UNITY_IPHONE || UNITY_ANDROID
     if (Application.platform == RuntimePlatform.IPhonePlayer || Application.platform == RuntimePlatform.Android) {
-			if (chatInput.isSelected && !isOpen && TouchScreenKeyboard.area.height > 0) {
-				isOpen = true;
-				openPos = new Vector3(transform.localPosition.x, NGUIMath.ScreenToPixels(new Vector2(0, TouchScreenKeyboard.area.height), ScreenManager.Instance.camera.transform).y + textListBackground.height, transform.localPosition.z);
-				TweenPosition tween = TweenPosition.Begin(gameObject, 0.2f, openPos, false);
+			if (chatInput.isSelected && TouchScreenKeyboard.area.height > 0) {
+				if (!isOpen) {
+					keyboardHeight = TouchScreenKeyboard.area.height;
+					isOpen = true;
+					openPos = new Vector3(transform.localPosition.x, NGUIMath.ScreenToPixels(new Vector2(0, TouchScreenKeyboard.area.height), ScreenManager.Instance.camera.transform).y + textListBackground.height, transform.localPosition.z);
+					TweenPosition tween = TweenPosition.Begin(gameObject, 0.2f, openPos, false);
+				} else if (TouchScreenKeyboard.area.height != keyboardHeight && TouchScreenKeyboard.area.height > keyboardHeight) {
+					keyboardHeight = TouchScreenKeyboard.area.height;
+					openPos = new Vector3(transform.localPosition.x, NGUIMath.ScreenToPixels(new Vector2(0, TouchScreenKeyboard.area.height), ScreenManager.Instance.camera.transform).y + textListBackground.height, transform.localPosition.z);
+					TweenPosition tween = TweenPosition.Begin(gameObject, 0.1f, openPos, false);
+				}
 			}
 			if (isOpen && !TouchScreenKeyboard.visible) {
 				isOpen = false;

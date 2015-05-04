@@ -22,6 +22,7 @@ public class Global {
   public static bool isTablet = false;
   
   public static int MAX_FRIEND_NUMB = 50;
+	public static int DAILY_REWARD_MILI = 300000;
   public static System.Random systemRandom;
   public static UnityEngine.Random unityRandom;
 	

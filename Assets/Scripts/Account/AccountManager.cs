@@ -14,6 +14,8 @@ public class AccountManager : MonoBehaviour {
 	private string mDisplayName = string.Empty;
 	private int mCash = 0;
 	private bool mIsGuest = false;
+	
+	public long lastClaimedDaily = 0;
 	// private JSONArray mFriends;
 	
 	public string username {
@@ -59,6 +61,7 @@ public class AccountManager : MonoBehaviour {
 		password = user.GetString("password");
 		displayName = user.GetString("displayName");
 		cash = user.GetInt("cash");
+		lastClaimedDaily = user.GetLong("lastDaily");
 		// friends = user.GetArray("friends");
 	}
 	

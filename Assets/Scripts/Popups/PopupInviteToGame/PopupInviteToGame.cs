@@ -13,6 +13,7 @@ public class PopupInviteToGame : Popup {
   public UIScrollView scrollview;
   public UIDragScrollView backgroundDragScrollView;
   public UIButton btnSendInvite;
+	public GameObject noFriendLabel;
   
   private bool isLoading = false;
   private JSONArray friendList;
@@ -23,6 +24,7 @@ public class PopupInviteToGame : Popup {
     base.Init(data);
     List<Buddy> buddyList = SmartfoxClient.Instance.GetBuddyList();
     if (buddyList.Count > 0) {
+      Utils.SetActive(noFriendLabel, false);
       EventDelegate.Set(btnSendInvite.onClick, EventSendInvite);
 			JSONObject friend;
 			friendList = new JSONArray();
@@ -41,8 +43,10 @@ public class PopupInviteToGame : Popup {
 				InitScrollViewData(friendList);
 			}
     } else {
+			// TO DO - dont have friend message
       Utils.SetActive(scrollview.gameObject, false);
       Utils.SetActive(btnSendInvite.gameObject, false);
+      Utils.SetActive(noFriendLabel, true);
       Debug.Log("----------- DONE HAVE ANY FRIEND ----------------");
     }
   }

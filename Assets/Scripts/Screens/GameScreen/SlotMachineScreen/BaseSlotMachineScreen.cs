@@ -339,12 +339,12 @@ public class SpinData {
 	public List<SpawnableSkill> spawnSkills = new List<SpawnableSkill>();
 		
 		
-	public SpinData(string username, JSONObject jsonData, bool isYou) {
+	public SpinData(string username, JSONObject jsonData, bool isYou, int numLine) {
 		Debug.Log("SpinData: " + jsonData.ToString());
 		this.isYou = isYou;
 		this.username = username;
 		JSONArray resultsData = jsonData.GetArray("items");
-		JSONObject extraData = SlotCombination.CalculateCombination(resultsData);
+		JSONObject extraData = SlotCombination.CalculateCombination(resultsData, numLine);
 	  JSONArray winningCount = extraData.GetArray("wCount");  
 	  JSONArray winningType = extraData.GetArray("wType");
     JSONArray winningGold = jsonData.GetArray("wGold");

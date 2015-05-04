@@ -8,6 +8,7 @@ public class Command {
     public const string ADD_FRIEND = "addFriend";
     public const string CHAT_IN_ROOM = "chatInRoom";
     public const string INVITE_TO_GAME = "inviteToGame";
+    public const string CLAIM_DAILY = "claimDaily";
   }
   
 	public class TLMB {

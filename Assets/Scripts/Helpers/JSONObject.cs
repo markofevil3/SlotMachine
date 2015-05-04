@@ -388,6 +388,14 @@ namespace Boomlagoon.JSON {
 			return (int)value.Number;
 		}
 
+		public long GetLong(string key) {
+			var value = GetValue(key);
+			if (value == null) {
+				return 0;
+			}
+			return (long)value.Number;
+		}
+
 		public JSONObject GetObject(string key) {
 			var value = GetValue(key);
 			if (value == null) {

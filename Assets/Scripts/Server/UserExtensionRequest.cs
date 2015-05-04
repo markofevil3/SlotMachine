@@ -48,6 +48,30 @@ public class UserExtensionRequest : MonoBehaviour {
 		}
   }
   
+  public void ClaimDailyReward() {
+    JSONObject data = new JSONObject();
+    data.Add("username", AccountManager.Instance.username);
+    SmartfoxClient.Instance.HandleServerRequest(CreateExtensionRequest(Command.USER.CLAIM_DAILY, "ClaimDailyRewardSuccess", data));
+  }
+	
+  void ClaimDailyRewardSuccess(JSONObject data) {
+    ErrorCode.USER errorCode = (ErrorCode.USER)data.GetInt("errorCode");
+    if (errorCode == ErrorCode.USER.NULL) {
+      Debug.Log("ClaimDailyRewardSuccess-- " + data.ToString());
+			AccountManager.Instance.lastClaimedDaily = data.GetLong("lastDaily");
+			int oldCashVal = AccountManager.Instance.cash;
+			int addedCash = data.GetInt("cash");
+			AccountManager.Instance.UpdateUserCash(addedCash);
+			if (ScreenManager.Instance.SelectGameScreen != null) {
+				Debug.Log("oldCashVal " + oldCashVal + " " + addedCash);
+				ScreenManager.Instance.SelectGameScreen.ClaimedDailyRewardCallback(oldCashVal, addedCash);
+			}
+    } else {
+      Debug.Log("ClaimDailyRewardFail-- " + data.ToString());
+      HUDManager.Instance.AddFlyText(errorCode.ToString(), Vector3.zero, 40, Color.red);
+    }
+  }
+	
   public void AddFriend(string fUsername) {
     JSONObject data = new JSONObject();
     data.Add("username", AccountManager.Instance.username);

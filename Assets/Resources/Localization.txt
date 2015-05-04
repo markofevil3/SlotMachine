@@ -57,3 +57,5 @@ Text_Off,Off,Tắt
 Btn_Help,Help,Trợ Giúp
 Btn_Credit,Credit,Credit
 Btn_Close,Close,Close
+Title_Invite,Invite,Invite
+PopupInvite_No_Friends,You don't have any friend!,You don't have any friend!

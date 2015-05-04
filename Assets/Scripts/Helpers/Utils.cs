@@ -10,6 +10,8 @@ using Sfs2X.Util;
 
 public class Utils : MonoBehaviour {
   
+	public static DateTime time1970 = new DateTime(1970, 1, 1);
+	
   public static bool IsTablet() {
 		#if UNITY_IPHONE
 			if (Application.platform == RuntimePlatform.IPhonePlayer) {
@@ -97,6 +99,38 @@ public class Utils : MonoBehaviour {
 	  }
 	  log += "]";
 	  return log;
+	}
+	
+	// Input seconds - format 1:20:30
+	public static string GetTimeString(int timer) {
+		if (timer <= 0) {
+			return "00:00:00";
+		}
+		int tempTime = 0;
+		string timeString = string.Empty;
+		if (timer > 3600) {
+			tempTime = (int)Mathf.Ceil(timer / 3600);
+			timeString += tempTime + ":";
+			timer -= tempTime * 3600;
+		} else {
+			timeString += "00:";
+		}
+		
+		if (timer >= 60) {
+			tempTime = (int)Mathf.Ceil(timer / 60);
+			timeString += tempTime + ":";
+			timer -= tempTime * 60;
+		} else {
+			timeString += "00:";
+		}
+		
+		if (timer < 10) {
+			timeString += "0" + timer;
+		} else {
+			timeString += timer;
+		}
+			
+		return timeString;
 	}
 }
 

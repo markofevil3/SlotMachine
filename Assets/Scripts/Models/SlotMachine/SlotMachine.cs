@@ -78,7 +78,7 @@ public class SlotMachine : MonoBehaviour {
     resultsData = jsonData.GetArray("items");
     winningGold = jsonData.GetArray("wGold");
 		// Calculate extra data (winning type, winning count from list result items)
-		JSONObject extraData = SlotCombination.CalculateCombination(resultsData);
+		JSONObject extraData = SlotCombination.CalculateCombination(resultsData, GetNumLine());
     winningCount = extraData.GetArray("wCount");
     winningType = extraData.GetArray("wType");
 		//
@@ -127,7 +127,7 @@ public class SlotMachine : MonoBehaviour {
 				}
 			}
 			if (totalScore > 0) {
-				ScreenManager.Instance.CurrentSlotScreen.AddSpinDataToQueue(new SpinData(string.Empty, spinDataResult, true));
+				ScreenManager.Instance.CurrentSlotScreen.AddSpinDataToQueue(new SpinData(string.Empty, spinDataResult, true, GetNumLine()));
 			}
 			
 			if (freeSpinLeft > 0) {
@@ -184,7 +184,9 @@ public class SlotMachine : MonoBehaviour {
   }
   
   public void SetNumLine(int lineVal) {
-    slotCombination.SetNumLines(lineVal);
+		if (!isRunning) {
+	    slotCombination.SetNumLines(lineVal);
+		}
   }
   
   public int GetNumLine() {

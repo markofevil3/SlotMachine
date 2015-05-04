@@ -11,6 +11,7 @@ public class ErrorCode {
     MAX_FRIENDS,
     CANT_FIND_USER,
     ALREADY_FRIEND,
+    CANT_CLAIM_DAILY_YET,
     UNKNOWN = 100
   }
   

@@ -134,11 +134,11 @@ public class SlotCombination : MonoBehaviour {
   //   return winningGold;
   // }
 	
-  public static JSONObject CalculateCombination(JSONArray reelData) {
+  public static JSONObject CalculateCombination(JSONArray reelData, int numLine) {
   	JSONObject results = new JSONObject();
-    int[] winningLineCount = new int[MAX_LINE];
-    int[] winningLineType = new int[MAX_LINE];
-    for (int i = 0; i < MAX_LINE; i++) {
+    int[] winningLineCount = new int[numLine];
+    int[] winningLineType = new int[numLine];
+    for (int i = 0; i < numLine; i++) {
       for (int j = 0; j < NUM_REELS - 1; j++) {
         if (j == 0 && (int)reelData[COMBINATION[i, j]].Number != (int)SlotItem.Type.WILD) {
           winningLineCount[i]++;
