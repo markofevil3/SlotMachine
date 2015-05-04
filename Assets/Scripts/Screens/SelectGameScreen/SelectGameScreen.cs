@@ -60,12 +60,14 @@ public class SelectGameScreen : BaseScreen {
 	}
 
 	void EnableClaimDailyReward() {
+		btnDailyBonus.isEnabled = true;
 		dailyRewardCounterLabel.text = Localization.Get("DailyReward_Claim_Now");
 		dailyRewardCounterLabel.color = Color.green;
 		shouldUpdateDailyRewardTime = false;
 	}
 
 	public void DisableClaimDailyReward() {
+		btnDailyBonus.isEnabled = false;
 		shouldUpdateDailyRewardTime = true;
 		dailyRewardCounterLabel.color = Color.white;
 	}
