@@ -127,7 +127,7 @@ public class SlotMachine : MonoBehaviour {
 				}
 			}
 			if (totalScore > 0) {
-				ScreenManager.Instance.CurrentSlotScreen.AddSpinDataToQueue(new SpinData(string.Empty, spinDataResult, true, GetNumLine()));
+				ScreenManager.Instance.CurrentSlotScreen.AddSpinDataToQueue(new SpinData(string.Empty, spinDataResult, true));
 			}
 			
 			if (freeSpinLeft > 0) {

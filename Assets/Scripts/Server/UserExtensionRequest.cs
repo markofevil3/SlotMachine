@@ -59,12 +59,9 @@ public class UserExtensionRequest : MonoBehaviour {
     if (errorCode == ErrorCode.USER.NULL) {
       Debug.Log("ClaimDailyRewardSuccess-- " + data.ToString());
 			AccountManager.Instance.lastClaimedDaily = data.GetLong("lastDaily");
-			int oldCashVal = AccountManager.Instance.cash;
-			int addedCash = data.GetInt("cash");
-			AccountManager.Instance.UpdateUserCash(addedCash);
+			AccountManager.Instance.UpdateUserCash(data.GetInt("cash"));
 			if (ScreenManager.Instance.SelectGameScreen != null) {
-				Debug.Log("oldCashVal " + oldCashVal + " " + addedCash);
-				ScreenManager.Instance.SelectGameScreen.ClaimedDailyRewardCallback(oldCashVal, addedCash);
+				ScreenManager.Instance.SelectGameScreen.ClaimedDailyRewardCallback();
 			}
     } else {
       Debug.Log("ClaimDailyRewardFail-- " + data.ToString());
@@ -102,7 +99,7 @@ public class UserExtensionRequest : MonoBehaviour {
   }
 	
 	void InviteToGameSuccess(JSONObject data) {
-		
+    HUDManager.Instance.AddFlyText(Localization.Get("InviteToGame_Success"), Vector3.zero, 40, Color.green);
 	}
 	
   void HandleErrorCode(ErrorCode.USER errorCode) {

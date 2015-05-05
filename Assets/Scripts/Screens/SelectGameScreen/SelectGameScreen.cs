@@ -24,6 +24,7 @@ public class SelectGameScreen : BaseScreen {
 
 	private bool shouldUpdateDailyRewardTime = false;
 	private int timeCounter = 0;
+	private int currentCashDisplay = 0;
 
   public override void Init(object[] data) {
     EventDelegate.Set(btnZombieGame.onClick, delegate() { EventOpenSlotGame(BaseSlotMachineScreen.GameType.SLOT_HALLOWEEN); });
@@ -38,7 +39,8 @@ public class SelectGameScreen : BaseScreen {
     EventDelegate.Set(btnDailyBonus.onClick, EventClaimDaily);
 		
 		usernameLabel.text = AccountManager.Instance.username;
-		coinLabel.text = AccountManager.Instance.cash.ToString("N0");
+		UpdateUserCashLabelFinished();
+		
 		
 		if (AccountManager.Instance.lastClaimedDaily == 0 || (long)((DateTime.UtcNow - Utils.time1970).TotalMilliseconds - AccountManager.Instance.lastClaimedDaily) >= Global.DAILY_REWARD_MILI) {
 			Debug.Log("### " + AccountManager.Instance.lastClaimedDaily + " " + (long)((DateTime.UtcNow - Utils.time1970).TotalMilliseconds - AccountManager.Instance.lastClaimedDaily));
@@ -72,18 +74,18 @@ public class SelectGameScreen : BaseScreen {
 		dailyRewardCounterLabel.color = Color.white;
 	}
 
-	public void ClaimedDailyRewardCallback(int userOldCash, int cashReward) {
+	public void ClaimedDailyRewardCallback() {
 		// TO DO - display collect reward animation
-		ScreenManager.Instance.SelectGameScreen.UpdateUserCashLabel(userOldCash, cashReward);
+		ScreenManager.Instance.SelectGameScreen.UpdateUserCashLabel();
 		DisableClaimDailyReward();
 	}
 
-  public void UpdateUserCashLabel(int fromVal, int addValue) {
-		if (addValue == 0) {
+  private void UpdateUserCashLabel() {
+		if (currentCashDisplay == AccountManager.Instance.cash) {
 			UpdateUserCashLabelFinished();
 			return;
 		}
-		LeanTween.value(gameObject, UpdateUserCashLabelCallback, fromVal, AccountManager.Instance.cash, 1f).setOnComplete(UpdateUserCashLabelFinished);
+		LeanTween.value(gameObject, UpdateUserCashLabelCallback, currentCashDisplay, AccountManager.Instance.cash, 1f).setOnComplete(UpdateUserCashLabelFinished);
   }
   
 	void UpdateUserCashLabelCallback(float val) {
@@ -92,6 +94,7 @@ public class SelectGameScreen : BaseScreen {
 	
 	void UpdateUserCashLabelFinished() {
     coinLabel.text = AccountManager.Instance.cash.ToString("N0");
+		currentCashDisplay = AccountManager.Instance.cash;
 	}
 
   private void EventOpenLeaderboard() {
