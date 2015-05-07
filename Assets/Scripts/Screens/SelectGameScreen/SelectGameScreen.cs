@@ -14,7 +14,7 @@ public class SelectGameScreen : BaseScreen {
 	
 	public UILabel usernameLabel;
 	public UILabel coinLabel;
-	public UILabel goldLabel;
+	public UILabel killLabel;
 
   public UIButton btnFriend;
 	public UIButton btnMail;
@@ -40,7 +40,7 @@ public class SelectGameScreen : BaseScreen {
 		
 		usernameLabel.text = AccountManager.Instance.username;
 		UpdateUserCashLabelFinished();
-		
+		killLabel.text = AccountManager.Instance.bossKilled.ToString("N0");
 		
 		if (AccountManager.Instance.lastClaimedDaily == 0 || (long)((DateTime.UtcNow - Utils.time1970).TotalMilliseconds - AccountManager.Instance.lastClaimedDaily) >= Global.DAILY_REWARD_MILI) {
 			Debug.Log("### " + AccountManager.Instance.lastClaimedDaily + " " + (long)((DateTime.UtcNow - Utils.time1970).TotalMilliseconds - AccountManager.Instance.lastClaimedDaily));

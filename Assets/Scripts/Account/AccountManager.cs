@@ -13,6 +13,7 @@ public class AccountManager : MonoBehaviour {
 	private string mPassword = string.Empty;
 	private string mDisplayName = string.Empty;
 	private int mCash = 0;
+	private int mBossKilled = 0;
 	private bool mIsGuest = false;
 	
 	public long lastClaimedDaily = 0;
@@ -38,6 +39,11 @@ public class AccountManager : MonoBehaviour {
 	  set { mCash = value ^ randomNumb; }
 	}
 	
+	public int bossKilled {
+	  get { return mBossKilled ^ randomNumb; }
+	  set { mBossKilled = value ^ randomNumb; }
+	}
+	
 	public bool isGuest {
 	  get { return mIsGuest; }
 	  set { mIsGuest = value; }
@@ -61,6 +67,7 @@ public class AccountManager : MonoBehaviour {
 		password = user.GetString("password");
 		displayName = user.GetString("displayName");
 		cash = user.GetInt("cash");
+		bossKilled = user.GetInt("bossKill");
 		lastClaimedDaily = user.GetLong("lastDaily");
 		// friends = user.GetArray("friends");
 	}

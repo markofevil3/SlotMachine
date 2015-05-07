@@ -4,8 +4,8 @@ using System.Collections.Generic;
 
 public class PopupManager : MonoBehaviour {
   
-  private float dimAnimateSpeed = 0.4f;
-  private float dimAlpha = 0.7f;
+  private float dimAnimateSpeed = 0.3f;
+  private float dimAlpha = 0.5f;
   private List<Popup> openingPopup = new List<Popup>();
   
   private PopupResult popupResult;

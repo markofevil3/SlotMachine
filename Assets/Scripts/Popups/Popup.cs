@@ -19,7 +19,7 @@ public class Popup : MonoBehaviour {
   private Vector3 maxScale = new Vector3(1f, 1f, 1.0f);
   private Vector3 minScale = new Vector3(0.5f, 0.5f, 1.0f);
   private bool isAnimating = false;
-	private float animateTime = 0.4f;
+	private float animateTime = 0.3f;
   
   public UIPanel panel;
   public UIButton btnClose;

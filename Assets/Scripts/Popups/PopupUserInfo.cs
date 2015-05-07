@@ -13,6 +13,7 @@ public class PopupUserInfo : Popup {
   public GameObject userInfoPanel;
   public UILabel displayNameLabel;
   public UILabel cashLabel;
+	public UILabel killLabel;
   public UIButton btnAddFriend;
   public UIButton btnSendMessage;
 
@@ -48,10 +49,12 @@ public class PopupUserInfo : Popup {
   }
 
   public void DisplayUserInfo(JSONObject mUser) {
+		Debug.Log("mUser " + mUser.ToString());
 		Utils.SetActive(userInfoPanel, true);
     user = mUser;
     displayNameLabel.text = user.GetString("displayName");
-    cashLabel.text = user.GetString("cash");
+    cashLabel.text = user.GetInt("cash").ToString("N0");
+    killLabel.text = user.GetInt("bossKill").ToString("N0");
 		Utils.SetActive(btnAddFriend.gameObject, !AccountManager.Instance.IsFriend(user.GetString("username")));
   }
   
