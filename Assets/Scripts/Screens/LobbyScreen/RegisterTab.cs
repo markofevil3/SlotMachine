@@ -17,7 +17,7 @@ public class RegisterTab : Tab {
   void EventRegister() {
     if (usernameInput.value != string.Empty && passwordInput.value != string.Empty && retypePasswordInput.value != string.Empty && displayNameInput.value != string.Empty) {
       Debug.Log("EventRegister");
-      PopupManager.Instance.ShowLoadingPopup();
+      PopupManager.Instance.ShowLoadingPopup("LoadingText_Register");
       JSONObject jsonData = new JSONObject();
       jsonData.Add("username", usernameInput.value);
       jsonData.Add("password", passwordInput.value);

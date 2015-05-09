@@ -22,7 +22,7 @@ public class LoginTab : Tab {
   private void EventLogin() {
     // SmartfoxClient.Instance.ManualConnect(usernameInput.value);
     if (usernameInput.value != string.Empty && passwordInput.value != string.Empty) {
-      PopupManager.Instance.ShowLoadingPopup();
+      PopupManager.Instance.ShowLoadingPopup("LoadingText_Login");
       SmartfoxClient.Instance.LoginUser(usernameInput.value.ToLower(), passwordInput.value);
     }
   }

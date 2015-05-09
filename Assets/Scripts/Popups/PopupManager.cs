@@ -308,12 +308,12 @@ public class PopupManager : MonoBehaviour {
 	  #endif
   }
   
-  public void ShowLoadingPopup() {
+  public void ShowLoadingPopup(string localizeKey = null) {
     if (popupLoading == null) {
       GameObject tempGameObject = NGUITools.AddChild(root, Resources.Load(Global.POPUP_PATH + "/PopupLoading", typeof(GameObject)) as GameObject);
      	tempGameObject.name = "PopupLoading";
      	popupLoading = tempGameObject.GetComponent<PopupLoading>();
-     	popupLoading.Open();
+     	popupLoading.Open(localizeKey);
     }
   }
   

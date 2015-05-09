@@ -108,7 +108,7 @@ public class SmartfoxClient : MonoBehaviour {
   }
   
 	public void Connect() {
-		PopupManager.Instance.ShowLoadingPopup();
+		PopupManager.Instance.ShowLoadingPopup("LoadingText_Connecting");
 		client = new SmartFox();
 		client.ThreadSafeMode = true;
 		client.UseBlueBox = false;
@@ -137,7 +137,7 @@ public class SmartfoxClient : MonoBehaviour {
     #if UNITY_EDITOR
     client.Connect("127.0.0.1", 9933);
     # else
-    client.Connect("14.177.8.87", 9933);
+    client.Connect("113.190.5.254", 9933);
     # endif
     // walk around for custom error code from server
     SFSErrorCodes.SetErrorMessage(2, "{0}");
@@ -148,12 +148,10 @@ public class SmartfoxClient : MonoBehaviour {
 		  isConnected = true;
 		  Debug.Log("Connect Success " + AccountManager.Instance.username + " " + AccountManager.Instance.password);
 		  if (AccountManager.Instance.username != string.Empty) {
-        // PopupManager.Instance.ShowLoadingPopup();
 		    LoginUser(AccountManager.Instance.username, AccountManager.Instance.password, false);
 		  } else {
 				Debug.Log("OnConnection " + FileManager.GetFromKeyChain("username"));
 		    if (FileManager.GetFromKeyChain("username") != string.Empty) {
-          // PopupManager.Instance.ShowLoadingPopup();
 		      LoginUser(FileManager.GetFromKeyChain("username"), FileManager.GetFromKeyChain("password"), false);
 				} else {
 				  PopupManager.Instance.CloseLoadingPopup();

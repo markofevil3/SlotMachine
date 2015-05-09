@@ -43,7 +43,6 @@ public class SelectGameScreen : BaseScreen {
 		killLabel.text = AccountManager.Instance.bossKilled.ToString("N0");
 		
 		if (AccountManager.Instance.lastClaimedDaily == 0 || (long)((DateTime.UtcNow - Utils.time1970).TotalMilliseconds - AccountManager.Instance.lastClaimedDaily) >= Global.DAILY_REWARD_MILI) {
-			Debug.Log("### " + AccountManager.Instance.lastClaimedDaily + " " + (long)((DateTime.UtcNow - Utils.time1970).TotalMilliseconds - AccountManager.Instance.lastClaimedDaily));
 			EnableClaimDailyReward();
 		} else {
 			DisableClaimDailyReward();

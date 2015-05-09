@@ -116,7 +116,7 @@ public class LobbyScreen : BaseScreen {
 	}
   
   private void EventPlayAsGuest() {
-    PopupManager.Instance.ShowLoadingPopup();
+    PopupManager.Instance.ShowLoadingPopup("LoadingText_LoginGuest");
     AccountManager.Instance.RegisterAsGuest();
   }
   
@@ -125,7 +125,7 @@ public class LobbyScreen : BaseScreen {
   }
   
   private void EventLogout() {
-    PopupManager.Instance.ShowLoadingPopup();
+    PopupManager.Instance.ShowLoadingPopup("LoadingText_Logout");
     SmartfoxClient.Instance.LogoutUser();
   }
   

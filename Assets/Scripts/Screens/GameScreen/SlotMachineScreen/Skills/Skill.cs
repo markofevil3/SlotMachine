@@ -42,7 +42,7 @@ public class Skill : MonoBehaviour {
 			}
 		}
 		if (!isAlive) {
-			MyPoolManager.Instance.Despawn(transform);
+			Destroy();
 			// TEST CODE - comment for new method
 			// ScreenManager.Instance.CurrentSlotScreen.ResumeSpawnSkill();
 		} else {

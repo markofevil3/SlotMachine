@@ -41,14 +41,14 @@ public class MyPoolManager : MonoBehaviour {
 		if (spawnPool == null) {
 			spawnPool = PoolManager.Pools[poolName];
 		}
-		spawnPool.Despawn(prefab);
+		spawnPool.Despawn(prefab, spawnPool.transform);
 	}
 	
   public void Despawn(Transform prefab, float seconds) {
 		if (spawnPool == null) {
 			spawnPool = PoolManager.Pools[poolName];
 		}
-		spawnPool.Despawn(prefab, seconds);
+		spawnPool.Despawn(prefab, seconds, spawnPool.transform);
 	}
 	
 }

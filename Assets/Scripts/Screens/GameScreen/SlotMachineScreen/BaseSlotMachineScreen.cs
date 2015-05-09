@@ -359,6 +359,7 @@ public class SpinData {
 			dropCash = (int)bossDrops[0].Number;
 			dropGem = (int)bossDrops[1].Number;
 			bossDrops = null;
+			AccountManager.Instance.bossKilled++;
 		}
 		
 
