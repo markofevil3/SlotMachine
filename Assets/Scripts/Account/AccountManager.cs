@@ -17,6 +17,11 @@ public class AccountManager : MonoBehaviour {
 	private bool mIsGuest = false;
 	
 	public long lastClaimedDaily = 0;
+	
+	// facebook data
+	public string fbId = string.Empty;
+	public string avatarLink = string.Empty;
+	public string email = string.Empty;
 	// private JSONArray mFriends;
 	
 	public string username {
@@ -69,7 +74,21 @@ public class AccountManager : MonoBehaviour {
 		cash = user.GetInt("cash");
 		bossKilled = user.GetInt("bossKill");
 		lastClaimedDaily = user.GetLong("lastDaily");
+		fbId = user.GetString("facebookId");
+		avatarLink = user.GetString("avatar");
+		Debug.Log("SetUser " + user.ToString());
 		// friends = user.GetArray("friends");
+	}
+	
+	public void LogOut() {
+	  username = string.Empty;
+		password = string.Empty;
+		displayName = string.Empty;
+		cash = 0;
+		bossKilled = 0;
+		lastClaimedDaily = 0;
+		fbId = string.Empty;
+		avatarLink = string.Empty;
 	}
 	
 	public void UpdateUserCash(int updateVal) {
@@ -103,6 +122,11 @@ public class AccountManager : MonoBehaviour {
 	
 	public void RegisterAsGuest() {
 	  SmartfoxClient.Instance.RegisterAsGuest();
+	}
+		
+	// Login or register using facebook
+	public void LoginUsingFB(string mFBId, string mDisplayName, string mAvatarLink, string mEmail) {
+		SmartfoxClient.Instance.LoginUsingFB(mFBId, mDisplayName, mAvatarLink, mEmail);
 	}
 	
   // void HandleErrorCode(ErrorCode.USER errorCode) {

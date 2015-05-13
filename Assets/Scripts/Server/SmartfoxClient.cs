@@ -91,6 +91,21 @@ public class SmartfoxClient : MonoBehaviour {
     client.Send(new LoginRequest(userId, DEFAULT_PASSWORD, "Gamble", loginData));
   }
 
+	public void LoginUsingFB(string mFBId, string mDisplayName, string mAvatarLink, string mEmail) {
+    JSONObject jsonData = new JSONObject();
+    jsonData.Add("isFBLogin", true);
+    jsonData.Add("guestId", FileManager.GetFromKeyChain("guestId"));
+    jsonData.Add("username", FileManager.GetFromKeyChain("username"));
+    jsonData.Add("password", DEFAULT_PASSWORD);
+    jsonData.Add("displayName", mDisplayName);
+    jsonData.Add("avatar", mAvatarLink);
+    jsonData.Add("email", mEmail);
+		Debug.Log("LoginUsingFB--- " + jsonData.ToString());
+    ISFSObject loginData = new SFSObject();
+    loginData.PutByteArray("jsonData", Utils.ToByteArray(jsonData.ToString()));
+    client.Send(new LoginRequest(mFBId, DEFAULT_PASSWORD, "Gamble", loginData));
+	}
+
   public void LoginUser(string username, string password, bool isManual = true) {
     JSONObject jsonData = new JSONObject();
     jsonData.Add("isRegister", false);
@@ -184,15 +199,17 @@ public class SmartfoxClient : MonoBehaviour {
 	  isLoggedIn = true;
 		ISFSObject loginData = (ISFSObject)e.Params["data"];
 		JSONObject user = JSONObject.Parse(Utils.FromByteArray(loginData.GetByteArray("jsonData")));
+		Debug.Log("OnLogin------ " + user.ToString());
 		AccountManager.Instance.SetUser(user);
 		if (ScreenManager.Instance.LobbyScreen != null) {
 		  ScreenManager.Instance.LobbyScreen.EventLoggedIn();
 		}
 		if (user.GetBoolean("isRegister") || isManualLogin) {
-      bool mIsGuest = user.GetBoolean("isGuest");
+      bool mIsGuest = user.ContainsKey("isGuest") && user.GetBoolean("isGuest");
       string mUsername = user.GetString("username");
 		  FileManager.SaveToKeyChain("username", mUsername);
 		  FileManager.SaveToKeyChain("password", user.GetString("password"));
+		  FileManager.SaveToKeyChain("fbId", AccountManager.Instance.fbId);
 		  FileManager.SaveToKeyChain("isGuest", mIsGuest.ToString());
 		  if (mIsGuest && !isManualLogin) {
 		    FileManager.SaveToKeyChain("guestId", mUsername);
@@ -218,11 +235,14 @@ public class SmartfoxClient : MonoBehaviour {
   
   void OnLogout(BaseEvent e) {
     isLoggedIn = false;
+	  if (AccountManager.Instance != null) {
+	  	AccountManager.Instance.LogOut();
+	  }
     PopupManager.Instance.CloseLoadingPopup();
     if (ScreenManager.Instance.LobbyScreen != null) {
       ScreenManager.Instance.LobbyScreen.EventLogoutSuccess();
     }
-	  
+
     Debug.Log("Log out");
   }
   

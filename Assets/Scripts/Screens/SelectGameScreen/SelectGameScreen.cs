@@ -38,7 +38,7 @@ public class SelectGameScreen : BaseScreen {
     EventDelegate.Set(btnSetting.onClick, EventOpenSetting);
     EventDelegate.Set(btnDailyBonus.onClick, EventClaimDaily);
 		
-		usernameLabel.text = AccountManager.Instance.username;
+		usernameLabel.text = AccountManager.Instance.displayName;
 		UpdateUserCashLabelFinished();
 		killLabel.text = AccountManager.Instance.bossKilled.ToString("N0");
 		

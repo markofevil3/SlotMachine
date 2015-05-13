@@ -4,7 +4,7 @@ using System.Collections;
 public class LobbyScreen : BaseScreen {
 
   public static LobbyScreen Instance;
-
+  public UIButton btnLoginFB;
   public UIButton btnLogin;
   public UIButton btnRegister;
   public UIButton btnPlayAsGuest;
@@ -30,6 +30,8 @@ public class LobbyScreen : BaseScreen {
     EventDelegate.Set(btnRegister.onClick, delegate() { OpenTab(Tab.TabType.REGISTER_TAB); });
     EventDelegate.Set(btnPlayAsGuest.onClick, EventPlayAsGuest);
     EventDelegate.Set(btnSelectGame.onClick, EventMoveToSelectGameScreen);
+    EventDelegate.Set(btnLoginFB.onClick, EventLoginFB);
+		NGUITools.SetActive(btnLoginFB.gameObject, !MyFacebook.Instance.IsLoggedIn);
     // TEST - for test slot game
     // EventDelegate.Set(btnSelectGame.onClick, EventMoveToSlotScreen);
     EventDelegate.Set(btnLogout.onClick, EventLogout);
@@ -38,13 +40,15 @@ public class LobbyScreen : BaseScreen {
     if (SmartfoxClient.Instance.IsLoggedIn) {
       EventLoggedIn();
     }
-    Invoke("TestDropdown", 2.0f);
+		
+		MyFacebook.Instance.Init();
+    // Invoke("TestDropdown", 2.0f);
   }
 
-  void TestDropdown() {
-    HUDManager.Instance.AddFlyText("AAAAAA", Vector3.zero, 40, Color.red);
-    PopupManager.Instance.ShowNotification(string.Empty, "toi dang test");
-  }
+  // void TestDropdown() {
+  //   HUDManager.Instance.AddFlyText("AAAAAA", Vector3.zero, 40, Color.red);
+  //   PopupManager.Instance.ShowNotification(string.Empty, "toi dang test");
+  // }
   
   public override void Open() {
   }
@@ -115,6 +119,10 @@ public class LobbyScreen : BaseScreen {
 		}
 	}
   
+	private void EventLoginFB() {
+		MyFacebook.Instance.Login();
+	}
+	
   private void EventPlayAsGuest() {
     PopupManager.Instance.ShowLoadingPopup("LoadingText_LoginGuest");
     AccountManager.Instance.RegisterAsGuest();
@@ -135,6 +143,7 @@ public class LobbyScreen : BaseScreen {
 		Utils.SetActive(btnSelectGame.gameObject, false);
 		Utils.SetActive(btnLogout.gameObject, false);
 		Utils.SetActive(btnPlayAsGuest.gameObject, true);
+		NGUITools.SetActive(btnLoginFB.gameObject, AccountManager.Instance.fbId == string.Empty);
     buttonGrid.Reposition();
     // userBottomBar.EventUserLoggedOut();
   }
@@ -148,6 +157,7 @@ public class LobbyScreen : BaseScreen {
 		Utils.SetActive(btnPlayAsGuest.gameObject, false);
 		Utils.SetActive(btnSelectGame.gameObject, true);
 		Utils.SetActive(btnLogout.gameObject, true);
+		NGUITools.SetActive(btnLoginFB.gameObject, AccountManager.Instance.fbId == string.Empty);
     buttonGrid.Reposition();
 		Utils.SetActive(loginRegisterPanel, false);
     // userBottomBar.EventUserLoggedIn();
