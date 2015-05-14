@@ -314,7 +314,9 @@ public class PopupManager : MonoBehaviour {
      	tempGameObject.name = "PopupLoading";
      	popupLoading = tempGameObject.GetComponent<PopupLoading>();
      	popupLoading.Open(localizeKey);
-    }
+		} else {
+     	popupLoading.SetLoadingText(localizeKey);
+		}
   }
   
   public void CloseLoadingPopup() {

@@ -124,7 +124,6 @@ public class LobbyScreen : BaseScreen {
 	}
 	
   private void EventPlayAsGuest() {
-    PopupManager.Instance.ShowLoadingPopup("LoadingText_LoginGuest");
     AccountManager.Instance.RegisterAsGuest();
   }
   

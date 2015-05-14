@@ -23,7 +23,6 @@ public class TestTLMB : MonoBehaviour {
 		
 	    switch (commandInput.text) {
 			case "connect":
-				SmartfoxClient.Instance.ManualConnect(userIdInput.text);
 			break;
 			case "lobby":
 				TLMBClient.Instance.JoinLobby();

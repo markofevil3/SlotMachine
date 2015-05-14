@@ -45,13 +45,9 @@ public class SmartfoxClient : MonoBehaviour {
     Connect();
 	}
 
-	public void ManualConnect(string userId) {
-		this.userId = userId;
-		Connect();
-	}
-
   public void Register(JSONObject user) {
     if (client != null) {
+      PopupManager.Instance.ShowLoadingPopup("LoadingText_Register");
       user.Add("isRegister", true);
       user.Add("isGuest", false);
       ISFSObject loginData = new SFSObject();
@@ -63,6 +59,7 @@ public class SmartfoxClient : MonoBehaviour {
   }
 
   public void RegisterAsGuest() {
+    PopupManager.Instance.ShowLoadingPopup("LoadingText_LoginGuest");
     JSONObject user = new JSONObject();
     string userId = FileManager.GetFromKeyChain("guestId");
     if (userId == string.Empty) {
@@ -92,6 +89,7 @@ public class SmartfoxClient : MonoBehaviour {
   }
 
 	public void LoginUsingFB(string mFBId, string mDisplayName, string mAvatarLink, string mEmail) {
+    PopupManager.Instance.ShowLoadingPopup("LoadingText_Login");
     JSONObject jsonData = new JSONObject();
     jsonData.Add("isFBLogin", true);
     jsonData.Add("guestId", FileManager.GetFromKeyChain("guestId"));
@@ -107,6 +105,7 @@ public class SmartfoxClient : MonoBehaviour {
 	}
 
   public void LoginUser(string username, string password, bool isManual = true) {
+    PopupManager.Instance.ShowLoadingPopup("LoadingText_Login");
     JSONObject jsonData = new JSONObject();
     jsonData.Add("isRegister", false);
     jsonData.Add("isGuest", false);
@@ -191,6 +190,7 @@ public class SmartfoxClient : MonoBehaviour {
 		isLoggedIn = false;
 		PopupManager.Instance.Restart();
 		ScreenManager.Instance.Restart();
+		AccountManager.Instance.LogOut();
 		Connect();
 	}
 
