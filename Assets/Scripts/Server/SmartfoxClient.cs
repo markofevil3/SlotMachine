@@ -31,6 +31,11 @@ public class SmartfoxClient : MonoBehaviour {
 	private bool isConnected = false;
 	private bool isLoggedIn = false;
 
+	private bool shouldCallRegisterAsGuest = false;
+	private bool shouldCallLoginUsingFB = false;
+	private bool shouldCallLoginUser = false;
+	private JSONObject jsonDataToSend;
+
   public bool IsLoggedIn {
     get { return isLoggedIn; }
   }
@@ -42,7 +47,9 @@ public class SmartfoxClient : MonoBehaviour {
 
 	void Start() {
 		// userId = AccountManager.Instance.GetUserId();
-    Connect();
+		if (FileManager.GetFromKeyChain("username") != string.Empty || FileManager.GetFromKeyChain("guestId") != string.Empty) {
+	    Connect(null);
+		}
 	}
 
   public void Register(JSONObject user) {
@@ -59,37 +66,40 @@ public class SmartfoxClient : MonoBehaviour {
   }
 
   public void RegisterAsGuest() {
-    PopupManager.Instance.ShowLoadingPopup("LoadingText_LoginGuest");
-    JSONObject user = new JSONObject();
-    string userId = FileManager.GetFromKeyChain("guestId");
-    if (userId == string.Empty) {
-      userId = Guid.NewGuid().ToString().Replace("-", "");
-      user.Add("isRegister", true);
-      Debug.Log("RegisterAsGuest " + userId);
-    } else {
-      user.Add("isRegister", false);
-      Debug.Log("LoginAsGuest " + userId);
-    }
+		if (isConnected) {
+	    PopupManager.Instance.ShowLoadingPopup("LoadingText_LoginGuest");
+	    JSONObject user = new JSONObject();
+	    string userId = FileManager.GetFromKeyChain("guestId");
+	    if (userId == string.Empty) {
+	      userId = Guid.NewGuid().ToString().Replace("-", "");
+	      user.Add("isRegister", true);
+	      Debug.Log("RegisterAsGuest " + userId);
+	    } else {
+	      user.Add("isRegister", false);
+	      Debug.Log("LoginAsGuest " + userId);
+	    }
     
-    // FAKE create fake user -- remove when publish
-    #if UNITY_EDITOR
-      userId = Guid.NewGuid().ToString().Replace("-", "");
-      user.Add("isRegister", true);
-    # endif
-    //
+	    // FAKE create fake user -- remove when publish
+	    #if UNITY_EDITOR
+	      userId = Guid.NewGuid().ToString().Replace("-", "");
+	      user.Add("isRegister", true);
+	    # endif
+	    //
     
-    user.Add("isGuest", true);
-    user.Add("username", userId);
-    user.Add("password", DEFAULT_PASSWORD);
-    user.Add("displayName", DEFAULT_GUEST_NAME);
-    
-    ISFSObject loginData = new SFSObject();
-    loginData.PutByteArray("jsonData", Utils.ToByteArray(user.ToString()));
-    client.Send(new LoginRequest(userId, DEFAULT_PASSWORD, "Gamble", loginData));
+	    user.Add("isGuest", true);
+	    user.Add("username", userId);
+	    user.Add("password", DEFAULT_PASSWORD);
+	    user.Add("displayName", DEFAULT_GUEST_NAME);
+	    ISFSObject loginData = new SFSObject();
+	    loginData.PutByteArray("jsonData", Utils.ToByteArray(user.ToString()));
+	    client.Send(new LoginRequest(userId, DEFAULT_PASSWORD, "Gamble", loginData));
+		} else {
+			shouldCallRegisterAsGuest = true;
+			Connect(null);
+		}
   }
 
 	public void LoginUsingFB(string mFBId, string mDisplayName, string mAvatarLink, string mEmail) {
-    PopupManager.Instance.ShowLoadingPopup("LoadingText_Login");
     JSONObject jsonData = new JSONObject();
     jsonData.Add("isFBLogin", true);
     jsonData.Add("guestId", FileManager.GetFromKeyChain("guestId"));
@@ -98,21 +108,35 @@ public class SmartfoxClient : MonoBehaviour {
     jsonData.Add("displayName", mDisplayName);
     jsonData.Add("avatar", mAvatarLink);
     jsonData.Add("email", mEmail);
-		Debug.Log("LoginUsingFB--- " + jsonData.ToString());
-    ISFSObject loginData = new SFSObject();
-    loginData.PutByteArray("jsonData", Utils.ToByteArray(jsonData.ToString()));
-    client.Send(new LoginRequest(mFBId, DEFAULT_PASSWORD, "Gamble", loginData));
+    jsonData.Add("fbId", mFBId);
+		if (isConnected) {
+			Debug.Log("LoginUsingFB--- " + jsonData.ToString());
+	    PopupManager.Instance.ShowLoadingPopup("LoadingText_Login");
+	    ISFSObject loginData = new SFSObject();
+	    loginData.PutByteArray("jsonData", Utils.ToByteArray(jsonData.ToString()));
+	    client.Send(new LoginRequest(mFBId, DEFAULT_PASSWORD, "Gamble", loginData));
+		} else {
+			shouldCallLoginUsingFB = true;
+			Connect(jsonData);
+		}
 	}
 
   public void LoginUser(string username, string password, bool isManual = true) {
-    PopupManager.Instance.ShowLoadingPopup("LoadingText_Login");
     JSONObject jsonData = new JSONObject();
     jsonData.Add("isRegister", false);
     jsonData.Add("isGuest", false);
-    ISFSObject loginData = new SFSObject();
-    loginData.PutByteArray("jsonData", Utils.ToByteArray(jsonData.ToString()));
-    isManualLogin = isManual;
-    client.Send(new LoginRequest(username, password, "Gamble", loginData));
+    jsonData.Add("username", username);
+    jsonData.Add("password", password);
+		if (isConnected) {
+	    PopupManager.Instance.ShowLoadingPopup("LoadingText_Login");
+	    ISFSObject loginData = new SFSObject();
+	    loginData.PutByteArray("jsonData", Utils.ToByteArray(jsonData.ToString()));
+	    isManualLogin = isManual;
+	    client.Send(new LoginRequest(username, password, "Gamble", loginData));
+		} else {
+			shouldCallLoginUser = true;
+			Connect(jsonData);
+		}
   }
   
   public void LogoutUser() {
@@ -121,7 +145,8 @@ public class SmartfoxClient : MonoBehaviour {
     }
   }
   
-	public void Connect() {
+	public void Connect(JSONObject jsonData) {
+		jsonDataToSend = jsonData;
 		PopupManager.Instance.ShowLoadingPopup("LoadingText_Connecting");
 		client = new SmartFox();
 		client.ThreadSafeMode = true;
@@ -161,6 +186,23 @@ public class SmartfoxClient : MonoBehaviour {
 		if ((bool)e.Params["success"]) {
 		  isConnected = true;
 		  Debug.Log("Connect Success " + AccountManager.Instance.username + " " + AccountManager.Instance.password);
+			if (shouldCallRegisterAsGuest) {
+				shouldCallRegisterAsGuest = false;
+				RegisterAsGuest();
+				return;
+			}
+			if (shouldCallLoginUsingFB) {
+				shouldCallLoginUsingFB = false;
+				LoginUsingFB(jsonDataToSend.GetString("fbId"), jsonDataToSend.GetString("displayName"), jsonDataToSend.GetString("avatar"), jsonDataToSend.GetString("email"));
+				jsonDataToSend = null;
+				return;
+			}
+			if (shouldCallLoginUser) {
+				shouldCallLoginUser = false;
+				LoginUser(jsonDataToSend.GetString("username"), jsonDataToSend.GetString("password"));
+				jsonDataToSend = null;
+				return;
+			}
 		  if (AccountManager.Instance.username != string.Empty) {
 		    LoginUser(AccountManager.Instance.username, AccountManager.Instance.password, false);
 		  } else {
@@ -188,10 +230,14 @@ public class SmartfoxClient : MonoBehaviour {
 	public void Restart() {
 		isManualLogin = false;
 		isLoggedIn = false;
+		shouldCallRegisterAsGuest = false;
+		shouldCallLoginUsingFB = false;
+		shouldCallLoginUser = false;
+		jsonDataToSend = null;
 		PopupManager.Instance.Restart();
 		ScreenManager.Instance.Restart();
 		AccountManager.Instance.LogOut();
-		Connect();
+		Connect(null);
 	}
 
 	void OnLogin(BaseEvent e) {
@@ -216,7 +262,6 @@ public class SmartfoxClient : MonoBehaviour {
 		  }
 		  isManualLogin = false;
 		}
-		Debug.Log("OnLogin---" + user.ToString());
 	}
 
 	void OnLoginError(BaseEvent e) {
@@ -227,6 +272,7 @@ public class SmartfoxClient : MonoBehaviour {
 	  
 	  HUDManager.Instance.AddFlyText(((ErrorCode.USER)errorCode).ToString(), Vector3.zero, 40, Color.red);
     if (ScreenManager.Instance.LobbyScreen != null) {
+			Debug.Log("############");
       ScreenManager.Instance.LobbyScreen.EventLoginFail();
 		}
 		
@@ -234,6 +280,7 @@ public class SmartfoxClient : MonoBehaviour {
 	}
   
   void OnLogout(BaseEvent e) {
+    Debug.Log("Log out");
     isLoggedIn = false;
 	  if (AccountManager.Instance != null) {
 	  	AccountManager.Instance.LogOut();
@@ -242,8 +289,6 @@ public class SmartfoxClient : MonoBehaviour {
     if (ScreenManager.Instance.LobbyScreen != null) {
       ScreenManager.Instance.LobbyScreen.EventLogoutSuccess();
     }
-
-    Debug.Log("Log out");
   }
   
 	void OnJoinRoom(BaseEvent e) {

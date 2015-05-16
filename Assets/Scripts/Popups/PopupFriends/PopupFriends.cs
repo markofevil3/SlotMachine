@@ -9,6 +9,8 @@ public class PopupFriends : Popup {
   
   private const int STOP_DRAG_NUMB_ROW = 3;
   
+	public UIEventTriggerExtent tabInvite;
+	public UIEventTriggerExtent tabFriends;
   public UIWrapContent wrapContent;
   public UIScrollView scrollview;
   public UIDragScrollView backgroundDragScrollView;
@@ -18,6 +20,9 @@ public class PopupFriends : Popup {
   
   public override void Init(object[] data) {
     base.Init(data);
+    EventDelegate.Set(tabInvite.onClick, EventTabInvite);
+    EventDelegate.Set(tabFriends.onClick, EventTabFriends);
+		
 		// Get list friends from smartfox buddy list
     List<Buddy> buddyList = SmartfoxClient.Instance.GetBuddyList();
     if (buddyList.Count > 0) {
@@ -45,6 +50,14 @@ public class PopupFriends : Popup {
       Debug.Log("----------- DONE HAVE ANY FRIEND ----------------");
     }
   }
+
+	void EventTabInvite() {
+		MyFacebook.Instance.InviteFriends();
+	}
+
+	void EventTabFriends() {
+		
+	}
 
   // void LoadListFriendFromServer() {
   //   PopupManager.Instance.ShowLoadingPopup();

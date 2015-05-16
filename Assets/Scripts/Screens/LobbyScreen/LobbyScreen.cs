@@ -138,11 +138,11 @@ public class LobbyScreen : BaseScreen {
   
   public void EventLogoutSuccess() {
 		Utils.SetActive(btnLogin.gameObject, true);
-		Utils.SetActive(btnRegister.gameObject, true);
+		Utils.SetActive(btnRegister.gameObject, false);
 		Utils.SetActive(btnSelectGame.gameObject, false);
 		Utils.SetActive(btnLogout.gameObject, false);
 		Utils.SetActive(btnPlayAsGuest.gameObject, true);
-		NGUITools.SetActive(btnLoginFB.gameObject, AccountManager.Instance.fbId == string.Empty);
+		Utils.SetActive(btnLoginFB.gameObject, true);
     buttonGrid.Reposition();
     // userBottomBar.EventUserLoggedOut();
   }
@@ -156,7 +156,7 @@ public class LobbyScreen : BaseScreen {
 		Utils.SetActive(btnPlayAsGuest.gameObject, false);
 		Utils.SetActive(btnSelectGame.gameObject, true);
 		Utils.SetActive(btnLogout.gameObject, true);
-		NGUITools.SetActive(btnLoginFB.gameObject, AccountManager.Instance.fbId == string.Empty);
+		Utils.SetActive(btnLoginFB.gameObject, false);
     buttonGrid.Reposition();
 		Utils.SetActive(loginRegisterPanel, false);
     // userBottomBar.EventUserLoggedIn();
@@ -166,5 +166,6 @@ public class LobbyScreen : BaseScreen {
     if (loginTab != null) {
       loginTab.ClearInput();
     }
+		EventLogoutSuccess();
   }
 }

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using Boomlagoon.JSON;
 
 public class MyFacebook : MonoBehaviour {
@@ -34,6 +35,7 @@ public class MyFacebook : MonoBehaviour {
 	
 	
 	public void Login() {
+    PopupManager.Instance.ShowLoadingPopup("LoadingText_Login");
     FB.Login("public_profile,email,user_friends", LoginCallback);
 	}
 	
@@ -41,8 +43,10 @@ public class MyFacebook : MonoBehaviour {
 		string lastResponse = "";
     if (result.Error != null) {
 	    lastResponse = "Error Response:\n" + result.Error;
+		  PopupManager.Instance.CloseLoadingPopup();
 		} else if (!FB.IsLoggedIn) {
       lastResponse = "Login cancelled by Player";
+		  PopupManager.Instance.CloseLoadingPopup();
     } else {
       lastResponse = "Login was successful! " + FB.UserId;;
 			AccountManager.Instance.fbId = FB.UserId;
@@ -58,15 +62,40 @@ public class MyFacebook : MonoBehaviour {
 	void LoadUserProfileCallback(FBResult result) {
     if (result.Error != null) {
 			Debug.Log("LoadUserProfileCallback " + result.Error);
+		  PopupManager.Instance.CloseLoadingPopup();
 			return;
 		}  
 		JSONObject userData = JSONObject.Parse(result.Text);
 		AccountManager.Instance.avatarLink = userData.GetObject("picture").GetObject("data").GetString("url").Replace("\\", "");
 		AccountManager.Instance.displayName = userData.GetString("name");
 		AccountManager.Instance.email = userData.ContainsKey("email") ? userData.GetString("email") : string.Empty;
-		// TO DO - send request login or register to server
 		AccountManager.Instance.LoginUsingFB(FB.UserId, AccountManager.Instance.displayName, AccountManager.Instance.avatarLink, AccountManager.Instance.email);
-		
 		userData = null;
+	}
+	
+	public void InviteFriends() {
+		if (FB.IsLoggedIn) {
+	    PopupManager.Instance.ShowLoadingPopup("LoadingText_GettingFbFriends");
+      List<object> friendSelectorFilters = new List<object>();
+      friendSelectorFilters.Add("app_non_users");
+	    FB.AppRequest(
+        to: null,
+        filters : friendSelectorFilters,
+        excludeIds : null,
+        message: "Friend Smash is smashing! Check it out.",
+        title: "Play Friend Smash with me!",
+        callback:InviteFriendsCallback
+	    );   
+		} else {
+			HUDManager.Instance.AddFlyText(Localization.Get("InviteFriend_AskForLogin"), Vector3.zero, 40, Color.red, 0, 2f);
+		}
+	}
+	
+	void InviteFriendsCallback(FBResult result) {
+	  PopupManager.Instance.CloseLoadingPopup();
+    if (result.Error == null) {
+      HUDManager.Instance.AddFlyText(Localization.Get("InviteFriend_Success"), Vector3.zero, 40, Color.green, 0, 2f);
+		}
+		Debug.Log("InviteFriendsCallback " + result.Text);
 	}
 }
