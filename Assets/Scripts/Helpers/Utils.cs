@@ -132,6 +132,10 @@ public class Utils : MonoBehaviour {
 			
 		return timeString;
 	}
+	
+	public static void Log(object message) {
+		Debug.Log(message);
+	}
 }
 
 static class MyExtensions

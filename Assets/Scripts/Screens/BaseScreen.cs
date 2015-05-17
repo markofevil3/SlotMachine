@@ -22,6 +22,7 @@ public class BaseScreen : MonoBehaviour {
 	
 	// Destroy screen
 	public virtual void Close() {
+		DestroyCallBack();
 		Destroy(gameObject);	  
 	}
 	
@@ -62,4 +63,6 @@ public class BaseScreen : MonoBehaviour {
 		}
 		Close();
 	}
+	
+	public virtual void DestroyCallBack() {}
 }

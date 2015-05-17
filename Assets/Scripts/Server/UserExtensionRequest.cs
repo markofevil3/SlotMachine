@@ -20,7 +20,7 @@ public class UserExtensionRequest : MonoBehaviour {
   void LoadLeaderboardDataSuccess(JSONObject data) {
     LeaderboardScreen.Tab selectedTab = (LeaderboardScreen.Tab)data.GetInt("type");
     LeaderboardScreen.SetData( data.GetArray("users"), selectedTab);
-    Debug.Log("LoadLeaderboardDataSuccess " + data.ToString());
+    Utils.Log("LoadLeaderboardDataSuccess " + data.ToString());
     if (ScreenManager.Instance.LeaderboardScreen != null) {
       ScreenManager.Instance.LeaderboardScreen.ShowTopPlayer(selectedTab);
     }
@@ -57,14 +57,14 @@ public class UserExtensionRequest : MonoBehaviour {
   void ClaimDailyRewardSuccess(JSONObject data) {
     ErrorCode.USER errorCode = (ErrorCode.USER)data.GetInt("errorCode");
     if (errorCode == ErrorCode.USER.NULL) {
-      Debug.Log("ClaimDailyRewardSuccess-- " + data.ToString());
+      Utils.Log("ClaimDailyRewardSuccess-- " + data.ToString());
 			AccountManager.Instance.lastClaimedDaily = data.GetLong("lastDaily");
 			AccountManager.Instance.UpdateUserCash(data.GetInt("cash"));
 			if (ScreenManager.Instance.SelectGameScreen != null) {
 				ScreenManager.Instance.SelectGameScreen.ClaimedDailyRewardCallback();
 			}
     } else {
-      Debug.Log("ClaimDailyRewardFail-- " + data.ToString());
+      Utils.Log("ClaimDailyRewardFail-- " + data.ToString());
       HUDManager.Instance.AddFlyText(errorCode.ToString(), Vector3.zero, 40, Color.red);
     }
   }
@@ -89,6 +89,22 @@ public class UserExtensionRequest : MonoBehaviour {
     }
   }
   
+  public void AddFbFriends(JSONArray fbIds) {
+    JSONObject data = new JSONObject();
+    data.Add("username", AccountManager.Instance.username);
+    data.Add("fbIds", fbIds);
+    SmartfoxClient.Instance.HandleServerRequest(CreateExtensionRequest(Command.USER.ADD_FB_FRIEND, "AddFbFriendSuccess", data));
+  }
+	
+  void AddFbFriendSuccess(JSONObject data) {
+    ErrorCode.USER errorCode = (ErrorCode.USER)data.GetInt("errorCode");
+    if (errorCode == ErrorCode.USER.NULL) {
+      Utils.Log("AddFbFriendSuccess--------- " + data.ToString());
+    } else {
+      HUDManager.Instance.AddFlyText(errorCode.ToString(), Vector3.zero, 40, Color.red);
+    }
+  }
+	
   public void InviteToGame(JSONArray inviteUsernames, BaseSlotMachineScreen.GameType gameType, string roomName) {
 	  JSONObject jsonData = new JSONObject();
 		jsonData.Add("gameType", SlotMachineClient.GetCommandByGameType(gameType));
@@ -106,7 +122,7 @@ public class UserExtensionRequest : MonoBehaviour {
     PopupManager.Instance.CloseLoadingPopup();
     PopupManager.Instance.HideLoadingIndicator();
     
-    Debug.Log("HandleErrorCode " + errorCode);
+    Utils.Log("HandleErrorCode " + errorCode);
   }
   
   private ISFSObject CreateExtensionObject(JSONObject jsonData) {

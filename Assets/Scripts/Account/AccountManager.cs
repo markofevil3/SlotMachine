@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using Boomlagoon.JSON;
 using Sfs2X.Entities.Data;
@@ -76,7 +76,7 @@ public class AccountManager : MonoBehaviour {
 		lastClaimedDaily = user.GetLong("lastDaily");
 		fbId = user.GetString("facebookId");
 		avatarLink = user.GetString("avatar");
-		Debug.Log("SetUser " + user.ToString());
+		Utils.Log("SetUser " + user.ToString());
 		// friends = user.GetArray("friends");
 	}
 	
@@ -130,7 +130,7 @@ public class AccountManager : MonoBehaviour {
 	}
 	
   // void HandleErrorCode(ErrorCode.USER errorCode) {
-  //   Debug.Log("HandleErrorCode " + errorCode);
+  //   Utils.Log("HandleErrorCode " + errorCode);
   // }
   // 
   // private ISFSObject CreateExtensionObject(JSONObject jsonData) {

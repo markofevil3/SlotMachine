@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using Boomlagoon.JSON;
 
@@ -36,9 +36,9 @@ public class SlotDragonScreen : BaseSlotMachineScreen {
 	}
 	
 	private void BossGetHitCallback() {
-		Debug.Log("BossGetHitCallback");
+		Utils.Log("BossGetHitCallback");
 		if (specialData.GetInt("dHP") == 0) {
-			Debug.Log("Boss DEAD");
+			Utils.Log("Boss DEAD");
 			bossManager.ChangeBoss(specialData.GetObject("newBoss"), "EventFinishChangeBoss");
 			int dropCash = (int)specialData.GetArray("dropItems")[0].Number;
 			

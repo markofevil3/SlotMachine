@@ -31,15 +31,15 @@ public class PopupFriends : Popup {
 			for (int i = 0; i < buddyList.Count; i++) {
 				friend = new JSONObject();
 				if (buddyList[i].IsOnline) {
-					Debug.Log("GetOnline Var");
 					friend.Add("displayName", buddyList[i].GetVariable("displayName").GetStringValue());
 					friend.Add("cash", buddyList[i].GetVariable("cash").GetIntValue());
+					friend.Add("avatar", buddyList[i].GetVariable("avatar").GetStringValue());
+					friend.Add("facebookId", buddyList[i].GetVariable("facebookId").GetStringValue());
 				} else {
-					// friend.Add("displayName", buddyList[i].GetVariable("$displayName").GetStringValue());
-					// friend.Add("cash", buddyList[i].GetVariable("$cash").GetIntValue());
-					// TEST CODE
-					friend.Add("displayName", "offline");
-					friend.Add("cash", "offline2");
+					friend.Add("displayName", buddyList[i].GetVariable("$displayName").GetStringValue());
+					friend.Add("cash", buddyList[i].GetVariable("$cash").GetIntValue());
+					friend.Add("avatar", buddyList[i].ContainsVariable("$avatar") ? buddyList[i].GetVariable("$avatar").GetStringValue() : string.Empty);
+					friend.Add("facebookId", buddyList[i].ContainsVariable("$facebookId") ? buddyList[i].GetVariable("$facebookId").GetStringValue() : string.Empty);
 				}
 				friend.Add("username", buddyList[i].Name);
 				friendList.Add(friend);
@@ -47,7 +47,7 @@ public class PopupFriends : Popup {
 			}
     } else {
       Utils.SetActive(scrollview.gameObject, false);
-      Debug.Log("----------- DONE HAVE ANY FRIEND ----------------");
+      Utils.Log("----------- DONE HAVE ANY FRIEND ----------------");
     }
   }
 

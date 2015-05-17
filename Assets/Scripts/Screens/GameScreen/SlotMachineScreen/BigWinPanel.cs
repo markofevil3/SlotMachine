@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using Boomlagoon.JSON;
 
@@ -21,7 +21,7 @@ public class BigWinPanel : MonoBehaviour {
 
 	// Fade in Big Win
 	public void FadeInBigWin(int numb) {
-		Debug.Log("FadeInBigWin");
+		Utils.Log("FadeInBigWin");
 		totalScore = numb;
 		NGUITools.SetActive(gameObject, true);
 		NGUITools.SetActive(bigWinView, true);
@@ -49,7 +49,7 @@ public class BigWinPanel : MonoBehaviour {
 
 	// Fade in Free Spin
 	public void FadeInFreeSpin(int numb, bool shouldPause = true) {
-		Debug.Log("FadeInFreeSpin");
+		Utils.Log("FadeInFreeSpin");
 		
 		NGUITools.SetActive(gameObject, true);
 		NGUITools.SetActive(bigWinView, false);

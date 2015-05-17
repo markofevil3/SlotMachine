@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using Boomlagoon.JSON;
 
@@ -32,7 +32,7 @@ public class SelectRoomScreen : BaseScreen {
     // fake room list
     // roomList = new JSONArray();
     roomList = ((JSONObject)data[1]).GetArray("rooms");
-    Debug.Log(roomList.ToString());
+    Utils.Log(roomList.ToString());
     // fake room min bet
     // int[] roomBet = new int[] { 10000, 100000, 520000, 2000000};
     // for (int i = 0; i < roomList.Length; i++) {
@@ -91,7 +91,7 @@ public class SelectRoomScreen : BaseScreen {
   private void EventFilterBet() {
     betFilterLabel.SetCurrentSelection();
     string crtSelect = UIPopupList.current.value;
-    Debug.Log("EventFilterBet " + crtSelect);
+    Utils.Log("EventFilterBet " + crtSelect);
     if (crtSelect == crtBetFilter) {
       return;
     }

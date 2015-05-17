@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using Boomlagoon.JSON;
 
@@ -60,11 +60,10 @@ public class BossManager : MonoBehaviour {
 		this.type = type;
 		this.maxHP = maxHP;
 		this.currentHP = currentHP;
-		// TEST CODE - fixed boss
 		Transform bossTrans = MyPoolManager.Instance.Spawn(GetBossPrefabName(slotMachineScreen.gameType, type), transform);
 		boss = bossTrans.GetComponent<Boss>();
 		boss.Init();
-		Debug.Log("Init boss " + type);
+		Utils.Log("Init boss " + type);
 		UpdateHPBar();
 	}
 	

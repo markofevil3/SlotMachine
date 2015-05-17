@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using Boomlagoon.JSON;
@@ -62,7 +62,7 @@ public class SlotMachine : MonoBehaviour {
       //   resultsData[i] = slotCombination.RandomItem();
       //   log += resultsData[i] + ",";
       // }
-      // Debug.Log("StartMachine " + log);
+      // Utils.Log("StartMachine " + log);
       for (int i = 0; i < slotReels.Length; i++) {
         slotReels[i].Reset();
         slotReels[i].StartMachine();

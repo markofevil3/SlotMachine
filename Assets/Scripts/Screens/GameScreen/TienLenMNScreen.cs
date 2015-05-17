@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +25,7 @@ public class TienLenMNScreen : BaseGameScreen {
     base.Init(data);
     EventDelegate.Set(btnBack.onClick, BackToSelectRoom);
     EventDelegate.Set(btnThrowCard.onClick, EventPlayCards);
-    Debug.Log(data[1]);
+    Utils.Log(data[1]);
     JSONObject roomData = (JSONObject)data[1];
     JSONArray userList = roomData.GetObject("gameRoom").GetArray("userGames");
     for (int i = 0 ; i < userList.Length; i++) {

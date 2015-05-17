@@ -24,6 +24,7 @@ public class LeaderboardScreen : BaseScreen {
   public UIScrollView scrollview;
   public UIButton[] tabBars = new UIButton[2];
   public UIDragScrollView backgroundDragScrollView;
+	public UIWidget wrapperAnchor;
 	
   private Tab currentTab = Tab.NULL;
   private bool isInitingRow = false;
@@ -178,6 +179,7 @@ public class LeaderboardScreen : BaseScreen {
 				Utils.SetActive(tempGameObject.gameObject, false);
       }
     }
+		wrapperAnchor.ResetAndUpdateAnchors();
   }
 
   float lastValue = 0;
@@ -217,6 +219,11 @@ public class LeaderboardScreen : BaseScreen {
   private void EventBackToPrevScreen() {
     ScreenManager.Instance.BackToPrevScreen();
   }
+
+	public override void DestroyCallBack() {
+		topRicherLoadTime = null;
+		topWinnerLoadTime = null;
+	}
 
   public override void Close() {
 		ScreenManager.Instance.LeaderboardScreen = null;

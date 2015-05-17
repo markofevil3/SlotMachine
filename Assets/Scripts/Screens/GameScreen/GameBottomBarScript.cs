@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using Boomlagoon.JSON;
 
@@ -42,7 +42,7 @@ public class GameBottomBarScript : MonoBehaviour {
     // TO DO: verify chat before send
     if (chatInput.value != string.Empty) {
       string escapedString = Utils.ChatEscape(chatInput.value);
-      Debug.Log("###### " + escapedString + " ---- " + Utils.ChatUnescape(escapedString));
+      Utils.Log("###### " + escapedString + " ---- " + Utils.ChatUnescape(escapedString));
       DisplayBubbleChat(escapedString, currentScreen.FindUserSlot(AccountManager.Instance.username));
       JSONObject data = new JSONObject();
       data.Add("message", escapedString);

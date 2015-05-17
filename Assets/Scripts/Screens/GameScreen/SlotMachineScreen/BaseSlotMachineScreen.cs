@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using Boomlagoon.JSON;
@@ -59,9 +59,9 @@ public class BaseSlotMachineScreen : BaseScreen {
 	}
 	
 	IEnumerator ProcessSpinData(SpinData spinData) {
-		Debug.Log("ProcessSpinData " + spinData.spawnSkills.Count);
+		Utils.Log("ProcessSpinData " + spinData.spawnSkills.Count);
 		if (spinData.newBossData != null) {
-			Debug.Log("ProcessSpinData~~~~~~~~~ ");
+			Utils.Log("ProcessSpinData~~~~~~~~~ ");
 			PauseSpawnSkill();
 		}
 		// Show Glow on user slot if not you
@@ -82,7 +82,7 @@ public class BaseSlotMachineScreen : BaseScreen {
 	}
 	
 	public virtual void DisplayBossDrop(int dropCash, int dropGem, JSONObject newBossData) {
-		Debug.Log("DisPlayBossDrop " + dropCash + " " + dropGem);
+		Utils.Log("DisPlayBossDrop " + dropCash + " " + dropGem);
 		bigWinPanel.FadeInTreasure(dropCash, dropGem, newBossData);
 		StartCoroutine(DisplayBossDropCallback(dropCash, dropGem, newBossData));
 	}
@@ -106,13 +106,13 @@ public class BaseSlotMachineScreen : BaseScreen {
 	// }
 	
 	public void PauseSpawnSkill() {
-		Debug.Log("PauseSpawnSkill");
+		Utils.Log("PauseSpawnSkill");
 		canSpawnSkill = false;
 		slotMachine.Wait();
 	}
 	
 	public void ResumeSpawnSkill() {
-		Debug.Log("ResumeSpawnSkill");
+		Utils.Log("ResumeSpawnSkill");
 		
 		canSpawnSkill = true;
 		slotMachine.Resume();
@@ -123,13 +123,6 @@ public class BaseSlotMachineScreen : BaseScreen {
 	
 	// Spawn skill if avaiable in queue
 	void Update() {
-		// TEST CODE - commented to use new SpinData queue
-		// if (listSpawnSkills.Count > 0 && canSpawnSkill) {
-		// 	canSpawnSkill = false;
-		// 	SpawnSkill(listSpawnSkills[0]);
-		// 	listSpawnSkills.RemoveAt(0);
-		// }
-		
 		if (listSpinDatas.Count > 0 && canSpawnSkill) {
 		// if (listSpinDatas.Count > 0 && (canSpawnSkill || Network.time - lastProcessSpin > MAX_SKILL_DURATION)) {
 			lastProcessSpin = Network.time;
@@ -149,7 +142,7 @@ public class BaseSlotMachineScreen : BaseScreen {
     SetNunLine(1);
     
     // Init other players if have
-    Debug.Log("### " + data[1].ToString());
+    Utils.Log("### " + data[1].ToString());
     JSONObject jsonData = (JSONObject)data[1];
     JSONArray otherPlayerDatas = jsonData.GetArray("otherPlayers");
 		roomData = jsonData.GetObject("roomData");
@@ -216,7 +209,7 @@ public class BaseSlotMachineScreen : BaseScreen {
 		}
 		int fromVal = AccountManager.Instance.cash;
 		AccountManager.Instance.UpdateUserCash(addValue);
-		Debug.Log("UpdateUserCash " + fromVal + " " + AccountManager.Instance.cash + " " + addValue);
+		Utils.Log("UpdateUserCash " + fromVal + " " + AccountManager.Instance.cash + " " + addValue);
 		LeanTween.value(gameObject, UpdateUserCashLabelCallback, fromVal, AccountManager.Instance.cash, 1f).setOnComplete(UpdateUserCashLabelFinished);
   }
   
@@ -268,7 +261,7 @@ public class BaseSlotMachineScreen : BaseScreen {
       if (playerSlot != null) {
         playerSlot.InitEmpty();
       } else {
-        Debug.Log("Cant find user slot " + username);
+        Utils.Log("Cant find user slot " + username);
       }
     } else {
       Debug.LogError("Not in this room " + this.roomId + " | " + roomId);
@@ -280,7 +273,7 @@ public class BaseSlotMachineScreen : BaseScreen {
      if (playerSlot != null) {
        playerSlot.UpdateCash(cashVal);
      } else {
-       Debug.Log("Cant find user slot " + username);
+       Utils.Log("Cant find user slot " + username);
      }
   }
   
@@ -340,7 +333,7 @@ public class SpinData {
 		
 		
 	public SpinData(string username, JSONObject jsonData, bool isYou) {
-		Debug.Log("SpinData: " + jsonData.ToString());
+		Utils.Log("SpinData: " + jsonData.ToString());
 		this.isYou = isYou;
 		this.username = username;
 		JSONArray resultsData = jsonData.GetArray("items");

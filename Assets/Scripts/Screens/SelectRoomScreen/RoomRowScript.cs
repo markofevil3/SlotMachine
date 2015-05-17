@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using Boomlagoon.JSON;
 
@@ -29,7 +29,7 @@ public class RoomRowScript : MonoBehaviour {
   }
   
   private void EventJoinSelectedRoom(string roomId) {
-    Debug.Log("EventJoinSelectedRoom " + roomId);
+    Utils.Log("EventJoinSelectedRoom " + roomId);
 		TLMBClient.Instance.Join(roomId);
     // if (ScreenManager.Instance.SelectRoomScreen != null) {
     //   ScreenManager.Instance.SetScreen(BaseScreen.Type.GAME_SCREEN, new object[]{ScreenManager.Instance.SelectRoomScreen.gameType, roomId});

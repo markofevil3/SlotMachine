@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System;
 using System.Collections;
 using Boomlagoon.JSON;
@@ -49,7 +49,7 @@ public class PopupUserInfo : Popup {
   }
 
   public void DisplayUserInfo(JSONObject mUser) {
-		Debug.Log("mUser " + mUser.ToString());
+		Utils.Log("mUser " + mUser.ToString());
 		Utils.SetActive(userInfoPanel, true);
     user = mUser;
     displayNameLabel.text = user.GetString("displayName");

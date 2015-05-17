@@ -1,7 +1,8 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using Boomlagoon.JSON;
+using Sfs2X.Entities;
 
 public class MyFacebook : MonoBehaviour {
 	
@@ -24,7 +25,7 @@ public class MyFacebook : MonoBehaviour {
 	}
 
 	void OnInitComplete() {
-    Debug.Log("FB.Init completed: Is user logged in? " + FB.IsLoggedIn);
+    Utils.Log("FB.Init completed: Is user logged in? " + FB.IsLoggedIn);
 		if (FB.IsLoggedIn) {
 			// LoadUserProfile();
 		} else {
@@ -37,6 +38,10 @@ public class MyFacebook : MonoBehaviour {
 	public void Login() {
     PopupManager.Instance.ShowLoadingPopup("LoadingText_Login");
     FB.Login("public_profile,email,user_friends", LoginCallback);
+	}
+	
+	public void LogOut() {
+		FB.Logout();
 	}
 	
 	void LoginCallback(FBResult result) {
@@ -52,16 +57,16 @@ public class MyFacebook : MonoBehaviour {
 			AccountManager.Instance.fbId = FB.UserId;
 			LoadUserProfile();
     }
-		Debug.Log(lastResponse);
+		Utils.Log(lastResponse);
 	}
 	
 	public void LoadUserProfile() {
-    FB.API("/me?fields=id,name,birthday,picture,email", Facebook.HttpMethod.GET, LoadUserProfileCallback);     
+    FB.API("/me?fields=id,name,birthday,picture.width(128).height(128),email", Facebook.HttpMethod.GET, LoadUserProfileCallback);     
 	}
 	
 	void LoadUserProfileCallback(FBResult result) {
     if (result.Error != null) {
-			Debug.Log("LoadUserProfileCallback " + result.Error);
+			Utils.Log("LoadUserProfileCallback " + result.Error);
 		  PopupManager.Instance.CloseLoadingPopup();
 			return;
 		}  
@@ -96,6 +101,76 @@ public class MyFacebook : MonoBehaviour {
     if (result.Error == null) {
       HUDManager.Instance.AddFlyText(Localization.Get("InviteFriend_Success"), Vector3.zero, 40, Color.green, 0, 2f);
 		}
-		Debug.Log("InviteFriendsCallback " + result.Text);
+		Utils.Log("InviteFriendsCallback " + result.Text);
 	}
+	
+	public void LoadFBFriends() {
+		FB.API("/me?fields=friends.limit(50).fields(id,name)", Facebook.HttpMethod.GET, LoadFBFriendsCallback);  
+	}
+	
+	void LoadFBFriendsCallback(FBResult result) {
+		if (result.Error != null)  {
+      HUDManager.Instance.AddFlyText(Localization.Get("LoadFBFriend_Fail"), Vector3.zero, 40, Color.red, 0, 4f);
+		} else {
+			JSONObject friendsData = JSONObject.Parse(result.Text);
+			JSONArray ids = friendsData.GetObject("friends").GetArray("data");
+			JSONArray fbIds = new JSONArray();
+			List<Buddy> buddyList = SmartfoxClient.Instance.GetBuddyList();
+			for (int i = 0; i < ids.Length; i++) {
+				string fbId = ids[i].Obj.GetString("id");
+				bool added = false;
+				for (int j = 0; j < buddyList.Count; j++) {
+					if (fbId == buddyList[j].GetVariable("$facebookId").GetStringValue()) {
+						added = true;
+					}
+				}
+				if (!added) {
+					fbIds.Add(fbId);
+				}
+			}
+			if (fbIds.Length > 0) {
+				UserExtensionRequest.Instance.AddFbFriends(fbIds);
+			}
+			friendsData = null;
+			ids = null;
+			fbIds = null;
+		}        
+	}
+	
+	
+	
+	
+	//   public delegate void LoadPictureCallback (string fbId, string url);
+	//
+	// public void GetAvatarByFbId(string fbId, LoadPictureCallback callback) {
+	// 	Utils.Log("GetAvatarByFbId----------- " + fbId);
+	// 	string url = GetPictureURL(fbId, 128, 128);
+	//     FB.API(url,Facebook.HttpMethod.GET,result => {
+	//     if (result.Error != null) {
+	//       Utils.Log("LoadAvatarByFbId " + result.Error);
+	//       return;
+	//     }
+	// 		JSONObject jsonData = JSONObject.Parse(result.Text);
+	//       callback(fbId, jsonData.GetObject("data").GetString("url").Replace("\\", ""));
+	//     });
+	// }
+	//
+	// IEnumerator LoadPictureEnumerator(string url, UITexture uiTexture) {
+	//     WWW www = new WWW(url);
+	//     yield return www;
+	// 	if (www.texture != null) {
+	// 		uiTexture.mainTexture = www.texture;
+	// 	}
+	// 	www.Dispose();
+	// }
+	//
+	//   private string GetPictureURL(string fbId, int? width = null, int? height = null, string type = null) {
+	//     string url = string.Format("/{0}/picture", fbId);
+	//     string query = width != null ? "&width=" + width.ToString() : "";
+	//     query += height != null ? "&height=" + height.ToString() : "";
+	//     query += type != null ? "&type=" + type : "";
+	//     query += "&redirect=false";
+	//     if (query != "") url += ("?g" + query);
+	//     return url;
+	//   }
 }

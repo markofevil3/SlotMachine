@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -31,7 +31,7 @@ public class PopupInviteToGame : Popup {
 			for (int i = 0; i < buddyList.Count; i++) {
 				friend = new JSONObject();
 				if (buddyList[i].IsOnline) {
-					Debug.Log("GetOnline Var");
+					Utils.Log("GetOnline Var");
 					friend.Add("displayName", buddyList[i].GetVariable("displayName").GetStringValue());
 					friend.Add("cash", buddyList[i].GetVariable("cash").GetIntValue());
 				} else {
@@ -47,7 +47,7 @@ public class PopupInviteToGame : Popup {
       Utils.SetActive(scrollview.gameObject, false);
       Utils.SetActive(btnSendInvite.gameObject, false);
       Utils.SetActive(noFriendLabel, true);
-      Debug.Log("----------- DONE HAVE ANY FRIEND ----------------");
+      Utils.Log("----------- DONE HAVE ANY FRIEND ----------------");
     }
   }
 
@@ -65,7 +65,7 @@ public class PopupInviteToGame : Popup {
 			for (int i = 0; i < listInviteUsers.Count; i++) {
 				arr.Add(listInviteUsers[i]);
 			}
-	    Debug.Log("EventSendInvite " + arr.ToString());
+	    Utils.Log("EventSendInvite " + arr.ToString());
 			
 	    UserExtensionRequest.Instance.InviteToGame(arr, ScreenManager.Instance.CurrentSlotScreen.GetCrtGameType(), ScreenManager.Instance.CurrentSlotScreen.GetRoomId());
 			Close();
@@ -88,7 +88,7 @@ public class PopupInviteToGame : Popup {
         }
       }
     }
-    Debug.Log(friendListRows.ToString());
+    Utils.Log(friendListRows.ToString());
     isLoading = false;
     wrapContent.ResetChildPositions();
     scrollview.currentMomentum = Vector3.zero;

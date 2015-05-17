@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using Boomlagoon.JSON;
@@ -52,7 +52,7 @@ public class BaseGameScreen : BaseScreen {
         return cardTextures[i];
       }
     }
-    Debug.Log("Cant find card " + cardName);
+    Utils.Log("Cant find card " + cardName);
     return null;
   }
 

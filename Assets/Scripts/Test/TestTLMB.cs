@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class TestTLMB : MonoBehaviour {
@@ -19,7 +19,7 @@ public class TestTLMB : MonoBehaviour {
 	}
 
 	public void EventSend() {
-		Debug.Log("Send");
+		Utils.Log("Send");
 		
 	    switch (commandInput.text) {
 			case "connect":

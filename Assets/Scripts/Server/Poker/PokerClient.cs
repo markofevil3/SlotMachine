@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -26,7 +26,7 @@ public class PokerClient : MonoBehaviour {
   //   // Move to Select room if join success
   // private void OnJoinLobby(JSONObject jsonData) {
   //   PopupManager.Instance.CloseLoadingPopup();
-  //   Debug.Log("OnJoinLobby " +jsonData.ToString());
+  //   Utils.Log("OnJoinLobby " +jsonData.ToString());
   //   ScreenManager.Instance.SetScreen(BaseScreen.Type.SELECT_ROOM, new object[]{(int)BaseGameScreen.GameType.POKER, jsonData});
   // }
   // 

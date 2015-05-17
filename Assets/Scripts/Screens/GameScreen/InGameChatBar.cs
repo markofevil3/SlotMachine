@@ -22,7 +22,6 @@ public class InGameChatBar : MonoBehaviour {
 	private Vector3 openPos = Vector3.zero;
 	private float keyboardHeight;
 
-	// TEST CODE -- asda
 	void Start() {
 		Init();
 	}

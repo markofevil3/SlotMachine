@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using Boomlagoon.JSON;
@@ -22,7 +22,7 @@ public class UIDraggableCameraExtent : UIDraggableCamera {
   //   // }
   // 
   // void LateUpdate() {
-  //     Debug.Log("LateUpdate " + direction + " " + currentMomentum);
+  //     Utils.Log("LateUpdate " + direction + " " + currentMomentum);
   //   if (currentMomentum == Vector2.zero) {
   //     direction = MoveDirection.NULL;
   //     return;
@@ -125,9 +125,9 @@ public class UIDraggableCameraExtent : UIDraggableCamera {
   //    if (rowIndex <= listRowScripts.Length - startMoveIndex) {
   //      int lastCacheRow = cachedRowNum - 1;
   //      nextRowIndex = boundTop - 1;
-  //      // Debug.Log("MOVE UP: " + nextRowIndex + " bound " + boundTop + " " + boundBottom);
+  //      // Utils.Log("MOVE UP: " + nextRowIndex + " bound " + boundTop + " " + boundBottom);
   //      if (nextRowIndex >= 0 && listRowScripts[nextRowIndex] != null && cacheRows[lastCacheRow].index > rowIndex + startMoveIndex) {
-  //        // Debug.Log("--MOVE UP");
+  //        // Utils.Log("--MOVE UP");
   //        listRowScripts[nextRowIndex].AddChild(cacheRows[lastCacheRow].childPrefab);
   //        listRowScripts[nextRowIndex].UpdateRowData(nextRowIndex, parent);
   //        cacheRows.RemoveAt(lastCacheRow);

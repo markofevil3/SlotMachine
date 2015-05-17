@@ -53,7 +53,7 @@ namespace Boomlagoon.JSON {
 	static class JSONLogger {
 #if USE_UNITY_DEBUGGING
 		public static void Log(string str) {
-			Debug.Log(str);
+			Utils.Log(str);
 		}
 		public static void Error(string str) {
 			Debug.LogError(str);

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -25,7 +25,7 @@ public class TLMBClient : MonoBehaviour {
   // Move to Select room if join success
 	private void OnJoinLobby(JSONObject jsonData) {
 	  PopupManager.Instance.CloseLoadingPopup();
-	  Debug.Log("OnJoinLobby " +jsonData.ToString());
+	  Utils.Log("OnJoinLobby " +jsonData.ToString());
 	  ScreenManager.Instance.SetScreen(BaseScreen.Type.SELECT_ROOM, new object[]{(int)BaseGameScreen.GameType.TIEN_LEN_MB, jsonData});
 	}
 
@@ -47,7 +47,7 @@ public class TLMBClient : MonoBehaviour {
 	}
 
 	private void OnStartGame(JSONObject jsonData) {
-	  Debug.Log("OnStartGame " + jsonData);
+	  Utils.Log("OnStartGame " + jsonData);
 		// TLMBGameData.LoadRoom(jsonData.GetObject("gameRoom"));
 	}
 
@@ -58,7 +58,7 @@ public class TLMBClient : MonoBehaviour {
 	}
 
 	private void OnJoin(JSONObject jsonData) {
-	  Debug.Log("OnJoin " + jsonData);
+	  Utils.Log("OnJoin " + jsonData);
     if (ScreenManager.Instance.SelectRoomScreen != null) {
       ScreenManager.Instance.SetScreen(BaseScreen.Type.GAME_SCREEN, new object[]{ScreenManager.Instance.SelectRoomScreen.gameType, jsonData});
     }
@@ -88,9 +88,9 @@ public class TLMBClient : MonoBehaviour {
 	}
 
 	private void OnSit(JSONObject jsonData) {
-	  Debug.Log("OnSit " + jsonData.ToString());
+	  Utils.Log("OnSit " + jsonData.ToString());
 	  if (ScreenManager.Instance.CurrentGameScreen != null) {
-  	  Debug.Log("#######");
+  	  Utils.Log("#######");
   	  ScreenManager.Instance.CurrentGameScreen.UpdateSeats(jsonData);
   	}
 	}
@@ -104,12 +104,12 @@ public class TLMBClient : MonoBehaviour {
 	}
 
 	public void Leave() {
-	  Debug.Log("Leave");
+	  Utils.Log("Leave");
 		SmartfoxClient.Instance.HandleServerRequest(CreateExtensionRequest(Command.TLMB.LEAVE));
 	}
 
 	private void OnLeave(JSONObject jsonData) {
-	  Debug.Log("OnLeave");
+	  Utils.Log("OnLeave");
     TLMBClient.Instance.JoinLobby();
 	}
 
@@ -133,7 +133,7 @@ public class TLMBClient : MonoBehaviour {
 	}
 
 	public void OnModerateMessage(string commandId, JSONObject jsonData) {
-		// Debug.Log("OnModerateMessage:" + commandId + " " + jsonData);
+		// Utils.Log("OnModerateMessage:" + commandId + " " + jsonData);
 		switch (commandId) {
 			case Command.TLMB.UPDATE:
 				UpdateState(jsonData);

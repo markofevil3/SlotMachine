@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using Boomlagoon.JSON;
 
@@ -128,9 +128,9 @@ public class SlotCombination : MonoBehaviour {
   //     }
   //     winningGold[i] = PAYOUTS[winningLineType[i], winningLineCount[i] - 1] * betPerLine;
   //   }
-  //   Debug.Log(Utils.ArrIntToString(winningLineCount));
-  //   Debug.Log(Utils.ArrIntToString(winningLineType));
-  //   Debug.Log(Utils.ArrIntToString(winningGold));
+  //   Utils.Log(Utils.ArrIntToString(winningLineCount));
+  //   Utils.Log(Utils.ArrIntToString(winningLineType));
+  //   Utils.Log(Utils.ArrIntToString(winningGold));
   //   return winningGold;
   // }
 	

@@ -3,6 +3,8 @@ using System.Collections;
 
 public class LobbyScreen : BaseScreen {
 
+	// TO DO - display FB avatar
+
   public static LobbyScreen Instance;
   public UIButton btnLoginFB;
   public UIButton btnLogin;
