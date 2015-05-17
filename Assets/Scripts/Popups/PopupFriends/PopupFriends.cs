@@ -43,8 +43,8 @@ public class PopupFriends : Popup {
 				}
 				friend.Add("username", buddyList[i].Name);
 				friendList.Add(friend);
-				InitScrollViewData(friendList);
 			}
+			InitScrollViewData(friendList);
     } else {
       Utils.SetActive(scrollview.gameObject, false);
       Utils.Log("----------- DONE HAVE ANY FRIEND ----------------");

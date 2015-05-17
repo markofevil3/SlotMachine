@@ -31,17 +31,13 @@ public class PopupInviteToGame : Popup {
 			for (int i = 0; i < buddyList.Count; i++) {
 				friend = new JSONObject();
 				if (buddyList[i].IsOnline) {
-					Utils.Log("GetOnline Var");
 					friend.Add("displayName", buddyList[i].GetVariable("displayName").GetStringValue());
 					friend.Add("cash", buddyList[i].GetVariable("cash").GetIntValue());
-				} else {
-					friend.Add("displayName", buddyList[i].GetVariable("$displayName").GetStringValue());
-					friend.Add("cash", buddyList[i].GetVariable("$cash").GetIntValue());
+					friend.Add("username", buddyList[i].Name);
+					friendList.Add(friend);
 				}
-				friend.Add("username", buddyList[i].Name);
-				friendList.Add(friend);
-				InitScrollViewData(friendList);
 			}
+			InitScrollViewData(friendList);
     } else {
 			// TO DO - dont have friend message
       Utils.SetActive(scrollview.gameObject, false);

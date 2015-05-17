@@ -16,7 +16,11 @@ public class PopupUserInfo : Popup {
 	public UILabel killLabel;
   public UIButton btnAddFriend;
   public UIButton btnSendMessage;
+	public GameObject defaultAvatar;
+	public UITexture avatarSprite;
 
+	private string avatarLink = string.Empty;
+	
   public static void SetUser(JSONObject mUser) {
     user = mUser;
     lastRequestTime = Utils.CurrentTime();
@@ -55,9 +59,27 @@ public class PopupUserInfo : Popup {
     displayNameLabel.text = user.GetString("displayName");
     cashLabel.text = user.GetInt("cash").ToString("N0");
     killLabel.text = user.GetInt("bossKill").ToString("N0");
+		avatarLink = user.GetString("avatar");
+		if (avatarLink != string.Empty) {
+			NGUITools.SetActive(avatarSprite.gameObject, true);
+			NGUITools.SetActive(defaultAvatar, false);
+			StartCoroutine(DisplayAvatar());
+		} else {
+			NGUITools.SetActive(avatarSprite.gameObject, false);
+			NGUITools.SetActive(defaultAvatar, true);
+		}
 		Utils.SetActive(btnAddFriend.gameObject, !AccountManager.Instance.IsFriend(user.GetString("username")));
   }
   
+	IEnumerator DisplayAvatar() {
+		WWW www = new WWW(avatarLink);
+		yield return www;
+		if (www.texture != null) {
+			avatarSprite.mainTexture = www.texture;
+		}
+		www.Dispose();
+	}
+	
   public void AddFriendSuccess(string fUsername) {
     if (fUsername == user.GetString("username")) {
 			Utils.SetActive(btnAddFriend.gameObject, false);

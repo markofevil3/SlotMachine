@@ -13,6 +13,8 @@ public class SelectGameScreen : BaseScreen {
   public UIButton btnPirateGame;
 	
 	public UILabel usernameLabel;
+	public GameObject defaultAvatar;
+	public UITexture avatarSprite;
 	public UILabel coinLabel;
 	public UILabel killLabel;
 
@@ -39,6 +41,14 @@ public class SelectGameScreen : BaseScreen {
     EventDelegate.Set(btnDailyBonus.onClick, EventClaimDaily);
 		
 		usernameLabel.text = AccountManager.Instance.displayName;
+		if (AccountManager.Instance.avatarLink != string.Empty) {
+			NGUITools.SetActive(avatarSprite.gameObject, true);
+			NGUITools.SetActive(defaultAvatar, false);
+			StartCoroutine(DisplayAvatar());
+		} else {
+			NGUITools.SetActive(avatarSprite.gameObject, false);
+			NGUITools.SetActive(defaultAvatar, true);
+		}
 		UpdateUserCashLabelFinished();
 		killLabel.text = AccountManager.Instance.bossKilled.ToString("N0");
 		
@@ -48,6 +58,15 @@ public class SelectGameScreen : BaseScreen {
 			DisableClaimDailyReward();
 		}
   }
+
+	IEnumerator DisplayAvatar() {
+		WWW www = new WWW(AccountManager.Instance.avatarLink);
+		yield return www;
+		if (www.texture != null) {
+			avatarSprite.mainTexture = www.texture;
+		}
+		www.Dispose();
+	}
 
 	void Update() {
 		if (shouldUpdateDailyRewardTime) {
