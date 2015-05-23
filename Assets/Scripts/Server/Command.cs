@@ -5,6 +5,7 @@ public class Command {
   public class USER {
     public const string LOAD_LEADERBOARD = "loadLeaderboard";
     public const string LOAD_USER_INFO = "loadUserInfo";
+    public const string LOAD_INBOX = "loadInbox";
     public const string ADD_FRIEND = "addFriend";
     public const string ADD_FB_FRIEND = "addFbFriend";		
     public const string CHAT_IN_ROOM = "chatInRoom";

@@ -27,6 +27,17 @@ public class UserExtensionRequest : MonoBehaviour {
     PopupManager.Instance.CloseLoadingPopup();
   }
   
+  public void LoadInboxData() {
+    JSONObject data = new JSONObject();
+    data.Add("username", AccountManager.Instance.username);
+    SmartfoxClient.Instance.HandleServerRequest(CreateExtensionRequest(Command.USER.LOAD_INBOX, "LoadInboxDataSuccess", data));
+  }
+  
+  void LoadInboxDataSuccess(JSONObject data) {
+    Utils.Log("LoadInboxDataSuccess " + data.ToString());
+    PopupManager.Instance.CloseLoadingPopup();
+  }
+	
   public void LoadUserInfo(string username) {
     JSONObject data = new JSONObject();
     data.Add("username", username);

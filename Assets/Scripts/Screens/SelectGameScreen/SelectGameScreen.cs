@@ -3,9 +3,7 @@ using System;
 using System.Collections;
 
 public class SelectGameScreen : BaseScreen {
-
-  private string GAME_ITEM_PREFAB = Global.SCREEN_PATH + "/SelectGameScreen/GameItem";
-
+	
   public UIButton btnLeaderboard;
   public UIButton btnDailyBonus;
   public UIButton btnZombieGame;
@@ -27,6 +25,8 @@ public class SelectGameScreen : BaseScreen {
 	private bool shouldUpdateDailyRewardTime = false;
 	private int timeCounter = 0;
 	private int currentCashDisplay = 0;
+
+	// TO DO: update lastest user data from server
 
   public override void Init(object[] data) {
     EventDelegate.Set(btnZombieGame.onClick, delegate() { EventOpenSlotGame(BaseSlotMachineScreen.GameType.SLOT_HALLOWEEN); });
