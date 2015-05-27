@@ -29,7 +29,7 @@ public class RoomRowScript : MonoBehaviour {
   }
   
   private void EventJoinSelectedRoom(string roomId) {
-    Utils.Log("EventJoinSelectedRoom " + roomId);
+    Debug.Log("EventJoinSelectedRoom " + roomId);
 		TLMBClient.Instance.Join(roomId);
     // if (ScreenManager.Instance.SelectRoomScreen != null) {
     //   ScreenManager.Instance.SetScreen(BaseScreen.Type.GAME_SCREEN, new object[]{ScreenManager.Instance.SelectRoomScreen.gameType, roomId});

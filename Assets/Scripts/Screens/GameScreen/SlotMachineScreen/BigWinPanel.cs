@@ -21,7 +21,7 @@ public class BigWinPanel : MonoBehaviour {
 
 	// Fade in Big Win
 	public void FadeInBigWin(int numb) {
-		Utils.Log("FadeInBigWin");
+		Debug.Log("FadeInBigWin");
 		totalScore = numb;
 		NGUITools.SetActive(gameObject, true);
 		NGUITools.SetActive(bigWinView, true);
@@ -49,7 +49,7 @@ public class BigWinPanel : MonoBehaviour {
 
 	// Fade in Free Spin
 	public void FadeInFreeSpin(int numb, bool shouldPause = true) {
-		Utils.Log("FadeInFreeSpin");
+		Debug.Log("FadeInFreeSpin");
 		
 		NGUITools.SetActive(gameObject, true);
 		NGUITools.SetActive(bigWinView, false);

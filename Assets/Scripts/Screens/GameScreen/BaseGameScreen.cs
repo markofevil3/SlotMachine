@@ -52,7 +52,7 @@ public class BaseGameScreen : BaseScreen {
         return cardTextures[i];
       }
     }
-    Utils.Log("Cant find card " + cardName);
+    Debug.Log("Cant find card " + cardName);
     return null;
   }
 

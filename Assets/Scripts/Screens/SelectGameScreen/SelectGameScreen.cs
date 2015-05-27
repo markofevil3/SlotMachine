@@ -52,7 +52,7 @@ public class SelectGameScreen : BaseScreen {
 		UpdateUserCashLabelFinished();
 		killLabel.text = AccountManager.Instance.bossKilled.ToString("N0");
 		
-		if (AccountManager.Instance.lastClaimedDaily == 0 || (long)((DateTime.UtcNow - Utils.time1970).TotalMilliseconds - AccountManager.Instance.lastClaimedDaily) >= Global.DAILY_REWARD_MILI) {
+		if (AccountManager.Instance.lastClaimedDaily == 0 || (long)(Utils.UTCNowMiliseconds() - AccountManager.Instance.lastClaimedDaily) >= Global.DAILY_REWARD_MILI) {
 			EnableClaimDailyReward();
 		} else {
 			DisableClaimDailyReward();
@@ -124,7 +124,7 @@ public class SelectGameScreen : BaseScreen {
   }
 
   private void EventOpenMailPopup() {
-    // PopupManager.Instance.OpenPopup(Popup.Type.POPUP_FRIENDS);
+    PopupManager.Instance.OpenPopup(Popup.Type.POPUP_INBOX);
   }
 
   private void EventOpenSetting() {

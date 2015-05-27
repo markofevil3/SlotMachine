@@ -53,7 +53,7 @@ public class PopupUserInfo : Popup {
   }
 
   public void DisplayUserInfo(JSONObject mUser) {
-		Utils.Log("mUser " + mUser.ToString());
+		Debug.Log("mUser " + mUser.ToString());
 		Utils.SetActive(userInfoPanel, true);
     user = mUser;
     displayNameLabel.text = user.GetString("displayName");

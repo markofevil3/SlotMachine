@@ -67,7 +67,7 @@ public class SlotMachineClient : MonoBehaviour {
 
   // Move to Select room if join success
 	private void OnJoinRoom(JSONObject jsonData) {
-	  Utils.Log("OnJoinLobby " +jsonData.ToString());
+	  Debug.Log("OnJoinLobby " +jsonData.ToString());
 	  PopupManager.Instance.CloseLoadingPopup();
 	  ScreenManager.Instance.SetScreen(BaseScreen.Type.SLOT_GAME_SCREEN, new object[]{GetGameTypeByCommand(jsonData.GetString("gameType")), jsonData});
     // ScreenManager.Instance.SetScreen(BaseScreen.Type.SELECT_ROOM, new object[]{(int)BaseGameScreen.GameType.TIEN_LEN_MB, jsonData});
@@ -82,7 +82,7 @@ public class SlotMachineClient : MonoBehaviour {
   }
 
   public void OnPlay(JSONObject jsonData) {
-    Utils.Log(jsonData.ToString());
+    Debug.Log(jsonData.ToString());
     if (ScreenManager.Instance.CurrentSlotScreen != null) {
       ScreenManager.Instance.CurrentSlotScreen.SetResults(jsonData);
     }
@@ -116,7 +116,7 @@ public class SlotMachineClient : MonoBehaviour {
   // }
   // 
   // private void OnStartGame(JSONObject jsonData) {
-  //   Utils.Log("OnStartGame " + jsonData);
+  //   Debug.Log("OnStartGame " + jsonData);
   //  // TLMBGameData.LoadRoom(jsonData.GetObject("gameRoom"));
   // }
   // 
@@ -127,7 +127,7 @@ public class SlotMachineClient : MonoBehaviour {
   // }
   // 
   // private void OnJoin(JSONObject jsonData) {
-  //   Utils.Log("OnJoin " + jsonData);
+  //   Debug.Log("OnJoin " + jsonData);
   //     if (ScreenManager.Instance.SelectRoomScreen != null) {
   //       ScreenManager.Instance.SetScreen(BaseScreen.Type.GAME_SCREEN, new object[]{ScreenManager.Instance.SelectRoomScreen.gameType, jsonData});
   //     }
@@ -157,9 +157,9 @@ public class SlotMachineClient : MonoBehaviour {
   // }
   // 
   // private void OnSit(JSONObject jsonData) {
-  //   Utils.Log("OnSit " + jsonData.ToString());
+  //   Debug.Log("OnSit " + jsonData.ToString());
   //   if (ScreenManager.Instance.CurrentGameScreen != null) {
-  //      Utils.Log("#######");
+  //      Debug.Log("#######");
   //      ScreenManager.Instance.CurrentGameScreen.UpdateSeats(jsonData);
   //    }
   // }
@@ -173,12 +173,12 @@ public class SlotMachineClient : MonoBehaviour {
   // }
   // 
   // public void Leave() {
-  //   Utils.Log("Leave");
+  //   Debug.Log("Leave");
   //  SmartfoxClient.Instance.HandleServerRequest(CreateExtensionRequest(Command.TLMB.LEAVE));
   // }
   // 
   // private void OnLeave(JSONObject jsonData) {
-  //   Utils.Log("OnLeave");
+  //   Debug.Log("OnLeave");
   //     TLMBClient.Instance.JoinLobby();
   // }
   // 
@@ -202,7 +202,7 @@ public class SlotMachineClient : MonoBehaviour {
 	}
 
 	public void OnModerateMessage(string commandId, JSONObject jsonData) {
-		// Utils.Log("OnModerateMessage:" + commandId + " " + jsonData);
+		// Debug.Log("OnModerateMessage:" + commandId + " " + jsonData);
 		switch (commandId) {
 			case Command.TLMB.UPDATE:
 				UpdateState(jsonData);

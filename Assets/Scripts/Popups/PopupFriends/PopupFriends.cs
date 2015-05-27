@@ -47,7 +47,7 @@ public class PopupFriends : Popup {
 			InitScrollViewData(friendList);
     } else {
       Utils.SetActive(scrollview.gameObject, false);
-      Utils.Log("----------- DONE HAVE ANY FRIEND ----------------");
+      Debug.Log("----------- DONE HAVE ANY FRIEND ----------------");
     }
   }
 

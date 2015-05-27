@@ -12,6 +12,10 @@ public class Utils : MonoBehaviour {
   
 	public static DateTime time1970 = new DateTime(1970, 1, 1);
 	
+	public static long UTCNowMiliseconds() {
+		return (long)(DateTime.UtcNow - Utils.time1970).TotalMilliseconds;
+	}
+	
   public static bool IsTablet() {
 		#if UNITY_IPHONE
 			if (Application.platform == RuntimePlatform.IPhonePlayer) {
@@ -130,6 +134,38 @@ public class Utils : MonoBehaviour {
 			timeString += timer;
 		}
 			
+		return timeString;
+	}
+	
+	// timer = seconds
+	public static string GetTimePassed(int timer) {
+		if (timer <= 0) {
+			return string.Empty;
+		}
+		int tempTime = 0;
+		string timeString = string.Empty;
+		
+		if (timer >= 86400) {
+			tempTime = (int)Mathf.Round(timer / 86400);
+			timeString += tempTime + Localization.Get("Time_Day_Short") + " ";
+			timer -= tempTime * 86400;
+		}
+		 
+		if (timer >= 3600) {
+			tempTime = (int)Mathf.Round(timer / 3600);
+			timeString += tempTime + Localization.Get("Time_Hour_Short") + " ";
+			timer -= tempTime * 3600;
+		}
+		
+		if (timer >= 60) {
+			tempTime = (int)Mathf.Round(timer / 60);
+			timeString += tempTime + Localization.Get("Time_Minute_Short") + " ";
+			timer -= tempTime * 60;
+		}
+		if (timeString != string.Empty && timeString != null) {
+			timeString = timeString + " " + Localization.Get("Time_Ago");
+		}
+		
 		return timeString;
 	}
 	

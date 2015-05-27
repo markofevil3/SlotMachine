@@ -19,7 +19,7 @@ public class TestTLMB : MonoBehaviour {
 	}
 
 	public void EventSend() {
-		Utils.Log("Send");
+		Debug.Log("Send");
 		
 	    switch (commandInput.text) {
 			case "connect":

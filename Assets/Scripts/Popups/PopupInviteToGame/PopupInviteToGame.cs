@@ -43,7 +43,7 @@ public class PopupInviteToGame : Popup {
       Utils.SetActive(scrollview.gameObject, false);
       Utils.SetActive(btnSendInvite.gameObject, false);
       Utils.SetActive(noFriendLabel, true);
-      Utils.Log("----------- DONE HAVE ANY FRIEND ----------------");
+      Debug.Log("----------- DONE HAVE ANY FRIEND ----------------");
     }
   }
 
@@ -61,7 +61,7 @@ public class PopupInviteToGame : Popup {
 			for (int i = 0; i < listInviteUsers.Count; i++) {
 				arr.Add(listInviteUsers[i]);
 			}
-	    Utils.Log("EventSendInvite " + arr.ToString());
+	    Debug.Log("EventSendInvite " + arr.ToString());
 			
 	    UserExtensionRequest.Instance.InviteToGame(arr, ScreenManager.Instance.CurrentSlotScreen.GetCrtGameType(), ScreenManager.Instance.CurrentSlotScreen.GetRoomId());
 			Close();
@@ -84,7 +84,7 @@ public class PopupInviteToGame : Popup {
         }
       }
     }
-    Utils.Log(friendListRows.ToString());
+    Debug.Log(friendListRows.ToString());
     isLoading = false;
     wrapContent.ResetChildPositions();
     scrollview.currentMomentum = Vector3.zero;

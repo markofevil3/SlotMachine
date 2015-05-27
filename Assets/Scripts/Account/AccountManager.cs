@@ -76,7 +76,7 @@ public class AccountManager : MonoBehaviour {
 		lastClaimedDaily = user.GetLong("lastDaily");
 		fbId = user.GetString("facebookId");
 		avatarLink = user.GetString("avatar");
-		Utils.Log("SetUser " + user.ToString());
+		Debug.Log("SetUser " + user.ToString());
 		// friends = user.GetArray("friends");
 	}
 	
@@ -130,7 +130,7 @@ public class AccountManager : MonoBehaviour {
 	}
 	
   // void HandleErrorCode(ErrorCode.USER errorCode) {
-  //   Utils.Log("HandleErrorCode " + errorCode);
+  //   Debug.Log("HandleErrorCode " + errorCode);
   // }
   // 
   // private ISFSObject CreateExtensionObject(JSONObject jsonData) {

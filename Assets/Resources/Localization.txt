@@ -69,3 +69,9 @@ LoadingText_Register,Register user...,Register user...
 LoadingText_LoginGuest,Login as Guest...,Login as Guest...
 InviteFriend_Success,Invites Sent!,Invites Sent!
 InviteFriend_AskForLogin,Please login using Facebook to invite friends.,Please login using Facebook to invite friends.
+Title_Inbox,Inbox,Inbox
+Inbox_NoMessage,You don't have any message.,You don't have any message.
+Time_Day_Short,d,d
+Time_Hour_Short,h,h
+Time_Minute_Short,m,m
+Time_Ago,ago,ago

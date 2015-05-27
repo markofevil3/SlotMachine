@@ -63,7 +63,7 @@ public class BossManager : MonoBehaviour {
 		Transform bossTrans = MyPoolManager.Instance.Spawn(GetBossPrefabName(slotMachineScreen.gameType, type), transform);
 		boss = bossTrans.GetComponent<Boss>();
 		boss.Init();
-		Utils.Log("Init boss " + type);
+		Debug.Log("Init boss " + type);
 		UpdateHPBar();
 	}
 	

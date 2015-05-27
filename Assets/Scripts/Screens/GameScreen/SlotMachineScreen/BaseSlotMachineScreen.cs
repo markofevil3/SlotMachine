@@ -59,9 +59,9 @@ public class BaseSlotMachineScreen : BaseScreen {
 	}
 	
 	IEnumerator ProcessSpinData(SpinData spinData) {
-		Utils.Log("ProcessSpinData " + spinData.spawnSkills.Count);
+		Debug.Log("ProcessSpinData " + spinData.spawnSkills.Count);
 		if (spinData.newBossData != null) {
-			Utils.Log("ProcessSpinData~~~~~~~~~ ");
+			Debug.Log("ProcessSpinData~~~~~~~~~ ");
 			PauseSpawnSkill();
 		}
 		// Show Glow on user slot if not you
@@ -82,7 +82,7 @@ public class BaseSlotMachineScreen : BaseScreen {
 	}
 	
 	public virtual void DisplayBossDrop(int dropCash, int dropGem, JSONObject newBossData) {
-		Utils.Log("DisPlayBossDrop " + dropCash + " " + dropGem);
+		Debug.Log("DisPlayBossDrop " + dropCash + " " + dropGem);
 		bigWinPanel.FadeInTreasure(dropCash, dropGem, newBossData);
 		StartCoroutine(DisplayBossDropCallback(dropCash, dropGem, newBossData));
 	}
@@ -106,13 +106,13 @@ public class BaseSlotMachineScreen : BaseScreen {
 	// }
 	
 	public void PauseSpawnSkill() {
-		Utils.Log("PauseSpawnSkill");
+		Debug.Log("PauseSpawnSkill");
 		canSpawnSkill = false;
 		slotMachine.Wait();
 	}
 	
 	public void ResumeSpawnSkill() {
-		Utils.Log("ResumeSpawnSkill");
+		Debug.Log("ResumeSpawnSkill");
 		
 		canSpawnSkill = true;
 		slotMachine.Resume();
@@ -142,7 +142,7 @@ public class BaseSlotMachineScreen : BaseScreen {
     SetNunLine(1);
     
     // Init other players if have
-    Utils.Log("### " + data[1].ToString());
+    Debug.Log("### " + data[1].ToString());
     JSONObject jsonData = (JSONObject)data[1];
     JSONArray otherPlayerDatas = jsonData.GetArray("otherPlayers");
 		roomData = jsonData.GetObject("roomData");
@@ -209,7 +209,7 @@ public class BaseSlotMachineScreen : BaseScreen {
 		}
 		int fromVal = AccountManager.Instance.cash;
 		AccountManager.Instance.UpdateUserCash(addValue);
-		Utils.Log("UpdateUserCash " + fromVal + " " + AccountManager.Instance.cash + " " + addValue);
+		Debug.Log("UpdateUserCash " + fromVal + " " + AccountManager.Instance.cash + " " + addValue);
 		LeanTween.value(gameObject, UpdateUserCashLabelCallback, fromVal, AccountManager.Instance.cash, 1f).setOnComplete(UpdateUserCashLabelFinished);
   }
   
@@ -261,7 +261,7 @@ public class BaseSlotMachineScreen : BaseScreen {
       if (playerSlot != null) {
         playerSlot.InitEmpty();
       } else {
-        Utils.Log("Cant find user slot " + username);
+        Debug.Log("Cant find user slot " + username);
       }
     } else {
       Debug.LogError("Not in this room " + this.roomId + " | " + roomId);
@@ -273,7 +273,7 @@ public class BaseSlotMachineScreen : BaseScreen {
      if (playerSlot != null) {
        playerSlot.UpdateCash(cashVal);
      } else {
-       Utils.Log("Cant find user slot " + username);
+       Debug.Log("Cant find user slot " + username);
      }
   }
   
@@ -333,7 +333,7 @@ public class SpinData {
 		
 		
 	public SpinData(string username, JSONObject jsonData, bool isYou) {
-		Utils.Log("SpinData: " + jsonData.ToString());
+		Debug.Log("SpinData: " + jsonData.ToString());
 		this.isYou = isYou;
 		this.username = username;
 		JSONArray resultsData = jsonData.GetArray("items");

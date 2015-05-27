@@ -62,7 +62,7 @@ public class SlotMachine : MonoBehaviour {
       //   resultsData[i] = slotCombination.RandomItem();
       //   log += resultsData[i] + ",";
       // }
-      // Utils.Log("StartMachine " + log);
+      // Debug.Log("StartMachine " + log);
       for (int i = 0; i < slotReels.Length; i++) {
         slotReels[i].Reset();
         slotReels[i].StartMachine();

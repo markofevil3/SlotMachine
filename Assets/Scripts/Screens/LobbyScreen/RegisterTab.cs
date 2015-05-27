@@ -16,7 +16,7 @@ public class RegisterTab : Tab {
 
   void EventRegister() {
     if (usernameInput.value != string.Empty && passwordInput.value != string.Empty && retypePasswordInput.value != string.Empty && displayNameInput.value != string.Empty) {
-      Utils.Log("EventRegister");
+      Debug.Log("EventRegister");
       JSONObject jsonData = new JSONObject();
       jsonData.Add("username", usernameInput.value);
       jsonData.Add("password", passwordInput.value);

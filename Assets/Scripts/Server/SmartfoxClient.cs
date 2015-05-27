@@ -61,7 +61,7 @@ public class SmartfoxClient : MonoBehaviour {
   		loginData.PutByteArray("jsonData", Utils.ToByteArray(user.ToString()));
       client.Send(new LoginRequest(user.GetString("username"), user.GetString("password"), "Gamble", loginData));
     } else {
-      Utils.Log("NO CONNECTION!");
+      Debug.Log("NO CONNECTION!");
     }
   }
 
@@ -73,10 +73,10 @@ public class SmartfoxClient : MonoBehaviour {
 	    if (userId == string.Empty) {
 	      userId = Guid.NewGuid().ToString().Replace("-", "");
 	      user.Add("isRegister", true);
-	      Utils.Log("RegisterAsGuest " + userId);
+	      Debug.Log("RegisterAsGuest " + userId);
 	    } else {
 	      user.Add("isRegister", false);
-	      Utils.Log("LoginAsGuest " + userId);
+	      Debug.Log("LoginAsGuest " + userId);
 	    }
     
 	    // FAKE create fake user -- remove when publish
@@ -110,7 +110,7 @@ public class SmartfoxClient : MonoBehaviour {
     jsonData.Add("email", mEmail);
     jsonData.Add("fbId", mFBId);
 		if (isConnected) {
-			Utils.Log("LoginUsingFB--- " + jsonData.ToString());
+			Debug.Log("LoginUsingFB--- " + jsonData.ToString());
 	    PopupManager.Instance.ShowLoadingPopup("LoadingText_Login");
 	    ISFSObject loginData = new SFSObject();
 	    loginData.PutByteArray("jsonData", Utils.ToByteArray(jsonData.ToString()));
@@ -190,7 +190,7 @@ public class SmartfoxClient : MonoBehaviour {
 	void OnConnection(BaseEvent e) {
 		if ((bool)e.Params["success"]) {
 		  isConnected = true;
-		  Utils.Log("Connect Success " + AccountManager.Instance.username + " " + AccountManager.Instance.password);
+		  Debug.Log("Connect Success " + AccountManager.Instance.username + " " + AccountManager.Instance.password);
 			if (shouldCallRegisterAsGuest) {
 				shouldCallRegisterAsGuest = false;
 				RegisterAsGuest();
@@ -211,7 +211,7 @@ public class SmartfoxClient : MonoBehaviour {
 		  if (AccountManager.Instance.username != string.Empty) {
 		    LoginUser(AccountManager.Instance.username, AccountManager.Instance.password, false);
 		  } else {
-				Utils.Log("OnConnection " + FileManager.GetFromKeyChain("username"));
+				Debug.Log("OnConnection " + FileManager.GetFromKeyChain("username"));
 		    if (FileManager.GetFromKeyChain("username") != string.Empty) {
 		      LoginUser(FileManager.GetFromKeyChain("username"), FileManager.GetFromKeyChain("password"), false);
 				} else {
@@ -221,7 +221,7 @@ public class SmartfoxClient : MonoBehaviour {
 		} else {
 		  PopupManager.Instance.CloseLoadingPopup();
 	    PopupManager.Instance.OpenPopup(Popup.Type.POPUP_RELOAD_GAME);
-		  Utils.Log("Connect FAIL!");
+		  Debug.Log("Connect FAIL!");
 		}
 	}
 
@@ -250,7 +250,7 @@ public class SmartfoxClient : MonoBehaviour {
 	  isLoggedIn = true;
 		ISFSObject loginData = (ISFSObject)e.Params["data"];
 		JSONObject user = JSONObject.Parse(Utils.FromByteArray(loginData.GetByteArray("jsonData")));
-		Utils.Log("OnLogin------ " + user.ToString());
+		Debug.Log("OnLogin------ " + user.ToString());
 		AccountManager.Instance.SetUser(user);
 		if (ScreenManager.Instance.LobbyScreen != null) {
 		  ScreenManager.Instance.LobbyScreen.EventLoggedIn();
@@ -282,15 +282,15 @@ public class SmartfoxClient : MonoBehaviour {
 	  
 	  HUDManager.Instance.AddFlyText(((ErrorCode.USER)errorCode).ToString(), Vector3.zero, 40, Color.red);
     if (ScreenManager.Instance.LobbyScreen != null) {
-			Utils.Log("############");
+			Debug.Log("############");
       ScreenManager.Instance.LobbyScreen.EventLoginFail();
 		}
 		
-		Utils.Log("LogIn error: " + ((ErrorCode.USER)errorCode));
+		Debug.Log("LogIn error: " + ((ErrorCode.USER)errorCode));
 	}
   
   void OnLogout(BaseEvent e) {
-    Utils.Log("Log out");
+    Debug.Log("Log out");
     isLoggedIn = false;
 	  if (AccountManager.Instance != null) {
 	  	AccountManager.Instance.LogOut();
@@ -299,14 +299,15 @@ public class SmartfoxClient : MonoBehaviour {
     if (ScreenManager.Instance.LobbyScreen != null) {
       ScreenManager.Instance.LobbyScreen.EventLogoutSuccess();
     }
+		Disconnect();
   }
   
 	void OnJoinRoom(BaseEvent e) {
-    Utils.Log("#### OnJoinRoom");
+    Debug.Log("#### OnJoinRoom");
 	}
 
 	void OnJoinRoomError(BaseEvent e) {
-    Utils.Log("#### OnJoinRoomError");
+    Debug.Log("#### OnJoinRoomError");
 	}
 
   void OnUserEnterRoom(BaseEvent e) {
@@ -317,7 +318,7 @@ public class SmartfoxClient : MonoBehaviour {
   	  userData.Add("username", enterUser.Name);
   	  userData.Add("cash", enterUser.GetVariable("cash").GetIntValue());
   	  userData.Add("displayName", enterUser.GetVariable("displayName").GetStringValue());
-  	  Utils.Log("OnUserEnterRoom --- " + userData.ToString());
+  	  Debug.Log("OnUserEnterRoom --- " + userData.ToString());
   	  
   	  ScreenManager.Instance.CurrentSlotScreen.OnPlayerJoinRoom(room.Name, userData);
   	}
@@ -330,12 +331,12 @@ public class SmartfoxClient : MonoBehaviour {
   	if (!leaveUser.IsItMe && room.GroupId != "lobby" && ScreenManager.Instance.CurrentSlotScreen != null) {
   	  ScreenManager.Instance.CurrentSlotScreen.OnPlayerLeaveRoom(room.Name, leaveUser.Name);
   	}
-    Utils.Log("OnUserExitRoom " + e.Params["room"] + " " + e.Params["user"]);
+    Debug.Log("OnUserExitRoom " + e.Params["room"] + " " + e.Params["user"]);
   }
 
 	void OnPublicMessage(BaseEvent e) {
 	  // foreach (DictionaryEntry entry in e.Params) {
-	  //   Utils.Log(entry.Key + " " + entry.Value);
+	  //   Debug.Log(entry.Key + " " + entry.Value);
 	  //   	}
   	User sender = ((User)e.Params["sender"]);
 		ISFSObject objIn = (SFSObject)e.Params["data"];
@@ -358,9 +359,9 @@ public class SmartfoxClient : MonoBehaviour {
 				}
 			break;
 		}
-    // Utils.Log("OnPublicMessage + " + e.Params.ToString());
+    // Debug.Log("OnPublicMessage + " + e.Params.ToString());
     //    JSONObject messageJson = JSONObject.Parse(e.Params["message"].ToString());
-    //    Utils.Log("OnPublicMessage " + messageJson.ToString());
+    //    Debug.Log("OnPublicMessage " + messageJson.ToString());
 	}
 
 	void OnPrivateMessage(BaseEvent e) {
@@ -373,7 +374,7 @@ public class SmartfoxClient : MonoBehaviour {
 		ParseCmd(cmd, out gameId, out commandId);
 		ISFSObject objIn = (SFSObject)e.Params["data"];
 		JSONObject jsonData = JSONObject.Parse(Utils.FromByteArray(objIn.GetByteArray("jsonData")));
-		Utils.Log("OnModeratorMessage:" + gameId + "." + commandId + " " + jsonData);
+		Debug.Log("OnModeratorMessage:" + gameId + "." + commandId + " " + jsonData);
 
 		switch (gameId) {
 			case GameId.TLMB:
@@ -393,12 +394,13 @@ public class SmartfoxClient : MonoBehaviour {
     }
   }
 
+	// TO DO: remove, update other players cash in play command only
   void OnUserVarsUpdate(BaseEvent e) {
     User user = ((User)e.Params["user"]);
   	if (!user.IsItMe && ScreenManager.Instance.CurrentSlotScreen != null) {
   	  ScreenManager.Instance.CurrentSlotScreen.UpdateOtherPlayerCash(user.Name, user.GetVariable("cash").GetIntValue());
   	}
-    // Utils.Log("OnUserVarsUpdate " + user.GetVariable("cash").GetIntValue());
+    // Debug.Log("OnUserVarsUpdate " + user.GetVariable("cash").GetIntValue());
   }
 
   void OnInvitationReceived(BaseEvent e) {
@@ -407,7 +409,7 @@ public class SmartfoxClient : MonoBehaviour {
                                                                                             invitation.Params.GetUtfString("roomName"),
                                                                                             invitation.Inviter.Name,
                                                                                             invitation.Params.GetUtfString("message")});
-  	Utils.Log(invitation.Inviter + " | " + invitation.Params.GetUtfString("message") + " | " + invitation.Params.GetUtfString("roomName"));
+  	Debug.Log(invitation.Inviter + " | " + invitation.Params.GetUtfString("message") + " | " + invitation.Params.GetUtfString("roomName"));
   }
   
   public void SendInviteToGame(List<object> invitedUsers, ISFSObject parameters) {
@@ -453,7 +455,7 @@ public class SmartfoxClient : MonoBehaviour {
 		if (client != null) {
 			client.Disconnect();
 		}
-
+		isConnected = false;
 		client = null;
 	}
 
@@ -503,7 +505,7 @@ public class SmartfoxClient : MonoBehaviour {
 
 	private void SendRequest() {
 		isRequesting = true;
-    // Utils.Log("SendRequest " + currentRequest.commandId);
+    // Debug.Log("SendRequest " + currentRequest.commandId);
 		client.Send(new ExtensionRequest(currentRequest.commandId, currentRequest.requestData));
 	}
 

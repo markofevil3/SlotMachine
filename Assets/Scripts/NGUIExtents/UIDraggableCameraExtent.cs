@@ -22,7 +22,7 @@ public class UIDraggableCameraExtent : UIDraggableCamera {
   //   // }
   // 
   // void LateUpdate() {
-  //     Utils.Log("LateUpdate " + direction + " " + currentMomentum);
+  //     Debug.Log("LateUpdate " + direction + " " + currentMomentum);
   //   if (currentMomentum == Vector2.zero) {
   //     direction = MoveDirection.NULL;
   //     return;
@@ -125,9 +125,9 @@ public class UIDraggableCameraExtent : UIDraggableCamera {
   //    if (rowIndex <= listRowScripts.Length - startMoveIndex) {
   //      int lastCacheRow = cachedRowNum - 1;
   //      nextRowIndex = boundTop - 1;
-  //      // Utils.Log("MOVE UP: " + nextRowIndex + " bound " + boundTop + " " + boundBottom);
+  //      // Debug.Log("MOVE UP: " + nextRowIndex + " bound " + boundTop + " " + boundBottom);
   //      if (nextRowIndex >= 0 && listRowScripts[nextRowIndex] != null && cacheRows[lastCacheRow].index > rowIndex + startMoveIndex) {
-  //        // Utils.Log("--MOVE UP");
+  //        // Debug.Log("--MOVE UP");
   //        listRowScripts[nextRowIndex].AddChild(cacheRows[lastCacheRow].childPrefab);
   //        listRowScripts[nextRowIndex].UpdateRowData(nextRowIndex, parent);
   //        cacheRows.RemoveAt(lastCacheRow);

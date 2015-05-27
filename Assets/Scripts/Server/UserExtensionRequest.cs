@@ -20,7 +20,7 @@ public class UserExtensionRequest : MonoBehaviour {
   void LoadLeaderboardDataSuccess(JSONObject data) {
     LeaderboardScreen.Tab selectedTab = (LeaderboardScreen.Tab)data.GetInt("type");
     LeaderboardScreen.SetData( data.GetArray("users"), selectedTab);
-    Utils.Log("LoadLeaderboardDataSuccess " + data.ToString());
+    Debug.Log("LoadLeaderboardDataSuccess " + data.ToString());
     if (ScreenManager.Instance.LeaderboardScreen != null) {
       ScreenManager.Instance.LeaderboardScreen.ShowTopPlayer(selectedTab);
     }
@@ -28,14 +28,20 @@ public class UserExtensionRequest : MonoBehaviour {
   }
   
   public void LoadInboxData() {
+		PopupManager.Instance.ShowLoadingPopup();
     JSONObject data = new JSONObject();
     data.Add("username", AccountManager.Instance.username);
     SmartfoxClient.Instance.HandleServerRequest(CreateExtensionRequest(Command.USER.LOAD_INBOX, "LoadInboxDataSuccess", data));
   }
   
   void LoadInboxDataSuccess(JSONObject data) {
-    Utils.Log("LoadInboxDataSuccess " + data.ToString());
     PopupManager.Instance.CloseLoadingPopup();
+    ErrorCode.USER errorCode = (ErrorCode.USER)data.GetInt("errorCode");
+    if (errorCode == ErrorCode.USER.NULL) {
+			if (PopupManager.Instance != null && PopupManager.Instance.PopupInbox != null) {
+				PopupManager.Instance.PopupInbox.LoadInboxCallback(data.GetArray("inbox"));
+			}
+		}
   }
 	
   public void LoadUserInfo(string username) {
@@ -68,14 +74,14 @@ public class UserExtensionRequest : MonoBehaviour {
   void ClaimDailyRewardSuccess(JSONObject data) {
     ErrorCode.USER errorCode = (ErrorCode.USER)data.GetInt("errorCode");
     if (errorCode == ErrorCode.USER.NULL) {
-      Utils.Log("ClaimDailyRewardSuccess-- " + data.ToString());
+      Debug.Log("ClaimDailyRewardSuccess-- " + data.ToString());
 			AccountManager.Instance.lastClaimedDaily = data.GetLong("lastDaily");
 			AccountManager.Instance.UpdateUserCash(data.GetInt("cash"));
 			if (ScreenManager.Instance.SelectGameScreen != null) {
 				ScreenManager.Instance.SelectGameScreen.ClaimedDailyRewardCallback();
 			}
     } else {
-      Utils.Log("ClaimDailyRewardFail-- " + data.ToString());
+      Debug.Log("ClaimDailyRewardFail-- " + data.ToString());
       HUDManager.Instance.AddFlyText(errorCode.ToString(), Vector3.zero, 40, Color.red);
     }
   }
@@ -110,7 +116,7 @@ public class UserExtensionRequest : MonoBehaviour {
   void AddFbFriendSuccess(JSONObject data) {
     ErrorCode.USER errorCode = (ErrorCode.USER)data.GetInt("errorCode");
     if (errorCode == ErrorCode.USER.NULL) {
-      Utils.Log("AddFbFriendSuccess--------- " + data.ToString());
+      Debug.Log("AddFbFriendSuccess--------- " + data.ToString());
     } else {
       HUDManager.Instance.AddFlyText(errorCode.ToString(), Vector3.zero, 40, Color.red);
     }
@@ -133,7 +139,7 @@ public class UserExtensionRequest : MonoBehaviour {
     PopupManager.Instance.CloseLoadingPopup();
     PopupManager.Instance.HideLoadingIndicator();
     
-    Utils.Log("HandleErrorCode " + errorCode);
+    Debug.Log("HandleErrorCode " + errorCode);
   }
   
   private ISFSObject CreateExtensionObject(JSONObject jsonData) {

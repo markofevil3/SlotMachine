@@ -25,7 +25,7 @@ public class MyFacebook : MonoBehaviour {
 	}
 
 	void OnInitComplete() {
-    Utils.Log("FB.Init completed: Is user logged in? " + FB.IsLoggedIn);
+    Debug.Log("FB.Init completed: Is user logged in? " + FB.IsLoggedIn);
 		if (FB.IsLoggedIn) {
 			// LoadUserProfile();
 		} else {
@@ -57,7 +57,7 @@ public class MyFacebook : MonoBehaviour {
 			AccountManager.Instance.fbId = FB.UserId;
 			LoadUserProfile();
     }
-		Utils.Log(lastResponse);
+		Debug.Log(lastResponse);
 	}
 	
 	public void LoadUserProfile() {
@@ -66,7 +66,7 @@ public class MyFacebook : MonoBehaviour {
 	
 	void LoadUserProfileCallback(FBResult result) {
     if (result.Error != null) {
-			Utils.Log("LoadUserProfileCallback " + result.Error);
+			Debug.Log("LoadUserProfileCallback " + result.Error);
 		  PopupManager.Instance.CloseLoadingPopup();
 			return;
 		}  
@@ -101,7 +101,7 @@ public class MyFacebook : MonoBehaviour {
     if (result.Error == null) {
       HUDManager.Instance.AddFlyText(Localization.Get("InviteFriend_Success"), Vector3.zero, 40, Color.green, 0, 2f);
 		}
-		Utils.Log("InviteFriendsCallback " + result.Text);
+		Debug.Log("InviteFriendsCallback " + result.Text);
 	}
 	
 	public void LoadFBFriends() {
@@ -143,11 +143,11 @@ public class MyFacebook : MonoBehaviour {
 	//   public delegate void LoadPictureCallback (string fbId, string url);
 	//
 	// public void GetAvatarByFbId(string fbId, LoadPictureCallback callback) {
-	// 	Utils.Log("GetAvatarByFbId----------- " + fbId);
+	// 	Debug.Log("GetAvatarByFbId----------- " + fbId);
 	// 	string url = GetPictureURL(fbId, 128, 128);
 	//     FB.API(url,Facebook.HttpMethod.GET,result => {
 	//     if (result.Error != null) {
-	//       Utils.Log("LoadAvatarByFbId " + result.Error);
+	//       Debug.Log("LoadAvatarByFbId " + result.Error);
 	//       return;
 	//     }
 	// 		JSONObject jsonData = JSONObject.Parse(result.Text);

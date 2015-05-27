@@ -36,9 +36,9 @@ public class SlotDragonScreen : BaseSlotMachineScreen {
 	}
 	
 	private void BossGetHitCallback() {
-		Utils.Log("BossGetHitCallback");
+		Debug.Log("BossGetHitCallback");
 		if (specialData.GetInt("dHP") == 0) {
-			Utils.Log("Boss DEAD");
+			Debug.Log("Boss DEAD");
 			bossManager.ChangeBoss(specialData.GetObject("newBoss"), "EventFinishChangeBoss");
 			int dropCash = (int)specialData.GetArray("dropItems")[0].Number;
 			

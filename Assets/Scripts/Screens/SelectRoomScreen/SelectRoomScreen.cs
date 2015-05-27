@@ -32,7 +32,7 @@ public class SelectRoomScreen : BaseScreen {
     // fake room list
     // roomList = new JSONArray();
     roomList = ((JSONObject)data[1]).GetArray("rooms");
-    Utils.Log(roomList.ToString());
+    Debug.Log(roomList.ToString());
     // fake room min bet
     // int[] roomBet = new int[] { 10000, 100000, 520000, 2000000};
     // for (int i = 0; i < roomList.Length; i++) {
@@ -91,7 +91,7 @@ public class SelectRoomScreen : BaseScreen {
   private void EventFilterBet() {
     betFilterLabel.SetCurrentSelection();
     string crtSelect = UIPopupList.current.value;
-    Utils.Log("EventFilterBet " + crtSelect);
+    Debug.Log("EventFilterBet " + crtSelect);
     if (crtSelect == crtBetFilter) {
       return;
     }
