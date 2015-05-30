@@ -44,6 +44,7 @@ public class LobbyScreen : BaseScreen {
     }
 		
 		MyFacebook.Instance.Init();
+		SmartfoxClient.Instance.isRestarting = false;
     // Invoke("TestDropdown", 2.0f);
   }
 

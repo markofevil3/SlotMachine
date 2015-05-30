@@ -4,14 +4,20 @@ using System.Collections;
 public class PopupLoading : MonoBehaviour {
   
 	public UILabel loadingText;
+	public UISprite dimBackground;
 	
-  public void Open(string localizeKey = null) {
+  public void Open(string localizeKey = null, bool showDim = true) {
     PopupManager.Instance.ShowLoadingIndicator();
 		if (localizeKey != null) {
 			NGUITools.SetActive(loadingText.gameObject, true);
 			loadingText.text = Localization.Get(localizeKey);
 		} else {
 			NGUITools.SetActive(loadingText.gameObject, false);
+		}
+		if (showDim) {
+			dimBackground.color = new Color(0,0,0,0.5f);
+		} else {
+			dimBackground.color = Color.clear;
 		}
   }
   

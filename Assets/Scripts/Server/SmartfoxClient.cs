@@ -23,6 +23,8 @@ public class SmartfoxClient : MonoBehaviour {
 	private const string DEFAULT_PASSWORD = "default";
 	private const string DEFAULT_GUEST_NAME = "I am Rich";
 	
+	public bool isRestarting = false;
+	
 	private SmartFox client;
 	private ServerRequest currentRequest;
 	private string userId;
@@ -233,6 +235,7 @@ public class SmartfoxClient : MonoBehaviour {
 	}
 
 	public void Restart() {
+		isRestarting = true;
 		isManualLogin = false;
 		isLoggedIn = false;
 		shouldCallRegisterAsGuest = false;
@@ -464,16 +467,36 @@ public class SmartfoxClient : MonoBehaviour {
 	}
 	
 	void OnExtensionResponse(BaseEvent e) {
+		string cmd = (string)e.Params["cmd"];
+		if (cmd == Command.USER.PUSH_USER_NOTICES) {
+			ISFSObject objIn = (SFSObject)e.Params["params"];
+			JSONObject jsonData = JSONObject.Parse(Utils.FromByteArray(objIn.GetByteArray("jsonData")));
+			HandleUserNotices(jsonData);
+			objIn = null;
+			jsonData = null;
+			return;
+		}
 		if (currentRequest != null) {
-			string cmd = (string)e.Params["cmd"];
 			ISFSObject objIn = (SFSObject)e.Params["params"];
 			JSONObject jsonData = JSONObject.Parse(Utils.FromByteArray(objIn.GetByteArray("jsonData")));
 			jsonData.Add("commandId", cmd);
 			currentRequest.handler.SendMessage(currentRequest.callback, jsonData, SendMessageOptions.DontRequireReceiver);
+			objIn = null;
+			jsonData = null;
 		}
 
 		ResetServerRequest();
 		HandleServerRequest();
+	}
+	
+	void HandleUserNotices(JSONObject jsonData) {
+		Debug.Log("HandleUserNotices" + jsonData.ToString());
+		if (AccountManager.Instance != null) {
+			AccountManager.Instance.lastInboxTime = jsonData.GetLong("lastInboxTime");
+			if (ScreenManager.Instance != null && ScreenManager.Instance.SelectGameScreen != null) {
+				ScreenManager.Instance.SelectGameScreen.ShowOrHideMailNotice();
+			}
+		}
 	}
 	
 	public void HandleServerRequest(ServerRequest newRequest = null, bool shouldRequestImmediately = false) {

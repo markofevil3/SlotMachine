@@ -12,6 +12,7 @@ public class ErrorCode {
     CANT_FIND_USER,
     ALREADY_FRIEND,
     CANT_CLAIM_DAILY_YET,
+    CANT_FIND_MESSAGE,
     UNKNOWN = 100
   }
   

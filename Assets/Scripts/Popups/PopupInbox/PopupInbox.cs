@@ -47,17 +47,23 @@ public class PopupInbox : Popup {
 	public void LoadInboxCallback(JSONArray messages) {
     isLoading = false;
 		if (messages != null && messages.Length > 0) {
+			Debug.Log("LoadInboxCallback " + messages.ToString());
 			messageList = messages;
 			Utils.SetActive(noMessageLabel, false);
 			Utils.SetActive(scrollview.gameObject, true);
 			InitScrollViewData();
+			// Hide notice and update lastReadInboxMes
+			AccountManager.Instance.lastInboxTime = AccountManager.Instance.lastReadInboxTime = messages[messages.Length - 1].Obj.GetLong("createdAt");
+			if (ScreenManager.Instance.SelectGameScreen != null) {
+				ScreenManager.Instance.SelectGameScreen.ShowOrHideMailNotice();
+			}
 		} else {
 			Utils.SetActive(noMessageLabel, true);
 			Utils.SetActive(scrollview.gameObject, false);
 		}
-		Debug.Log("LoadInboxCallback " + messages.ToString());
 	}
 	
+	// TO DO: sort messages lastest to oldest
   public void InitScrollViewData() {
     wrapContent.ResetChildPositions();
     scrollview.currentMomentum = Vector3.zero;
@@ -101,7 +107,10 @@ public class PopupInbox : Popup {
     }
   }
 	
+	private JSONObject selectMessage;
+	
 	public void EventViewMessage(JSONObject message) {
+		selectMessage = message;
 		Utils.SetActive(scrollview.gameObject, false);
 		Utils.SetActive(viewMessagePanel, true);
 		Utils.SetActive(btnBack.gameObject, true);
@@ -126,16 +135,35 @@ public class PopupInbox : Popup {
 	}
 	
 	void ClaimReward(int type, long createdAt, string fromUsername) {
+		UserExtensionRequest.Instance.ClaimInboxReward(type, createdAt, fromUsername);
+		// JSONObject message;
+		// for (int i = 0; i < messageList.Length; i++) {
+		// 	message = messageList[i].Obj;
+		// 	if (message.GetLong("createdAt") == createdAt && message.GetInt("type") == type) {
+		// 		messageList.Remove(i);
+		// 		Debug.Log("ClaimReward " + type + " " + createdAt + " " + fromUsername);
+		// 		break;
+		// 	}
+		// }
+		//     InitScrollViewData();
+	}
+	
+	// TO DO: update gem val
+	public void ClaimRewardSuccess(JSONObject jsonData) {
+		Debug.Log("ClaimRewardSuccess " + jsonData.ToString());
+		AccountManager.Instance.UpdateUserCash(jsonData.GetInt("goldVal"));
+		AccountManager.Instance.UpdateUserGem(jsonData.GetInt("gemVal"));
 		JSONObject message;
 		for (int i = 0; i < messageList.Length; i++) {
 			message = messageList[i].Obj;
-			if (message.GetLong("createdAt") == createdAt && message.GetInt("type") == type) {
+			if (message.GetLong("createdAt") == selectMessage.GetLong("createdAt") && message.GetInt("type") == selectMessage.GetInt("type") && (string.IsNullOrEmpty(selectMessage.GetString("fromUsername")) || message.GetString("fromUsername") == selectMessage.GetString("fromUsername"))) {
 				messageList.Remove(i);
-				Debug.Log("ClaimReward " + type + " " + createdAt + " " + fromUsername);
 				break;
 			}
 		}
+		EventBackToListMessages();
     InitScrollViewData();
+    HUDManager.Instance.AddFlyText(Localization.Get("PopupInbox_ClaimSuccess"), Vector3.zero, 40, Color.green);
 	}
 	
 	void EventBackToListMessages() {

@@ -15,17 +15,21 @@ public class SelectGameScreen : BaseScreen {
 	public UITexture avatarSprite;
 	public UILabel coinLabel;
 	public UILabel killLabel;
+	public UILabel gemLabel;
 
   public UIButton btnFriend;
 	public UIButton btnMail;
 	public UIButton btnSetting;
 	public UIButton btnBack;
 	public UILabel dailyRewardCounterLabel;
+	public GameObject mailNotice;
 
 	private bool shouldUpdateDailyRewardTime = false;
 	private int timeCounter = 0;
 	private int currentCashDisplay = 0;
-
+	private int currentGemDisplay = 0;
+	private bool updatingCash = false;
+	private bool updatingGem = false;
 	// TO DO: update lastest user data from server
 
   public override void Init(object[] data) {
@@ -50,6 +54,7 @@ public class SelectGameScreen : BaseScreen {
 			NGUITools.SetActive(defaultAvatar, true);
 		}
 		UpdateUserCashLabelFinished();
+		UpdateUserGemLabelFinished();
 		killLabel.text = AccountManager.Instance.bossKilled.ToString("N0");
 		
 		if (AccountManager.Instance.lastClaimedDaily == 0 || (long)(Utils.UTCNowMiliseconds() - AccountManager.Instance.lastClaimedDaily) >= Global.DAILY_REWARD_MILI) {
@@ -57,13 +62,25 @@ public class SelectGameScreen : BaseScreen {
 		} else {
 			DisableClaimDailyReward();
 		}
+		ShowOrHideMailNotice();
   }
+
+	public void ShowOrHideMailNotice() {
+		if (AccountManager.Instance.lastInboxTime > AccountManager.Instance.lastReadInboxTime) {
+			Utils.SetActive(mailNotice, true);
+		} else {
+			Utils.SetActive(mailNotice, false);
+		}
+	}
 
 	IEnumerator DisplayAvatar() {
 		WWW www = new WWW(AccountManager.Instance.avatarLink);
 		yield return www;
 		if (www.texture != null) {
 			avatarSprite.mainTexture = www.texture;
+		} else {
+			NGUITools.SetActive(avatarSprite.gameObject, false);
+			NGUITools.SetActive(defaultAvatar, true);
 		}
 		www.Dispose();
 	}
@@ -76,6 +93,12 @@ public class SelectGameScreen : BaseScreen {
 			} else {
 				dailyRewardCounterLabel.text = Utils.GetTimeString(timeCounter);
 			}
+		}
+		if (!SmartfoxClient.Instance.isRestarting && currentCashDisplay != AccountManager.Instance.cash && !updatingCash) {
+			UpdateUserCashLabel();
+		}
+		if (!SmartfoxClient.Instance.isRestarting && currentGemDisplay != AccountManager.Instance.gem && !updatingGem) {
+			UpdateUserGemLabel();
 		}
 	}
 
@@ -94,7 +117,7 @@ public class SelectGameScreen : BaseScreen {
 
 	public void ClaimedDailyRewardCallback() {
 		// TO DO - display collect reward animation
-		ScreenManager.Instance.SelectGameScreen.UpdateUserCashLabel();
+		// UpdateUserCashLabel();
 		DisableClaimDailyReward();
 	}
 
@@ -103,6 +126,7 @@ public class SelectGameScreen : BaseScreen {
 			UpdateUserCashLabelFinished();
 			return;
 		}
+		updatingCash = true;
 		LeanTween.value(gameObject, UpdateUserCashLabelCallback, currentCashDisplay, AccountManager.Instance.cash, 1f).setOnComplete(UpdateUserCashLabelFinished);
   }
   
@@ -113,6 +137,26 @@ public class SelectGameScreen : BaseScreen {
 	void UpdateUserCashLabelFinished() {
     coinLabel.text = AccountManager.Instance.cash.ToString("N0");
 		currentCashDisplay = AccountManager.Instance.cash;
+		updatingCash = false;
+	}
+
+  private void UpdateUserGemLabel() {
+		if (currentGemDisplay == AccountManager.Instance.gem) {
+			UpdateUserGemLabelFinished();
+			return;
+		}
+		updatingGem = true;
+		LeanTween.value(gameObject, UpdateUserGemLabelCallback, currentGemDisplay, AccountManager.Instance.gem, 1f).setOnComplete(UpdateUserGemLabelFinished);
+  }
+  
+	void UpdateUserGemLabelCallback(float val) {
+    gemLabel.text = Mathf.Floor(val).ToString("N0");
+	}
+	
+	void UpdateUserGemLabelFinished() {
+    gemLabel.text = AccountManager.Instance.gem.ToString("N0");
+		currentGemDisplay = AccountManager.Instance.gem;
+		updatingGem = false;
 	}
 
   private void EventOpenLeaderboard() {

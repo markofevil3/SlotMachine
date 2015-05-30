@@ -13,10 +13,13 @@ public class AccountManager : MonoBehaviour {
 	private string mPassword = string.Empty;
 	private string mDisplayName = string.Empty;
 	private int mCash = 0;
+	private int mGem = 0;
 	private int mBossKilled = 0;
 	private bool mIsGuest = false;
 	
 	public long lastClaimedDaily = 0;
+	public long lastReadInboxTime = 0;
+	public long lastInboxTime = 0;
 	
 	// facebook data
 	public string fbId = string.Empty;
@@ -42,6 +45,11 @@ public class AccountManager : MonoBehaviour {
 	public int cash {
 	  get { return mCash ^ randomNumb; }
 	  set { mCash = value ^ randomNumb; }
+	}
+	
+	public int gem {
+	  get { return mGem ^ randomNumb; }
+	  set { mGem = value ^ randomNumb; }
 	}
 	
 	public int bossKilled {
@@ -72,10 +80,13 @@ public class AccountManager : MonoBehaviour {
 		password = user.GetString("password");
 		displayName = user.GetString("displayName");
 		cash = user.GetInt("cash");
+		gem = user.GetInt("gem");
 		bossKilled = user.GetInt("bossKill");
 		lastClaimedDaily = user.GetLong("lastDaily");
 		fbId = user.GetString("facebookId");
 		avatarLink = user.GetString("avatar");
+		lastReadInboxTime = user.GetLong("lastReadInboxTime");
+		lastInboxTime = user.GetLong("lastInboxTime");
 		Debug.Log("SetUser " + user.ToString());
 		// friends = user.GetArray("friends");
 	}
@@ -85,14 +96,21 @@ public class AccountManager : MonoBehaviour {
 		password = string.Empty;
 		displayName = string.Empty;
 		cash = 0;
+		gem = 0;
 		bossKilled = 0;
 		lastClaimedDaily = 0;
+		lastReadInboxTime = 0;
+		lastInboxTime = 0;
 		fbId = string.Empty;
 		avatarLink = string.Empty;
 	}
 	
 	public void UpdateUserCash(int updateVal) {
 	  cash = Mathf.Max(0, cash + updateVal);
+	}
+	
+	public void UpdateUserGem(int updateVal) {
+	  gem = Mathf.Max(0, gem + updateVal);
 	}
 	
 	public bool IsYou(string username) {

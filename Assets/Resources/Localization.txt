@@ -75,3 +75,6 @@ Time_Day_Short,d,d
 Time_Hour_Short,h,h
 Time_Minute_Short,m,m
 Time_Ago,ago,ago
+Btn_Claim,Claim,Claim
+PopupInbox_Claiming,Claiming...,Claiming...
+PopupInbox_ClaimSuccess,Claim reward successful!,Claim reward successful!

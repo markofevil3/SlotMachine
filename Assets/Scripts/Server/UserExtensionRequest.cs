@@ -44,6 +44,28 @@ public class UserExtensionRequest : MonoBehaviour {
 		}
   }
 	
+  public void ClaimInboxReward(int type, long createdAt, string fromUsername) {
+		PopupManager.Instance.ShowLoadingPopup("PopupInbox_Claiming", false);
+    JSONObject data = new JSONObject();
+    data.Add("username", AccountManager.Instance.username);
+    data.Add("type", type);
+    data.Add("createdAt", createdAt);
+    data.Add("fromUsername", fromUsername);
+    SmartfoxClient.Instance.HandleServerRequest(CreateExtensionRequest(Command.USER.CLAIM_INBOX_REWARD, "ClaimInboxRewardSuccess", data));
+  }
+  
+  void ClaimInboxRewardSuccess(JSONObject data) {
+    PopupManager.Instance.CloseLoadingPopup();
+    ErrorCode.USER errorCode = (ErrorCode.USER)data.GetInt("errorCode");
+    if (errorCode == ErrorCode.USER.NULL) {
+			if (PopupManager.Instance != null && PopupManager.Instance.PopupInbox != null) {
+				PopupManager.Instance.PopupInbox.ClaimRewardSuccess(data);
+			}
+		} else {
+      HUDManager.Instance.AddFlyText(errorCode.ToString(), Vector3.zero, 40, Color.red);
+		}
+  }
+	
   public void LoadUserInfo(string username) {
     JSONObject data = new JSONObject();
     data.Add("username", username);

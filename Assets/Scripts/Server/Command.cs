@@ -11,6 +11,8 @@ public class Command {
     public const string CHAT_IN_ROOM = "chatInRoom";
     public const string INVITE_TO_GAME = "inviteToGame";
     public const string CLAIM_DAILY = "claimDaily";
+    public const string CLAIM_INBOX_REWARD = "claimInboxReward";
+    public const string PUSH_USER_NOTICES = "pushUserNotices";
   }
   
 	public class TLMB {
