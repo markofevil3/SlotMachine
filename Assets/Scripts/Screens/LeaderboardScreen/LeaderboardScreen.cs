@@ -36,27 +36,6 @@ public class LeaderboardScreen : BaseScreen {
     EventDelegate.Set(btnBack.onClick, EventBackToPrevScreen);
     EventDelegate.Set(tabBars[0].onClick, delegate() { ShowTopPlayer(Tab.TOP_RICHER); });
    	EventDelegate.Set(tabBars[1].onClick, delegate() { ShowTopPlayer(Tab.TOP_WINNER); });
-    
-    // topRicherList = new JSONArray();
-    // topWinnerList = new JSONArray();
-    // // Fake top richer list
-    // for (int i = 0; i < 100; i++) {
-    //   JSONObject player = new JSONObject();
-    //   player.Add("id", i);
-    //   player.Add("rank", i + 1);
-    //   player.Add("name", Utils.RandomUsername(6));
-    //   player.Add("cash", (int)UnityEngine.Random.Range(1000000f, 50000000f));
-    //   topRicherList.Add(player);
-    // }
-    // // Fake top winner list
-    // for (int i = 0; i < 100; i++) {
-    //   JSONObject player = new JSONObject();
-    //   player.Add("id", i);
-    //   player.Add("rank", i + 1);
-    //   player.Add("name", Utils.RandomUsername(6));
-    //   player.Add("winMatchNumb", (int)UnityEngine.Random.Range(1000, 10000));
-    //   topWinnerList.Add(player);
-    // }
     ShowTopPlayer(Tab.TOP_RICHER);
   }
 

@@ -183,7 +183,7 @@ public class SmartfoxClient : MonoBehaviour {
     #if UNITY_EDITOR
     client.Connect("127.0.0.1", 9933);
     # else
-    client.Connect("14.162.92.31", 9933);
+    client.Connect("14.162.87.64", 9933);
     # endif
     // walk around for custom error code from server
     SFSErrorCodes.SetErrorMessage(2, "{0}");
@@ -476,6 +476,7 @@ public class SmartfoxClient : MonoBehaviour {
 			jsonData = null;
 			return;
 		}
+		Debug.Log("OnExtensionResponse response " + cmd + " currentRequest " + currentRequest.commandId);
 		if (currentRequest != null) {
 			ISFSObject objIn = (SFSObject)e.Params["params"];
 			JSONObject jsonData = JSONObject.Parse(Utils.FromByteArray(objIn.GetByteArray("jsonData")));
@@ -507,17 +508,18 @@ public class SmartfoxClient : MonoBehaviour {
 				ServerRequestQueue.Queue(newRequest);
 			}
 		}
-
-		currentRequest = ServerRequestQueue.Dequeue();
-
 		if (CanSendRequest()) { 
-			switch (currentRequest.type) {
-				case ServerRequest.Type.PUBLIC_MESSAGE:
-     			SendPublicMessage();
- 				break;
-				case ServerRequest.Type.EXTENSION:
-					SendRequest();
-				break;
+			currentRequest = ServerRequestQueue.Dequeue();
+			if (currentRequest != null) {
+				Debug.Log("HandleServerRequest " + currentRequest.commandId);
+				switch (currentRequest.type) {
+					case ServerRequest.Type.PUBLIC_MESSAGE:
+	     			SendPublicMessage();
+	 				break;
+					case ServerRequest.Type.EXTENSION:
+						SendRequest();
+					break;
+				}
 			}
 		}
 	}
@@ -539,7 +541,7 @@ public class SmartfoxClient : MonoBehaviour {
 	}
 
 	private bool CanSendRequest() {
-		return currentRequest != null && IsConnected() && !isRequesting;
+		return IsConnected() && !isRequesting;
 	}
 
 	private void ParseCmd(string cmd, out string gameId, out string commandId) {

@@ -89,13 +89,16 @@ public class SlotMachineClient : MonoBehaviour {
   }
 
   public void LeaveGame() {
+	  PopupManager.Instance.ShowLoadingPopup("LoadingText_LeaveRoom");
     JSONObject jsonData = new JSONObject();
     jsonData.Add("gameType", GetCommandByGameType(ScreenManager.Instance.CurrentSlotScreen.GetCrtGameType()));
 		SmartfoxClient.Instance.HandleServerRequest(CreateExtensionRequest(Command.SLOT_MACHINE.SLOT_LEAVE, jsonData));
   }
 
   public void OnLeaveGame(JSONObject jsonData) {
-    
+		Debug.Log("OnLeaveGame " + jsonData.ToString());
+	  PopupManager.Instance.CloseLoadingPopup();
+    ScreenManager.Instance.SetScreen(BaseScreen.Type.SELECT_GAME, null, true);
   }
 
   // public void Create() {
@@ -220,6 +223,7 @@ public class SlotMachineClient : MonoBehaviour {
 		switch (commandId) {
 			case Command.SLOT_MACHINE.SLOT_JOIN_ROOM: OnJoinRoom(jsonData); break;
 			case Command.SLOT_MACHINE.SLOT_PLAY: OnPlay(jsonData); break;
+			case Command.SLOT_MACHINE.SLOT_LEAVE: OnLeaveGame(jsonData); break;
       // case Command.TLMB.CREATE: OnCreate(jsonData); break;
       // case Command.TLMB.START: OnStartGame(jsonData); break;
       // case Command.TLMB.JOIN: OnJoin(jsonData); break;

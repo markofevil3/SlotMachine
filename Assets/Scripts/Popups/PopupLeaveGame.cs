@@ -18,6 +18,5 @@ public class PopupLeaveGame : Popup {
   void EventLeaveGame() {
     SlotMachineClient.Instance.LeaveGame();
     Close();
-    ScreenManager.Instance.SetScreen(BaseScreen.Type.SELECT_GAME, null, true);
   }
 }
