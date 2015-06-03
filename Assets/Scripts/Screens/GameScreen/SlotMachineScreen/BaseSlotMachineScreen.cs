@@ -164,6 +164,7 @@ public class BaseSlotMachineScreen : BaseScreen {
     
     UpdateUserCashLabel(0);
     bigWinPanel.Hide();
+		bossManager.Init(roomData.GetInt("dIndex"), roomData.GetInt("dHP"), roomData.GetInt("dMaxHP"), this, "BossGetHitCallback");
     base.Init(data);
   }
 
@@ -193,10 +194,18 @@ public class BaseSlotMachineScreen : BaseScreen {
 		bigWinPanel.FadeInFreeSpin(numb, shouldPause);
 	}
 
-	public virtual void SpawnSkill(int type, int level, int damage) {}
-	public virtual void SpawnSkill(SpawnableSkill skill) {}
+	public virtual void SpawnSkill(int type, int level, int damage) {
+		
+	}
+	
+	public virtual void SpawnSkill(SpawnableSkill skill) {
+		SpawnSkill(skill.type, skill.level, skill.damage);
+	}
 
-	public virtual void OtherPlayerSpinResult(string username, JSONObject jsonData) {}
+	public virtual void OtherPlayerSpinResult(string username, JSONObject jsonData) {
+		Debug.Log("OtherPlayerSpinResult " + jsonData.ToString());
+		ScreenManager.Instance.CurrentSlotScreen.AddSpinDataToQueue(new SpinData(username, jsonData, false));
+	}
 	
 	public virtual void ProcessSpinData(string username, JSONObject jsonData) {
 		
