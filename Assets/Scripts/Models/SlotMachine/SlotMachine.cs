@@ -116,7 +116,11 @@ public class SlotMachine : MonoBehaviour {
 			} else {
 	      UpdateScore(totalScore);
 			}
-			
+			if (freeSpinLeft == 0) {
+				ScreenManager.Instance.CurrentSlotScreen.StopFreeSpinAnimation();
+			} else {
+				ScreenManager.Instance.CurrentSlotScreen.UpdateFreeSpinText(freeSpinLeft);
+			}
 			// Glow winning item
 			for (int i = 0; i < winningCount.Length; i++) {
 				if (winningCount[i].Number >= 3 || ((int)winningType[i].Number == (int)SlotItem.Type.TILE_1 && winningCount[i].Number >= 2)) {

@@ -4,6 +4,11 @@ using Boomlagoon.JSON;
 
 public class SlotPirateScreen : BaseSlotMachineScreen {
 
+	public GameObject slotMachineBackground;
+	public TweenScale octopusTween;
+	public GameObject octopusFreeSpin;
+	public UILabel octopusFreeSpinLabel;
+
 	public override void SpawnSkill(int type, int level, int damage) {
 		GameObject tempGameObject;
 		SkillFireBall skill;
@@ -74,6 +79,33 @@ public class SlotPirateScreen : BaseSlotMachineScreen {
 			// skillLuffy.Init(level, damage, bossManager);
 	}
 	
+	public override void ShowFreeSpinAnimation() {
+		TweenColor[] tweens = slotMachineBackground.GetComponentsInChildren<TweenColor>();
+		if (tweens != null && tweens.Length > 0) {
+			for (int i = 0; i < tweens.Length; i ++) {
+				tweens[i].enabled = true;
+			}
+		}
+		octopusTween.enabled = true;
+		Utils.SetActive(octopusFreeSpin, true);
+	}
+
+	public override void StopFreeSpinAnimation() {
+		TweenColor[] tweens = slotMachineBackground.GetComponentsInChildren<TweenColor>();
+		if (tweens != null && tweens.Length > 0) {
+			for (int i = 0; i < tweens.Length; i ++) {
+				tweens[i].value = Color.white;
+				tweens[i].enabled = false;
+			}
+		}
+		octopusTween.enabled = false;
+		octopusTween.value = Vector3.one;
+		Utils.SetActive(octopusFreeSpin, false);
+	}
+	
+	public override void UpdateFreeSpinText(int numb) {
+		octopusFreeSpinLabel.text = Localization.Format("FreeSpinCountText", numb.ToString());
+	}	
 	
 	// private void SpawnSkill(int damage, Vector3 startPos) { // startPos is world position
 	// 	//   	GameObject tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotDragonScreen/Lighting", typeof(GameObject)) as GameObject);

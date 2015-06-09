@@ -61,8 +61,13 @@ public class BigWinPanel : MonoBehaviour {
 		transform.localScale = Vector3.one * 3;
 		LeanTween.scale(gameObject, Vector3.one, 0.5f).setEase(LeanTweenType.easeInOutCubic);
 		Invoke("FadeOutFreeSpin", 2f);
-		if (shouldPause) {
-			ScreenManager.Instance.CurrentSlotScreen.PauseSpawnSkill();
+
+		if (ScreenManager.Instance.CurrentSlotScreen != null) {
+			if (shouldPause) {
+				ScreenManager.Instance.CurrentSlotScreen.PauseSpawnSkill();
+			}
+			// Start background animation while in free spin
+			ScreenManager.Instance.CurrentSlotScreen.ShowFreeSpinAnimation();
 		}
 	}
 

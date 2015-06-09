@@ -131,7 +131,8 @@ public class BaseSlotMachineScreen : BaseScreen {
 		}
 	}
 	
-  public override void Init(object[] data) {    
+  public override void Init(object[] data) {
+		StopFreeSpinAnimation();
     EventDelegate.Set(btnBack.onClick, EventBackToSelectGame);
    	
    	slotMachine.Init();
@@ -193,6 +194,12 @@ public class BaseSlotMachineScreen : BaseScreen {
 	public virtual void FadeInFreeSpin(int numb, bool shouldPause = true) {
 		bigWinPanel.FadeInFreeSpin(numb, shouldPause);
 	}
+
+	public virtual void ShowFreeSpinAnimation() {}
+
+	public virtual void StopFreeSpinAnimation() {}
+
+	public virtual void UpdateFreeSpinText(int numb) {}	
 
 	public virtual void SpawnSkill(int type, int level, int damage) {
 		
