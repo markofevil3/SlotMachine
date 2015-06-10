@@ -4,6 +4,9 @@ using Boomlagoon.JSON;
 
 public class SlotDragonScreen : BaseSlotMachineScreen {
 	
+	public GameObject freeSpinLeft;
+	public UILabel freeSpinLeftLabel;
+	
 	public override void SpawnSkill(int type, int level, int damage) {
 		GameObject tempGameObject;
 		SkillFireBall skill;
@@ -73,4 +76,16 @@ public class SlotDragonScreen : BaseSlotMachineScreen {
 			// SkillSanji skillLuffy = tempGameObject.GetComponent<SkillSanji>();
 			// skillLuffy.Init(level, damage, bossManager);
 	}
+	
+	public override void ShowFreeSpinAnimation() {
+		Utils.SetActive(freeSpinLeft, true);
+	}
+
+	public override void StopFreeSpinAnimation() {
+		Utils.SetActive(freeSpinLeft, false);
+	}
+	
+	public override void UpdateFreeSpinText(int numb) {
+		freeSpinLeftLabel.text = Localization.Format("FreeSpinCountText", numb.ToString());
+	}	
 }
