@@ -8,14 +8,14 @@ public class BossHawkEye : Boss {
 	private Vector3[] lightPosition = new Vector3[3];
 
 	public override Vector3 GetPosition() {
-		return new Vector3(0, 230f, 0);
+		return new Vector3(0, -47f, 0);
 	}
 	
 	public override void Init() {
 		base.Init();
-		lightPosition[0] = new Vector3(-175.8f, 79f, 0);
-		lightPosition[1] = new Vector3(0f, 20f, 0);
-		lightPosition[2] = new Vector3(11f, 95f, 0);
+		lightPosition[0] = new Vector3(-175.8f, 337, 0);
+		lightPosition[1] = new Vector3(17f, 355f, 0);
+		lightPosition[2] = new Vector3(7f, 277f, 0);
 		StartCoroutine(StartGlowEffect());
 	}
 	

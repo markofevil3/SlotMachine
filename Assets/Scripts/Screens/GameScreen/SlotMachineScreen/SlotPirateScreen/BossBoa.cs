@@ -9,7 +9,7 @@ public class BossBoa : Boss {
 	private string[] effectName = new string[2] { "CFXM2_PickupHeart2", "CFXM2_PickupHeart3" };
 	
 	public override Vector3 GetPosition() {
-		return new Vector3(0, 250f, 0);
+		return new Vector3(0, 90f, 0);
 	}
 
 	public override void Init() {
