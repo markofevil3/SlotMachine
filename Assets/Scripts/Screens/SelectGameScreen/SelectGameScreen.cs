@@ -33,7 +33,7 @@ public class SelectGameScreen : BaseScreen {
 	// TO DO: update lastest user data from server
 
   public override void Init(object[] data) {
-    EventDelegate.Set(btnZombieGame.onClick, delegate() { EventOpenSlotGame(BaseSlotMachineScreen.GameType.SLOT_HALLOWEEN); });
+    EventDelegate.Set(btnZombieGame.onClick, delegate() { EventOpenSlotGame(BaseSlotMachineScreen.GameType.SLOT_ZOMBIE); });
     EventDelegate.Set(btnDragonGame.onClick, delegate() { EventOpenSlotGame(BaseSlotMachineScreen.GameType.SLOT_DRAGON); });
     EventDelegate.Set(btnPirateGame.onClick, delegate() { EventOpenSlotGame(BaseSlotMachineScreen.GameType.SLOT_PIRATE); });
     EventDelegate.Set(btnLeaderboard.onClick, EventOpenLeaderboard);

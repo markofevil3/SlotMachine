@@ -144,22 +144,6 @@ public class ScreenManager : MonoBehaviour {
     GameObject tempGameObject;
     BaseSlotMachineScreen tempScreen;
     switch(gameType) {
-      case BaseSlotMachineScreen.GameType.SLOT_FRUITS:
-        tempGameObject = NGUITools.AddChild(root, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotFruitScreen", typeof(GameObject)) as GameObject);
-       	tempGameObject.name = "SlotFruitScreen";
-       	SlotFruitsScreen slotFruitsScreen = tempGameObject.GetComponent<SlotFruitsScreen>();
-       	slotFruitsScreen.Init(data);
-	     	slotFruitsScreen.Open();
-	     	tempScreen = slotFruitsScreen as BaseSlotMachineScreen;
-      break;
-      case BaseSlotMachineScreen.GameType.SLOT_HALLOWEEN:
-        tempGameObject = NGUITools.AddChild(root, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotHalloweenScreen", typeof(GameObject)) as GameObject);
-       	tempGameObject.name = "SlotHalloweenScreen";
-       	SlotHalloweenScreen slotHalloweenScreen = tempGameObject.GetComponent<SlotHalloweenScreen>();
-       	slotHalloweenScreen.Init(data);
-	     	slotHalloweenScreen.Open();
-	     	tempScreen = slotHalloweenScreen as BaseSlotMachineScreen;
-      break;
       case BaseSlotMachineScreen.GameType.SLOT_DRAGON:
         tempGameObject = NGUITools.AddChild(root, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotDragonScreen/SlotDragonScreen", typeof(GameObject)) as GameObject);
        	tempGameObject.name = "SlotDragonScreen";
@@ -176,6 +160,14 @@ public class ScreenManager : MonoBehaviour {
 	     	slotPirateScreen.Open();
 	     	tempScreen = slotPirateScreen as BaseSlotMachineScreen;
       break;
+      case BaseSlotMachineScreen.GameType.SLOT_ZOMBIE:
+        tempGameObject = NGUITools.AddChild(root, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotZombieScreen/SlotZombieScreen", typeof(GameObject)) as GameObject);
+       	tempGameObject.name = "SlotZombieScreen";
+       	SlotZombieScreen slotZombieScreen = tempGameObject.GetComponent<SlotZombieScreen>();
+       	slotZombieScreen.Init(data);
+	     	slotZombieScreen.Open();
+	     	tempScreen = slotZombieScreen as BaseSlotMachineScreen;
+      break;
       default:
         tempScreen = null;
       break;
@@ -188,14 +180,6 @@ public class ScreenManager : MonoBehaviour {
     GameObject tempGameObject;
     BaseScreen tempScreen;
     switch(gameType) {
-      case BaseGameScreen.GameType.TIEN_LEN_MB:
-        tempGameObject = NGUITools.AddChild(root, Resources.Load(Global.SCREEN_PATH + "/GameScreen/TienLenMN/TienLenMNScreen", typeof(GameObject)) as GameObject);
-       	tempGameObject.name = "TienLenMNScreen";
-       	TienLenMNScreen tienLenMNScreen = tempGameObject.GetComponent<TienLenMNScreen>();
-       	tienLenMNScreen.Init(data);
-	     	tienLenMNScreen.Open();
-	     	tempScreen = tienLenMNScreen as BaseGameScreen;
-      break;
       default:
         tempScreen = null;
       break;
