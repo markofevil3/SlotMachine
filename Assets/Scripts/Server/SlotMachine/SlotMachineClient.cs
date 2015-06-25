@@ -32,6 +32,9 @@ public class SlotMachineClient : MonoBehaviour {
       case BaseSlotMachineScreen.GameType.SLOT_PIRATE:
         return Command.SLOT_MACHINE.SLOT_TYPE_PIRATE;
       break;
+      case BaseSlotMachineScreen.GameType.SLOT_ZOMBIE:
+        return Command.SLOT_MACHINE.SLOT_TYPE_ZOMBIE;
+      break;
       default:
         return string.Empty;
     }
@@ -50,6 +53,9 @@ public class SlotMachineClient : MonoBehaviour {
       break;
       case Command.SLOT_MACHINE.SLOT_TYPE_PIRATE:
         return BaseSlotMachineScreen.GameType.SLOT_PIRATE;
+      break;
+      case Command.SLOT_MACHINE.SLOT_TYPE_ZOMBIE:
+        return BaseSlotMachineScreen.GameType.SLOT_ZOMBIE;
       break;
       default:
         return BaseSlotMachineScreen.GameType.SLOT_FRUITS;

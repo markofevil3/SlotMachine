@@ -87,6 +87,7 @@ public class SelectGameScreen : BaseScreen {
 
 	void Update() {
 		if (shouldUpdateDailyRewardTime) {
+			// TO DO: can be hack by change device time
 			timeCounter = (int)((Global.DAILY_REWARD_MILI - (long)((DateTime.UtcNow - Utils.time1970).TotalMilliseconds - AccountManager.Instance.lastClaimedDaily)) / 1000);
 			if (timeCounter <= 0) {
 				EnableClaimDailyReward();

@@ -38,6 +38,7 @@ public class Command {
 		public const string SLOT_TYPE_HALLOWEEN = "slot_halloween";
 		public const string SLOT_TYPE_DRAGON = "slot_dragon";
 		public const string SLOT_TYPE_PIRATE = "slot_pirate";
+		public const string SLOT_TYPE_ZOMBIE = "slot_zombie";
   }
   
 	public static string Create(string gameId, string commandId) {

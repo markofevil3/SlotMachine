@@ -36,8 +36,8 @@ public class PopupLoading : MonoBehaviour {
   }
   
 	IEnumerator CloseDelay() {
-		yield return new WaitForSeconds(0.3f);
-    TweenAlpha tween = TweenAlpha.Begin(gameObject, 0.3f, 0);
+		yield return new WaitForSeconds(0.2f);
+    TweenAlpha tween = TweenAlpha.Begin(gameObject, 0.2f, 0);
     EventDelegate.Set(tween.onFinished, Destroy);
 	}
 	

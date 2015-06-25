@@ -27,7 +27,7 @@ public class BossManager : MonoBehaviour {
 	
 	private string[] bossPiratePrefabs = new string[3] {"BossBoa", "BossCrocodile", "BossHawkEye"};
 	private string[] bossDragonPrefabs = new string[3] {"BossDragonFire", "BossDragonOrange", "BossDragonBlack"};
-	private string[] bossZombiePrefabs = new string[3] {"BossBoa", "BossCrocodile", "BossHawkEye"};
+	private string[] bossZombiePrefabs = new string[3] {"BossHomeless", "BossMan", "BossAstronau"};
 
 	public virtual string GetBossPrefabName(BaseSlotMachineScreen.GameType gameType, int type) {
 		switch(gameType) {

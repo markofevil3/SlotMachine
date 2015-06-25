@@ -84,7 +84,6 @@ public class PopupInviteToGame : Popup {
         }
       }
     }
-    Debug.Log(friendListRows.ToString());
     isLoading = false;
     wrapContent.ResetChildPositions();
     scrollview.currentMomentum = Vector3.zero;

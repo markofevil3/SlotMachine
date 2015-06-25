@@ -5,9 +5,10 @@ public class PlayerSlotScript : MonoBehaviour {
   
   public UILabel usernameLabel;
   public UILabel cashLabel;
-  public UISprite avatarSprite;
+  public UITexture avatarSprite;
   public UIEventTriggerExtent eventTrigger;
 	public GameObject glowBackground;
+	public GameObject btnAdd;
   // public UISprite circleSprite;
   // public UIButton btnThrowCard;
   // public UIButton btnSit;
@@ -26,7 +27,7 @@ public class PlayerSlotScript : MonoBehaviour {
     usernameLabel.text = displayName;
     cashLabel.text = cash.ToString("N0");
     if (avatarName != string.Empty) {
-      avatarSprite.spriteName = avatarName;
+      // avatarSprite.spriteName = avatarName;
     }
     eventTrigger.inputParams = new object[] {username};
     EventDelegate.Set(eventTrigger.onClick, delegate() { EventShowUserInfo((string)eventTrigger.inputParams[0]); });
