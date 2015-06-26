@@ -12,7 +12,8 @@ public class PlayerSlotScript : MonoBehaviour {
   // public UISprite circleSprite;
   // public UIButton btnThrowCard;
   // public UIButton btnSit;
-  
+  private string avatarLink;
+	
   [HideInInspector]
   public string username;
   [HideInInspector]
@@ -22,25 +23,40 @@ public class PlayerSlotScript : MonoBehaviour {
     get { return transform.position; }
   }
   
-  public void Init(string mUsername, string displayName, int cash, string avatarName) {
+  public void Init(string mUsername, string displayName, int cash, string avatarLink) {
     username = mUsername;
     usernameLabel.text = displayName;
     cashLabel.text = cash.ToString("N0");
-    if (avatarName != string.Empty) {
+		this.avatarLink = avatarLink;
+    if (this.avatarLink != string.Empty) {
+			StartCoroutine(DisplayAvatar());
       // avatarSprite.spriteName = avatarName;
-    }
+		} else {
+			
+		}
     eventTrigger.inputParams = new object[] {username};
     EventDelegate.Set(eventTrigger.onClick, delegate() { EventShowUserInfo((string)eventTrigger.inputParams[0]); });
     HideGlow();
+		NGUITools.SetActive(btnAdd, false);
     // circleSprite.gameObject.SetActive(false);
     // btnSit.gameObject.SetActive(false);
     // btnThrowCard.gameObject.SetActive(true);
   }
   
+	IEnumerator DisplayAvatar() {
+		WWW www = new WWW(this.avatarLink);
+		yield return www;
+		if (www.texture != null) {
+			avatarSprite.mainTexture = www.texture;
+		}
+		www.Dispose();
+	}
+	
   public void InitEmpty() {
     username = string.Empty;
     usernameLabel.text = string.Empty;
     cashLabel.text = string.Empty;
+		NGUITools.SetActive(btnAdd, true);
     EventDelegate.Set(eventTrigger.onClick, OpenInvitePlayerPopup);
     HideGlow();
     // btnThrowCard.gameObject.SetActive(false);

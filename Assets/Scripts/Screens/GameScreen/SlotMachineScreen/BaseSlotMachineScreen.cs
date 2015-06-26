@@ -29,6 +29,9 @@ public class BaseSlotMachineScreen : BaseScreen {
   public UILabel betPerLineLabel;
   public UILabel lineLabel;
   public UILabel userCashLabel;
+	public UILabel userGemLabel;
+	public UILabel userKillLabel;
+	public UITexture userAvatarTexture;
 	public UIEventTriggerExtent backgroundEventListener;
 	public InGameChatBar inGameChatBar;
   public PlayerSlotScript[] otherPlayers = new PlayerSlotScript[4];
@@ -89,8 +92,9 @@ public class BaseSlotMachineScreen : BaseScreen {
 	
 	IEnumerator DisplayBossDropCallback(int dropCash, int dropGem, JSONObject newBossData) {
 		yield return new WaitForSeconds(2.5f);
-		// TO DO: update user gem
     UpdateUserCashLabel(dropCash);
+    UpdateUserGemLabel(dropGem);
+    UpdateUserKillLabel();
 		isChangingBoss = true;
 		bossManager.ChangeBoss(newBossData, "EventFinishChangeBoss");
 	}
@@ -150,7 +154,7 @@ public class BaseSlotMachineScreen : BaseScreen {
     int count = 0;
     for (int i = 0; i < otherPlayerDatas.Length; i++) {
       if (!AccountManager.Instance.IsYou(otherPlayerDatas[i].Obj.GetString("username"))) {
-        otherPlayers[count].Init(otherPlayerDatas[i].Obj.GetString("username"), otherPlayerDatas[i].Obj.GetString("displayName"), otherPlayerDatas[i].Obj.GetInt("cash"), null);
+        otherPlayers[count].Init(otherPlayerDatas[i].Obj.GetString("username"), otherPlayerDatas[i].Obj.GetString("displayName"), otherPlayerDatas[i].Obj.GetInt("cash"), otherPlayerDatas[i].Obj.GetString("avatar"));
         count++;
       }
     }
@@ -164,10 +168,28 @@ public class BaseSlotMachineScreen : BaseScreen {
     roomId = jsonData.GetString("roomId");
     
     UpdateUserCashLabel(0);
+		UpdateUserGemLabel(0);
+		UpdateUserKillLabel();
+    if (AccountManager.Instance.avatarLink != string.Empty) {
+			Utils.SetActive(userAvatarTexture.gameObject, true);
+			StartCoroutine(DisplayAvatar());
+      // avatarSprite.spriteName = avatarName;
+		} else {
+			Utils.SetActive(userAvatarTexture.gameObject, false);
+		}
     bigWinPanel.Hide();
 		bossManager.Init(roomData.GetInt("dIndex"), roomData.GetInt("dHP"), roomData.GetInt("dMaxHP"), this, "BossGetHitCallback");
     base.Init(data);
   }
+
+	IEnumerator DisplayAvatar() {
+		WWW www = new WWW(AccountManager.Instance.avatarLink);
+		yield return www;
+		if (www.texture != null) {
+			userAvatarTexture.mainTexture = www.texture;
+		}
+		www.Dispose();
+	}
 
   private void EventBackToSelectGame() {
     PopupManager.Instance.OpenPopup(Popup.Type.POPUP_LEAVE_GAME, new object[] { gameType });
@@ -218,6 +240,29 @@ public class BaseSlotMachineScreen : BaseScreen {
 		
 	}
 
+  public void UpdateUserGemLabel(int addValue) {
+		if (addValue == 0) {
+			UpdateUserGemLabelFinished();
+			return;
+		}
+		int fromVal = AccountManager.Instance.gem;
+		AccountManager.Instance.UpdateUserGem(addValue);
+		Debug.Log("UpdateUserGemLabel " + fromVal + " " + AccountManager.Instance.gem + " " + addValue);
+		LeanTween.value(gameObject, UpdateUserGemLabelCallback, fromVal, AccountManager.Instance.gem, 1f).setOnComplete(UpdateUserGemLabelFinished);
+  }
+  
+	void UpdateUserGemLabelCallback(float val) {
+    userGemLabel.text = Utils.CurrencyToStringShort(Mathf.Floor(val));
+	}
+	
+	void UpdateUserGemLabelFinished() {
+    userGemLabel.text = Utils.CurrencyToStringShort(AccountManager.Instance.gem);
+	}
+
+	public void UpdateUserKillLabel() {
+		userKillLabel.text = AccountManager.Instance.bossKilled.ToString("N0");
+	}
+
   public void UpdateUserCashLabel(int addValue) {
 		if (addValue == 0) {
 			UpdateUserCashLabelFinished();
@@ -230,11 +275,11 @@ public class BaseSlotMachineScreen : BaseScreen {
   }
   
 	void UpdateUserCashLabelCallback(float val) {
-    userCashLabel.text = Mathf.Floor(val).ToString("N0");
+    userCashLabel.text = Utils.CurrencyToStringShort(Mathf.Floor(val));
 	}
 	
 	void UpdateUserCashLabelFinished() {
-    userCashLabel.text = AccountManager.Instance.cash.ToString("N0");
+    userCashLabel.text = Utils.CurrencyToStringShort(AccountManager.Instance.cash);
 	}
 	
   public virtual void UpdateJackpot(int score) {
@@ -265,7 +310,7 @@ public class BaseSlotMachineScreen : BaseScreen {
   public void OnPlayerJoinRoom(string roomId, JSONObject userData) {
     if (this.roomId == roomId) {
       PlayerSlotScript playerSlot = GetAvailableSlot(userData.GetString("username"));
-      playerSlot.Init(userData.GetString("username"), userData.GetString("displayName"), userData.GetInt("cash"), null);
+      playerSlot.Init(userData.GetString("username"), userData.GetString("displayName"), userData.GetInt("cash"), userData.GetString("avatar"));
     } else {
       Debug.LogError("Not in this room " + this.roomId + " | " + roomId);
     }

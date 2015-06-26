@@ -105,6 +105,34 @@ public class Utils : MonoBehaviour {
 	  return log;
 	}
 	
+	public static string CurrencyToStringShort(int numb) {
+		// billion
+		if (numb >= 1000000000) {
+			return Math.Round(numb / 1000000000f, 2) + "B";
+		}
+		if (numb >= 1000000) {
+			return Math.Round(numb / 1000000f, 2) + "M";
+		}
+		if (numb >= 1000) {
+			return Math.Round(numb / 1000f, 2) + "K";
+		}
+		return numb.ToString();
+	}
+	
+	public static string CurrencyToStringShort(float numb) {
+		// billion
+		if (numb >= 1000000000) {
+			return Math.Round(numb / 1000000000f, 2) + "B";
+		}
+		if (numb >= 1000000) {
+			return Math.Round(numb / 1000000f, 2) + "M";
+		}
+		if (numb >= 1000) {
+			return Math.Round(numb / 1000f, 2) + "K";
+		}
+		return numb.ToString();
+	}
+	
 	// Input seconds - format 1:20:30
 	public static string GetTimeString(int timer) {
 		if (timer <= 0) {

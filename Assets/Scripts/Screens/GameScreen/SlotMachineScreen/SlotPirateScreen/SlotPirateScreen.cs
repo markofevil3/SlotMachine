@@ -4,7 +4,7 @@ using Boomlagoon.JSON;
 
 public class SlotPirateScreen : BaseSlotMachineScreen {
 
-	public GameObject slotMachineBackground;
+	public GameObject starHolder;
 	public TweenScale octopusTween;
 	public GameObject octopusFreeSpin;
 	public UILabel octopusFreeSpinLabel;
@@ -80,7 +80,7 @@ public class SlotPirateScreen : BaseSlotMachineScreen {
 	}
 	
 	public override void ShowFreeSpinAnimation() {
-		TweenColor[] tweens = slotMachineBackground.GetComponentsInChildren<TweenColor>();
+		TweenColor[] tweens = starHolder.GetComponentsInChildren<TweenColor>();
 		if (tweens != null && tweens.Length > 0) {
 			for (int i = 0; i < tweens.Length; i ++) {
 				tweens[i].enabled = true;
@@ -91,7 +91,7 @@ public class SlotPirateScreen : BaseSlotMachineScreen {
 	}
 
 	public override void StopFreeSpinAnimation() {
-		TweenColor[] tweens = slotMachineBackground.GetComponentsInChildren<TweenColor>();
+		TweenColor[] tweens = starHolder.GetComponentsInChildren<TweenColor>();
 		if (tweens != null && tweens.Length > 0) {
 			for (int i = 0; i < tweens.Length; i ++) {
 				tweens[i].value = Color.white;

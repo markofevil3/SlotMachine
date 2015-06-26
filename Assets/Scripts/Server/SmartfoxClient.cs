@@ -321,6 +321,7 @@ public class SmartfoxClient : MonoBehaviour {
   	  userData.Add("username", enterUser.Name);
   	  userData.Add("cash", enterUser.GetVariable("cash").GetIntValue());
   	  userData.Add("displayName", enterUser.GetVariable("displayName").GetStringValue());
+  	  userData.Add("avatar", enterUser.GetVariable("avatar").GetStringValue());
   	  Debug.Log("OnUserEnterRoom --- " + userData.ToString());
   	  
   	  ScreenManager.Instance.CurrentSlotScreen.OnPlayerJoinRoom(room.Name, userData);
