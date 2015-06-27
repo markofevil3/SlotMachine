@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using Boomlagoon.JSON;
 using Sfs2X.Entities.Data;
@@ -98,7 +98,7 @@ public class UserExtensionRequest : MonoBehaviour {
     if (errorCode == ErrorCode.USER.NULL) {
       Debug.Log("ClaimDailyRewardSuccess-- " + data.ToString());
 			AccountManager.Instance.lastClaimedDaily = data.GetLong("lastDaily");
-			AccountManager.Instance.UpdateUserCash(data.GetInt("cash"));
+			AccountManager.Instance.UpdateUserCash(data.GetLong("cash"));
 			if (ScreenManager.Instance.SelectGameScreen != null) {
 				ScreenManager.Instance.SelectGameScreen.ClaimedDailyRewardCallback();
 			}

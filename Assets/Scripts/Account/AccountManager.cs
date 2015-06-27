@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 using System.Collections;
 using Boomlagoon.JSON;
 using Sfs2X.Entities.Data;
@@ -12,7 +13,7 @@ public class AccountManager : MonoBehaviour {
 	private string mUsername = string.Empty;
 	private string mPassword = string.Empty;
 	private string mDisplayName = string.Empty;
-	private int mCash = 0;
+	private long mCash = 0;
 	private int mGem = 0;
 	private int mBossKilled = 0;
 	private bool mIsGuest = false;
@@ -42,7 +43,7 @@ public class AccountManager : MonoBehaviour {
 	  set { mDisplayName = value; }
 	}
 	
-	public int cash {
+	public long cash {
 	  get { return mCash ^ randomNumb; }
 	  set { mCash = value ^ randomNumb; }
 	}
@@ -79,7 +80,7 @@ public class AccountManager : MonoBehaviour {
 	  username = user.GetString("username");
 		password = user.GetString("password");
 		displayName = user.GetString("displayName");
-		cash = user.GetInt("cash");
+		cash = user.GetLong("cash");
 		gem = user.GetInt("gem");
 		bossKilled = user.GetInt("bossKill");
 		lastClaimedDaily = user.GetLong("lastDaily");
@@ -105,12 +106,12 @@ public class AccountManager : MonoBehaviour {
 		avatarLink = string.Empty;
 	}
 	
-	public void UpdateUserCash(int updateVal) {
-	  cash = Mathf.Max(0, cash + updateVal);
+	public void UpdateUserCash(long updateVal) {
+	  cash = Math.Max(0, cash + updateVal);
 	}
 	
 	public void UpdateUserGem(int updateVal) {
-	  gem = Mathf.Max(0, gem + updateVal);
+	  gem = Math.Max(0, gem + updateVal);
 	}
 	
 	public bool IsYou(string username) {

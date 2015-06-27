@@ -57,7 +57,7 @@ public class PopupUserInfo : Popup {
 		Utils.SetActive(userInfoPanel, true);
     user = mUser;
     displayNameLabel.text = user.GetString("displayName");
-    cashLabel.text = user.GetInt("cash").ToString("N0");
+    cashLabel.text = user.GetLong("cash").ToString("N0");
     killLabel.text = user.GetInt("bossKill").ToString("N0");
 		avatarLink = user.GetString("avatar");
 		if (avatarLink != string.Empty) {

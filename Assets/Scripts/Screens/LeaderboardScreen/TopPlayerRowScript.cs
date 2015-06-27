@@ -33,7 +33,7 @@ public class TopPlayerRowScript : MonoBehaviour {
     
     playerNameLabel.text = rowData.GetString("displayName");
     if (selectedTab == LeaderboardScreen.Tab.TOP_RICHER) {
-      cashLabel.text = rowData.GetInt("cash").ToString("N0") + "$";
+      cashLabel.text = rowData.GetLong("cash").ToString("N0") + "$";
     } else {
       // cashLabel.text = Utils.Localize("Top_Winner_Match_Text", new string[1] {rowData.GetInt("winMatchNumb").ToString("N0")});
       cashLabel.text = Localization.Format("Top_Winner_Match_Text", rowData.GetInt("bossKill").ToString("N0"));

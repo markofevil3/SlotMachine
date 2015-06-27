@@ -23,7 +23,7 @@ public class PlayerSlotScript : MonoBehaviour {
     get { return transform.position; }
   }
   
-  public void Init(string mUsername, string displayName, int cash, string avatarLink) {
+  public void Init(string mUsername, string displayName, long cash, string avatarLink) {
     username = mUsername;
     usernameLabel.text = displayName;
     cashLabel.text = cash.ToString("N0");

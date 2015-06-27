@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using Boomlagoon.JSON;
 
@@ -28,7 +28,7 @@ public class FriendRowScript : MonoBehaviour {
     rowData = data;
 		facebookID = rowData.GetString("facebookId");
     usernameLabel.text = data.GetString("displayName");
-    cashLabel.text = data.GetInt("cash").ToString("N0");
+    cashLabel.text = data.GetLong("cash").ToString("N0");
 		if (facebookID != null && facebookID != string.Empty) {
 			NGUITools.SetActive(avatarTexture.gameObject, true);
 			StartCoroutine(DisplayAvatar(facebookID));

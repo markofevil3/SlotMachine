@@ -26,7 +26,7 @@ public class SelectGameScreen : BaseScreen {
 
 	private bool shouldUpdateDailyRewardTime = false;
 	private int timeCounter = 0;
-	private int currentCashDisplay = 0;
+	private long currentCashDisplay = 0;
 	private int currentGemDisplay = 0;
 	private bool updatingCash = false;
 	private bool updatingGem = false;

@@ -155,7 +155,7 @@ public class BaseSlotMachineScreen : BaseScreen {
     int count = 0;
     for (int i = 0; i < otherPlayerDatas.Length; i++) {
       if (!AccountManager.Instance.IsYou(otherPlayerDatas[i].Obj.GetString("username"))) {
-        otherPlayers[count].Init(otherPlayerDatas[i].Obj.GetString("username"), otherPlayerDatas[i].Obj.GetString("displayName"), otherPlayerDatas[i].Obj.GetInt("cash"), otherPlayerDatas[i].Obj.GetString("avatar"));
+        otherPlayers[count].Init(otherPlayerDatas[i].Obj.GetString("username"), otherPlayerDatas[i].Obj.GetString("displayName"), otherPlayerDatas[i].Obj.GetLong("cash"), otherPlayerDatas[i].Obj.GetString("avatar"));
         count++;
       }
     }
@@ -269,7 +269,7 @@ public class BaseSlotMachineScreen : BaseScreen {
 			UpdateUserCashLabelFinished();
 			return;
 		}
-		int fromVal = AccountManager.Instance.cash;
+		long fromVal = AccountManager.Instance.cash;
 		AccountManager.Instance.UpdateUserCash(addValue);
 		Debug.Log("UpdateUserCash " + fromVal + " " + AccountManager.Instance.cash + " " + addValue);
 		LeanTween.value(gameObject, UpdateUserCashLabelCallback, fromVal, AccountManager.Instance.cash, 1f).setOnComplete(UpdateUserCashLabelFinished);
@@ -307,13 +307,14 @@ public class BaseSlotMachineScreen : BaseScreen {
   
   void EventMaxBet() {
     SetNumbLine(SlotCombination.MAX_LINE);
+		SetBetPerLine(SlotCombination.MAX_BET_PER_LINE_RANGER - 1);
 		slotMachine.StartMachine();
   }
   
   public void OnPlayerJoinRoom(string roomId, JSONObject userData) {
     if (this.roomId == roomId) {
       PlayerSlotScript playerSlot = GetAvailableSlot(userData.GetString("username"));
-      playerSlot.Init(userData.GetString("username"), userData.GetString("displayName"), userData.GetInt("cash"), userData.GetString("avatar"));
+      playerSlot.Init(userData.GetString("username"), userData.GetString("displayName"), userData.GetLong("cash"), userData.GetString("avatar"));
     } else {
       Debug.LogError("Not in this room " + this.roomId + " | " + roomId);
     }
