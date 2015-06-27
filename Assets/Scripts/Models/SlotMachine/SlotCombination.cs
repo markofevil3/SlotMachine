@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 using System.Collections;
 using Boomlagoon.JSON;
 
@@ -10,10 +11,11 @@ using Boomlagoon.JSON;
 public class SlotCombination : MonoBehaviour {
   
   public static int MAX_LINE = 9;
+  public static int MAX_BET_PER_LINE_RANGER = 5;
   public static int NUM_REELS = 5;
   public static int MAX_DISPLAY_ITEMS = 15;
   
-  private float[] ITEM_RATES = new float[10] {4f, 20f, 12f, 11f, 10f, 10f, 10f, 9f, 8f, 6f};
+  // private float[] ITEM_RATES = new float[10] {4f, 20f, 12f, 11f, 10f, 10f, 10f, 9f, 8f, 6f};
   
   private float randomValue;
   
@@ -38,33 +40,40 @@ public class SlotCombination : MonoBehaviour {
     { 1, 3, 7, 11, 13 },
   };
   
-  public static int[,] PAYOUTS = new int[,] {
-    // item 0 - ignore
-    { 0, 0, 0, 0, 0 },
-    // item 1
-    { 0, 1, 3, 10, 85 },
-    // item 2
-    { 0, 0, 15, 30, 150 },
-    // item 3
-    { 0, 0, 20, 40, 250 },
-    // item 4
-    { 0, 0, 25, 50, 400 },
-    // item 5
-    { 0, 0, 30, 70, 550 },
-    // item 6
-    { 0, 0, 35, 80, 650 },
-    // item 7
-    { 0, 0, 45, 100, 800 },
-    // item 8
-    { 0, 0, 75, 175, 1250 },
-    // item 9
-    { 0, 0, 100, 200, 1750 }
-  };
+  // public static int[,] PAYOUTS = new int[,] {
+  //   // item 0 - ignore
+  //   { 0, 0, 0, 0, 0 },
+  //   // item 1
+  //   { 0, 1, 3, 10, 85 },
+  //   // item 2
+  //   { 0, 0, 15, 30, 150 },
+  //   // item 3
+  //   { 0, 0, 20, 40, 250 },
+  //   // item 4
+  //   { 0, 0, 25, 50, 400 },
+  //   // item 5
+  //   { 0, 0, 30, 70, 550 },
+  //   // item 6
+  //   { 0, 0, 35, 80, 650 },
+  //   // item 7
+  //   { 0, 0, 45, 100, 800 },
+  //   // item 8
+  //   { 0, 0, 75, 175, 1250 },
+  //   // item 9
+  //   { 0, 0, 100, 200, 1750 }
+  // };
   
   // default value - should be set by user
   private int mBetPerLine = 10;
   private int mNumLines = 9;
+	private int mBetPerLineIndex = 0;
+	private int[] betPerLines = new int[5];
   
+	public int betPerLineIndex {
+    get { return mBetPerLineIndex; }
+    set { mBetPerLineIndex = value; }
+	}
+	
   public int betPerLine {
     get { return mBetPerLine; }
     set { mBetPerLine = value; }
@@ -75,29 +84,35 @@ public class SlotCombination : MonoBehaviour {
     set { mNumLines = value; }
   }
   
-  public void Init() {
+  public void Init(string betPerLinesData) {
+		Utils.StringToIntArray(betPerLinesData, betPerLines);
+		Debug.Log("####### " + Utils.ArrIntToString(betPerLines));
   }
   
   public void SetBetPerLine(int betVal) {
-    betPerLine = betVal;
+		if (betVal >= betPerLines.Length) {
+			betVal = betPerLines.Length - 1;
+		}
+		betPerLineIndex = betVal;
+    betPerLine = betPerLines[betVal];
   }
   
   public void SetNumLines(int lineVal) {
-    numLines = lineVal;
+    numLines = Math.Min(lineVal, MAX_LINE);
   }
     
-  public int RandomItem() {
-    float cap = 0;
-    randomValue = UnityEngine.Random.value * 100;
-    for (int i = 0; i < ITEM_RATES.Length; i++) {
-      if (randomValue <= cap + ITEM_RATES[i]) {
-        return i;
-      } else {
-        cap += ITEM_RATES[i];
-      }
-    }
-    return 1;
-  }
+  // public int RandomItem() {
+  //   float cap = 0;
+  //   randomValue = UnityEngine.Random.value * 100;
+  //   for (int i = 0; i < ITEM_RATES.Length; i++) {
+  //     if (randomValue <= cap + ITEM_RATES[i]) {
+  //       return i;
+  //     } else {
+  //       cap += ITEM_RATES[i];
+  //     }
+  //   }
+  //   return 1;
+  // }
   
   // // input data is array type of 15 items - output data is array winning gold of 9 lines
   // public int[] CalculateCombination(int[] reelData) {

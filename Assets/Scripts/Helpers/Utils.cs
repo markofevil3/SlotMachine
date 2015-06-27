@@ -105,6 +105,16 @@ public class Utils : MonoBehaviour {
 	  return log;
 	}
 	
+	public static void StringToIntArray(string input, int[] fillArr) {
+		string[] split = input.Trim().Split(',');
+		for (int i = 0; i < fillArr.Length; i++) {
+			if (split.Length - 1 >= i) {
+				fillArr[i] = int.Parse(split[i].Trim());
+			}
+		}
+		split = null;
+	}
+	
 	public static string CurrencyToStringShort(int numb) {
 		// billion
 		if (numb >= 1000000000) {

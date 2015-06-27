@@ -42,6 +42,7 @@ public class BaseSlotMachineScreen : BaseScreen {
 
 	
   private string roomId = string.Empty;
+	private int DEFAULT_BET_PER_LINE_INDEX = 0;
 	
 	// private List<SpawnableSkill> listSpawnSkills = new List<SpawnableSkill>();
 	private List<SpinData> listSpinDatas = new List<SpinData>();
@@ -136,19 +137,19 @@ public class BaseSlotMachineScreen : BaseScreen {
 	}
 	
   public override void Init(object[] data) {
+    JSONObject jsonData = (JSONObject)data[1];
 		StopFreeSpinAnimation();
     EventDelegate.Set(btnBack.onClick, EventBackToSelectGame);
    	
-   	slotMachine.Init();
+   	slotMachine.Init(jsonData.GetString("betPerLines"));
     EventDelegate.Set(btnBetPerLine.onClick, EventBetPerLine);
     EventDelegate.Set(btnLines.onClick, EventBetLines);
     EventDelegate.Set(btnMaxBet.onClick, EventMaxBet);
-    SetBetPerLine(500);
-    SetNunLine(1);
+    SetBetPerLine(DEFAULT_BET_PER_LINE_INDEX);
+    SetNumbLine(1);
     
     // Init other players if have
     Debug.Log("### " + data[1].ToString());
-    JSONObject jsonData = (JSONObject)data[1];
     JSONArray otherPlayerDatas = jsonData.GetArray("otherPlayers");
 		roomData = jsonData.GetObject("roomData");
     int count = 0;
@@ -286,24 +287,26 @@ public class BaseSlotMachineScreen : BaseScreen {
     slotMachine.UpdateJackpot(score);
   }
   
-  void SetBetPerLine(int betPerLine) {
-    slotMachine.SetBetPerLine(betPerLine);
+  void SetBetPerLine(int betPerLineIndex) {
+    slotMachine.SetBetPerLine(betPerLineIndex);
     betPerLineLabel.text = slotMachine.GetBetPerLine().ToString();
   }
 
-  void SetNunLine(int lineVal) {
+  void SetNumbLine(int lineVal) {
     slotMachine.SetNumLine(lineVal);
     lineLabel.text = slotMachine.GetNumLine().ToString();
   }
 
-  void EventBetPerLine() {}
+  void EventBetPerLine() {
+    SetBetPerLine((slotMachine.GetBetPerLineIndex() + 1) % SlotCombination.MAX_BET_PER_LINE_RANGER);
+  }
   
   void EventBetLines() {
-    SetNunLine((slotMachine.GetNumLine() % SlotCombination.MAX_LINE) + 1);
+    SetNumbLine((slotMachine.GetNumLine() % SlotCombination.MAX_LINE) + 1);
   }
   
   void EventMaxBet() {
-    SetNunLine(SlotCombination.MAX_LINE);
+    SetNumbLine(SlotCombination.MAX_LINE);
 		slotMachine.StartMachine();
   }
   

@@ -41,8 +41,8 @@ public class SlotMachine : MonoBehaviour {
 	
 	private bool pauseCount = false;
 	
-  public void Init() {
-    slotCombination.Init();
+  public void Init(string betPerLines) {
+    slotCombination.Init(betPerLines);
 		// slotItems.Clear();
     for (int i = 0; i < slotReels.Length; i++) {
 			// for (int j = 0; j < slotReels[i].GetSlotItems().Count; i++) {
@@ -68,7 +68,7 @@ public class SlotMachine : MonoBehaviour {
         slotReels[i].StartMachine();
         // slotReels[i].SetResults(new int[3] { resultsData[i * 3], resultsData[i * 3 + 1], resultsData[i * 3 + 2]});
       }
-      SlotMachineClient.Instance.Play(GetBetPerLine(), GetNumLine());
+      SlotMachineClient.Instance.Play(GetBetPerLineIndex(), GetNumLine());
     }
     // Send request to server to get result
   }
@@ -200,4 +200,8 @@ public class SlotMachine : MonoBehaviour {
   public int GetBetPerLine() {
     return slotCombination.betPerLine;
   }
+	
+	public int GetBetPerLineIndex() {
+		return slotCombination.betPerLineIndex;
+	}
 }

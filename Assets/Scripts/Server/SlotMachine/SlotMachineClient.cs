@@ -79,9 +79,9 @@ public class SlotMachineClient : MonoBehaviour {
     // ScreenManager.Instance.SetScreen(BaseScreen.Type.SELECT_ROOM, new object[]{(int)BaseGameScreen.GameType.TIEN_LEN_MB, jsonData});
 	}
 
-  public void Play(int betPerLine, int numLines) {
+  public void Play(int betPerLineIndex, int numLines) {
     JSONObject jsonData = new JSONObject();
-		jsonData.Add("betPerLine", betPerLine);
+		jsonData.Add("betPerLine", betPerLineIndex);
 		jsonData.Add("numLines", numLines);
 		jsonData.Add("gameType", GetCommandByGameType(ScreenManager.Instance.CurrentSlotScreen.GetCrtGameType()));
 		SmartfoxClient.Instance.HandleServerRequest(CreateExtensionRequest(Command.SLOT_MACHINE.SLOT_PLAY, jsonData));
