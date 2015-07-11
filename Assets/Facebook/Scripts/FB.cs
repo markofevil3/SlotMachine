@@ -408,7 +408,7 @@ public sealed class FB : ScriptableObject
             }
 
 #if !UNITY_WINRT
-#if UNITY_4_5 || UNITY_4_6 || UNITY_5_0
+// #if UNITY_4_5 || UNITY_4_6 || UNITY_5_0 || UNITY_5_1
             var authTokenWww = new WWW(IntegratedPluginCanvasLocation.KeyUrl);
             yield return authTokenWww;
             if (authTokenWww.error != null)
@@ -418,9 +418,9 @@ public sealed class FB : ScriptableObject
                 yield break;
             }
             var assembly = Security.LoadAndVerifyAssembly(www.bytes, authTokenWww.text);
-#else
-            var assembly = Security.LoadAndVerifyAssembly(www.bytes);
-#endif
+// #else
+//             var assembly = Security.LoadAndVerifyAssembly(www.bytes);
+// #endif
             if (assembly == null)
             {
                 FbDebug.Error("Could not securely load assembly from " + url);

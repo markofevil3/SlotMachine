@@ -181,9 +181,9 @@ public class SmartfoxClient : MonoBehaviour {
 		
     // client.Connect("54.255.173.193", 9933);
     #if UNITY_EDITOR
-    client.Connect("127.0.0.1", 9933);
+    client.Connect(ServerConfig.LOCAL_SERVER, ServerConfig.SERVER_PORT);
     # else
-    client.Connect("14.177.4.215", 9933);
+    client.Connect(ServerConfig.DEV_SERVER, ServerConfig.SERVER_PORT);
     # endif
     // walk around for custom error code from server
     SFSErrorCodes.SetErrorMessage(2, "{0}");
@@ -477,7 +477,7 @@ public class SmartfoxClient : MonoBehaviour {
 			jsonData = null;
 			return;
 		}
-		Debug.Log("OnExtensionResponse response " + cmd + " currentRequest " + currentRequest.commandId);
+		// Debug.Log("OnExtensionResponse response " + cmd + " currentRequest " + currentRequest.commandId);
 		if (currentRequest != null) {
 			ISFSObject objIn = (SFSObject)e.Params["params"];
 			JSONObject jsonData = JSONObject.Parse(Utils.FromByteArray(objIn.GetByteArray("jsonData")));
