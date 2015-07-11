@@ -118,13 +118,13 @@ public class Utils : MonoBehaviour {
 	public static string CurrencyToStringShort(int numb) {
 		// billion
 		if (numb >= 1000000000) {
-			return Math.Round(numb / 1000000000f, 2) + "B";
+			return Math.Round(numb / 1000000000f, 3) + "B";
 		}
 		if (numb >= 1000000) {
-			return Math.Round(numb / 1000000f, 2) + "M";
+			return Math.Round(numb / 1000000f, 3) + "M";
 		}
 		if (numb >= 1000) {
-			return Math.Round(numb / 1000f, 2) + "K";
+			return Math.Round(numb / 1000f, 3) + "K";
 		}
 		return numb.ToString();
 	}
@@ -132,13 +132,13 @@ public class Utils : MonoBehaviour {
 	public static string CurrencyToStringShort(float numb) {
 		// billion
 		if (numb >= 1000000000) {
-			return Math.Round(numb / 1000000000f, 2) + "B";
+			return Math.Round(numb / 1000000000f, 3) + "B";
 		}
 		if (numb >= 1000000) {
-			return Math.Round(numb / 1000000f, 2) + "M";
+			return Math.Round(numb / 1000000f, 3) + "M";
 		}
 		if (numb >= 1000) {
-			return Math.Round(numb / 1000f, 2) + "K";
+			return Math.Round(numb / 1000f, 3) + "K";
 		}
 		return numb.ToString();
 	}
