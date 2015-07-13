@@ -22,18 +22,18 @@ public class HUDManager : MonoBehaviour {
   	tempGameObject.transform.localPosition = localPosition;
 
   	Vector3 toPosition = new Vector3(localPosition.x, localPosition.y + 100f, localPosition.z);
+		TweenAlpha tweenAlpha;
   	if (flyDuration > 0) {
   	  TweenPosition tween = TweenPosition.Begin(tempGameObject, flyDuration, toPosition, false);
     	tween.delay = stayTime;
-    	EventDelegate.Add(tween.onFinished, delegate() { hudText.Destroy(); }, true);
     	
-    	TweenAlpha tweenAlpha = TweenAlpha.Begin(tempGameObject, flyDuration / 2, 0);
+    	tweenAlpha = TweenAlpha.Begin(tempGameObject, flyDuration / 2, 0);
       tweenAlpha.delay = stayTime + (flyDuration / 2);
   	} else {
-  	  TweenAlpha tweenAlpha = TweenAlpha.Begin(tempGameObject, 0.2f, 0);
+  	  tweenAlpha = TweenAlpha.Begin(tempGameObject, 0.2f, 0);
       tweenAlpha.delay = stayTime;
   	}
-    
+  	EventDelegate.Add(tweenAlpha.onFinished, delegate() { hudText.Destroy(); }, true);
   	return hudText;
   }
   

@@ -7,6 +7,7 @@ public class BigWinPanel : MonoBehaviour {
 	private Vector3 minScale = new Vector3(0.5f, 0.5f, 1f);
 	private int totalScore = 0;
 	
+	public UIPanel bigWinPanel;
 	public GameObject bigWinView;
 	public GameObject freeSpinView;
 	public GameObject treasureView;
@@ -19,6 +20,14 @@ public class BigWinPanel : MonoBehaviour {
 	public Transform effectPoint2;
 	public Transform effectPoint3;
 
+	public virtual float BIG_WIN_FADEIN_DURATION {
+		get { return 0.3f; }
+	}
+
+	public virtual float BIG_WIN_STAY_DURATION {
+		get { return 2f; }
+	}
+
 	// Fade in Big Win
 	public void FadeInBigWin(int numb) {
 		Debug.Log("FadeInBigWin");
@@ -28,12 +37,14 @@ public class BigWinPanel : MonoBehaviour {
 		NGUITools.SetActive(freeSpinView, false);
 		NGUITools.SetActive(treasureView, false);
 		winNumbLabel.text = numb.ToString("N0");
-		TweenAlpha tween = TweenAlpha.Begin(gameObject, 0.5f, 1);
-		tween.from = 0;
-    EventDelegate.Add(tween.onFinished, EventFinishFadeIn, true);
-		transform.localScale = Vector3.one * 3;
-		LeanTween.scale(gameObject, Vector3.one, 0.5f).setEase(LeanTweenType.easeInOutCubic);
-		Invoke("FadeOutBigWin", 2f);
+		// TweenAlpha tween = TweenAlpha.Begin(gameObject, 0.5f, 1);
+		// tween.from = 0;
+    // EventDelegate.Add(tween.onFinished, EventFinishFadeIn, true);
+		// transform.localScale = Vector3.one * 3;
+		bigWinPanel.alpha = 1;
+		LeanTween.scale(gameObject, Vector3.one, 0.3f).setEase(LeanTweenType.easeInOutCubic);
+		Invoke("FadeOutBigWin", BIG_WIN_STAY_DURATION);
+		Invoke("EventFinishFadeIn", BIG_WIN_FADEIN_DURATION);
 		ScreenManager.Instance.CurrentSlotScreen.PauseSpawnSkill();
 	}
 
@@ -56,10 +67,11 @@ public class BigWinPanel : MonoBehaviour {
 		NGUITools.SetActive(treasureView, false);
 		NGUITools.SetActive(freeSpinView, true);
 		freeSpinNumbLabel.text = numb.ToString("N0") + "\nFREE SPIN";
-		TweenAlpha tween = TweenAlpha.Begin(gameObject, 0.5f, 1);
-		tween.from = 0;
-		transform.localScale = Vector3.one * 3;
-		LeanTween.scale(gameObject, Vector3.one, 0.5f).setEase(LeanTweenType.easeInOutCubic);
+		bigWinPanel.alpha = 1;
+		// TweenAlpha tween = TweenAlpha.Begin(gameObject, 0.5f, 1);
+		// tween.from = 0;
+		// transform.localScale = Vector3.one * 3;
+		// LeanTween.scale(gameObject, Vector3.one, 0.5f).setEase(LeanTweenType.easeInOutCubic);
 		Invoke("FadeOutFreeSpin", 2f);
 
 		if (ScreenManager.Instance.CurrentSlotScreen != null) {
