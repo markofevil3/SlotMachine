@@ -66,7 +66,7 @@ public class BigWinPanel : MonoBehaviour {
 		NGUITools.SetActive(bigWinView, false);
 		NGUITools.SetActive(treasureView, false);
 		NGUITools.SetActive(freeSpinView, true);
-		freeSpinNumbLabel.text = numb.ToString("N0") + "\nFREE SPIN";
+		freeSpinNumbLabel.text = numb.ToString("N0") + "\nFREE SPINS";
 		bigWinPanel.alpha = 1;
 		// TweenAlpha tween = TweenAlpha.Begin(gameObject, 0.5f, 1);
 		// tween.from = 0;

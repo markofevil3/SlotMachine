@@ -4,8 +4,11 @@ using Boomlagoon.JSON;
 
 public class SlotZombieScreen : BaseSlotMachineScreen {
 	
+	public UIPanel mainPanel;
 	public GameObject freeSpinLeft;
 	public UILabel freeSpinLeftLabel;
+	
+	private Transform fallingLeave;
 	
 	public override void SpawnSkill(int type, int level, int damage) {
 		GameObject tempGameObject;
@@ -79,10 +82,17 @@ public class SlotZombieScreen : BaseSlotMachineScreen {
 	
 	public override void ShowFreeSpinAnimation() {
 		Utils.SetActive(freeSpinLeft, true);
+		fallingLeave = MyPoolManager.Instance.Spawn("FallingLeaves", skillCamera.transform);
+		fallingLeave.localScale = Vector3.one * 525f;
+		fallingLeave.position = new Vector3(0, mainPanel.worldCorners[1].y, 0);
 	}
 
 	public override void StopFreeSpinAnimation() {
 		Utils.SetActive(freeSpinLeft, false);
+		if (fallingLeave != null) {
+			MyPoolManager.Instance.Despawn(fallingLeave);
+			fallingLeave = null;
+		}
 	}
 	
 	public override void UpdateFreeSpinText(int numb) {

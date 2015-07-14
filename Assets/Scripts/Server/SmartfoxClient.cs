@@ -512,7 +512,7 @@ public class SmartfoxClient : MonoBehaviour {
 		if (CanSendRequest()) { 
 			currentRequest = ServerRequestQueue.Dequeue();
 			if (currentRequest != null) {
-				Debug.Log("HandleServerRequest " + currentRequest.commandId);
+				// Debug.Log("HandleServerRequest " + currentRequest.commandId);
 				switch (currentRequest.type) {
 					case ServerRequest.Type.PUBLIC_MESSAGE:
 	     			SendPublicMessage();
