@@ -49,10 +49,10 @@ public class BigWinPanel : MonoBehaviour {
 	}
 
 	public void FadeOutBigWin() {
-		TweenAlpha tween = TweenAlpha.Begin(gameObject, 0.5f, 0);
 		if (ScreenManager.Instance.CurrentSlotScreen.slotMachine.gotFreeSpin) {
 			FadeInFreeSpin(ScreenManager.Instance.CurrentSlotScreen.slotMachine.freeSpinLeft, false);
 		} else {
+			TweenAlpha tween = TweenAlpha.Begin(gameObject, 0.5f, 0);
 	    EventDelegate.Add(tween.onFinished, Hide, true);
 		}
 		ScreenManager.Instance.CurrentSlotScreen.slotMachine.UpdateScore(totalScore);

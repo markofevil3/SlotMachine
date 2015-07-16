@@ -10,7 +10,9 @@ public class Skill : MonoBehaviour {
 		SWORD_DAGGER,
 		BITE,
 		LUFFY_HAND,
-		SANJI_KICK
+		SANJI_KICK,
+		PISTOL,
+		MACHINE_GUN
   }
 
 	public Type type;
@@ -26,7 +28,7 @@ public class Skill : MonoBehaviour {
   [HideInInspector]
 	public BossManager bossManager;
 
-	private ParticleSystem[] listParticles;
+	public ParticleSystem[] listParticles;
 
 	public virtual void Init() {
 		listParticles = gameObject.GetComponentsInChildren<ParticleSystem>(true);
