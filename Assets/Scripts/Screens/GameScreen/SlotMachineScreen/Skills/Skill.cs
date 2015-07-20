@@ -12,7 +12,8 @@ public class Skill : MonoBehaviour {
 		LUFFY_HAND,
 		SANJI_KICK,
 		PISTOL,
-		MACHINE_GUN
+		MACHINE_GUN,
+		GRENADE
   }
 
 	public Type type;

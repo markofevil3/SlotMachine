@@ -92,7 +92,8 @@ public class BossManager : MonoBehaviour {
 	}
 	
 	public void GetHit(int damage) {
-		currentHP = Mathf.Max(0, currentHP - damage);		
+		currentHP = Mathf.Max(0, currentHP - damage);
+    HUDManager.Instance.AddDamageText((-damage).ToString("N0"), ScreenManager.Instance.camera.WorldToViewportPoint(GetBossMiddlePoint()));
 		UpdateHPBar();
 		if (handler != null && callback != string.Empty) {
 			handler.SendMessage(callback, null, SendMessageOptions.DontRequireReceiver);
