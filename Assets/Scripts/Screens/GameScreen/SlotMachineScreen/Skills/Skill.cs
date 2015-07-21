@@ -13,7 +13,8 @@ public class Skill : MonoBehaviour {
 		SANJI_KICK,
 		PISTOL,
 		MACHINE_GUN,
-		GRENADE
+		GRENADE,
+		CROSSBOW
   }
 
 	public Type type;
@@ -52,7 +53,7 @@ public class Skill : MonoBehaviour {
 	}
 
 	// example of fireball 
-	public virtual void Init(int level, int damage, BossManager bossManager) {
+	public virtual void Init(int level, int damage, BossManager bossManager, Vector3 fromPos) {
 		// transform.localScale = size;
 		// transform.position = startPos;
 		// Vector3 target = boss.bossSprite.transform.position;
@@ -64,6 +65,8 @@ public class Skill : MonoBehaviour {
 		// LeanTween.move(gameObject, target, 0.6f).setEase(LeanTweenType.easeInQuad).setOnComplete(Explode);
 		// LeanTween.value(gameObject, UpdateSpriteAlpha, 0, 1f, 0.2f);
 	}
+
+	public virtual void Init(int level, int damage, BossManager bossManager) {}
 
 	// Fade in skill
 	// private void UpdateSpriteAlpha(float val) {

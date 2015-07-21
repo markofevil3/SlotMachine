@@ -7,7 +7,7 @@ public class SlotDragonScreen : BaseSlotMachineScreen {
 	public GameObject freeSpinLeft;
 	public UILabel freeSpinLeftLabel;
 	
-	public override void SpawnSkill(int type, int level, int damage) {
+	public override void SpawnSkill(int type, int level, int damage, Vector3 fromPos) {
 		GameObject tempGameObject;
 		SkillFireBall skill;
 		switch (type) {

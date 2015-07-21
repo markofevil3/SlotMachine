@@ -11,7 +11,7 @@ public class SlotZombieScreen : BaseSlotMachineScreen {
 	
 	private Transform fallingLeave;
 	
-	public override void SpawnSkill(int type, int level, int damage) {
+	public override void SpawnSkill(int type, int level, int damage, Vector3 fromPos) {
 		GameObject tempGameObject;
 		SkillFireBall skill;
 		// switch (type) {
@@ -76,10 +76,10 @@ public class SlotZombieScreen : BaseSlotMachineScreen {
 		// 		skill.Init(level, damage, bossManager);
 		// 	break;
 		// }
-		tempGameObject = MyPoolManager.Instance.Spawn("SkillGrenade", skillCamera.transform).gameObject;
+		tempGameObject = MyPoolManager.Instance.Spawn("SkillCrossBow", skillCamera.transform).gameObject;
 		// tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillSwordBlue", typeof(GameObject)) as GameObject);
-		SkillGrenade skillGrenade = tempGameObject.GetComponent<SkillGrenade>();
-		skillGrenade.Init(level, damage, bossManager);
+		SkillCrossBow skillCrossBow = tempGameObject.GetComponent<SkillCrossBow>();
+		skillCrossBow.Init(level, damage, bossManager, fromPos);
 	}
 	
 	public override void ShowFreeSpinAnimation() {

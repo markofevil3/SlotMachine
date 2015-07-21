@@ -9,7 +9,7 @@ public class SlotPirateScreen : BaseSlotMachineScreen {
 	public GameObject octopusFreeSpin;
 	public UILabel octopusFreeSpinLabel;
 
-	public override void SpawnSkill(int type, int level, int damage) {
+	public override void SpawnSkill(int type, int level, int damage, Vector3 fromPos) {
 		GameObject tempGameObject;
 		SkillFireBall skill;
 		switch (type) {

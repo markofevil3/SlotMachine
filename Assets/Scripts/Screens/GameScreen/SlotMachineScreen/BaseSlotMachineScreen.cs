@@ -39,6 +39,7 @@ public class BaseSlotMachineScreen : BaseScreen {
 	public GameObject skillCamera;
 	public BossManager bossManager;
   public BigWinPanel bigWinPanel;
+	public UIButton btnTestSkill;
 
 	
   private string roomId = string.Empty;
@@ -69,14 +70,18 @@ public class BaseSlotMachineScreen : BaseScreen {
 			PauseSpawnSkill();
 		}
 		// Show Glow on user slot if not you
+		Vector3 fromPos = Vector3.zero;
 		if (!spinData.isYou) {
 			PlayerSlotScript playerSlot = FindUserSlot(spinData.username);
 			if (playerSlot != null) {
+				fromPos = playerSlot.transform.position;
 				playerSlot.ShowGlow();
 			}
+		} else {
+			fromPos = userAvatarTexture.transform.position;
 		}
 		for (int i = 0; i < spinData.spawnSkills.Count; i++) {
-			SpawnSkill(spinData.spawnSkills[i]);
+			SpawnSkill(spinData.spawnSkills[i], fromPos);
 			yield return new WaitForSeconds(0.5f);
 		}
 		if (spinData.newBossData != null) {
@@ -145,6 +150,9 @@ public class BaseSlotMachineScreen : BaseScreen {
     EventDelegate.Set(btnBetPerLine.onClick, EventBetPerLine);
     EventDelegate.Set(btnLines.onClick, EventBetLines);
     EventDelegate.Set(btnMaxBet.onClick, EventMaxBet);
+		// TEST CODE -- test skill
+    EventDelegate.Set(btnTestSkill.onClick, EventTestSkill);
+		
     SetBetPerLine(DEFAULT_BET_PER_LINE_INDEX);
     SetNumbLine(1);
     
@@ -224,12 +232,16 @@ public class BaseSlotMachineScreen : BaseScreen {
 
 	public virtual void UpdateFreeSpinText(int numb) {}	
 
-	public virtual void SpawnSkill(int type, int level, int damage) {
+	public void EventTestSkill() {
+		SpawnSkill(0, 1, 1, userAvatarTexture.transform.position);
+	}
+
+	public virtual void SpawnSkill(int type, int level, int damage, Vector3 fromPos) {
 		
 	}
 	
-	public virtual void SpawnSkill(SpawnableSkill skill) {
-		SpawnSkill(skill.type, skill.level, skill.damage);
+	public virtual void SpawnSkill(SpawnableSkill skill, Vector3 fromPos) {
+		SpawnSkill(skill.type, skill.level, skill.damage, fromPos);
 	}
 
 	public virtual void OtherPlayerSpinResult(string username, JSONObject jsonData) {
