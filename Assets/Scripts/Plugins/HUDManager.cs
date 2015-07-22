@@ -46,7 +46,6 @@ public class HUDManager : MonoBehaviour {
 		worldPosition = camera.ViewportToWorldPoint(worldPosition);
 		worldPosition.y += 0.2f;
 		worldPosition.x += 0.2f;
-		Debug.Log("@@@@@@@@ " + worldPosition);
   	tempGameObject.transform.position = worldPosition;
 
   	Vector3 toPosition = new Vector3(worldPosition.x, worldPosition.y + 0.15f, worldPosition.z);

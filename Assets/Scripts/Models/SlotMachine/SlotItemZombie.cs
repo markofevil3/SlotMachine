@@ -9,7 +9,7 @@ public class SlotItemZombie : SlotItem {
 	public const int ITEM_NAMI = 3;
 	public const int ITEM_PISTOL = 4;
 	public const int ITEM_BROOK = 5;
-	public const int ITEM_NICO = 6;
+	public const int ITEM_CROSSBOW = 6;
 	public const int ITEM_MACHINEGUN = 7;
 	public const int ITEM_GRENADE = 8;
 	public const int ITEM_LUFFY = 9;

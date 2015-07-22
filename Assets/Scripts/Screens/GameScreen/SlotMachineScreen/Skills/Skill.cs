@@ -14,7 +14,8 @@ public class Skill : MonoBehaviour {
 		PISTOL,
 		MACHINE_GUN,
 		GRENADE,
-		CROSSBOW
+		CROSSBOW,
+		KNIFE
   }
 
 	public Type type;

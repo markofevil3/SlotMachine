@@ -45,11 +45,11 @@ public class SlotZombieScreen : BaseSlotMachineScreen {
 		// 		SkillDagger skillSword = tempGameObject.GetComponent<SkillDagger>();
 		// 		skillSword.Init(level, damage, bossManager);
 		// 	break;
-		// 	case SlotItemZombie.ITEM_NICO:
-		// 		tempGameObject = MyPoolManager.Instance.Spawn("SkillDagger", skillCamera.transform).gameObject;
-		// 		// tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillDagger", typeof(GameObject)) as GameObject);
-		// 		SkillDagger skillDagger = tempGameObject.GetComponent<SkillDagger>();
-		// 		skillDagger.Init(level, damage, bossManager);
+		// 	case SlotItemZombie.ITEM_CROSSBOW:
+		// 	tempGameObject = MyPoolManager.Instance.Spawn("SkillCrossBow", skillCamera.transform).gameObject;
+		// 	// tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillSwordBlue", typeof(GameObject)) as GameObject);
+		// 	SkillCrossBow skillCrossBow = tempGameObject.GetComponent<SkillCrossBow>();
+		// 	skillCrossBow.Init(level, damage, bossManager, fromPos);
 		// 	break;
 		// 	case SlotItemZombie.ITEM_MACHINEGUN:
 		// 		tempGameObject = MyPoolManager.Instance.Spawn("SkillMachineGun", skillCamera.transform).gameObject;
@@ -76,10 +76,10 @@ public class SlotZombieScreen : BaseSlotMachineScreen {
 		// 		skill.Init(level, damage, bossManager);
 		// 	break;
 		// }
-		tempGameObject = MyPoolManager.Instance.Spawn("SkillCrossBow", skillCamera.transform).gameObject;
+		tempGameObject = MyPoolManager.Instance.Spawn("SkillKnife", skillCamera.transform).gameObject;
 		// tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillSwordBlue", typeof(GameObject)) as GameObject);
-		SkillCrossBow skillCrossBow = tempGameObject.GetComponent<SkillCrossBow>();
-		skillCrossBow.Init(level, damage, bossManager, fromPos);
+		SkillKnife skillKnife = tempGameObject.GetComponent<SkillKnife>();
+		skillKnife.Init(3, damage, bossManager, fromPos);
 	}
 	
 	public override void ShowFreeSpinAnimation() {

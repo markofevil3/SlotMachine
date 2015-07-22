@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SkillCrossBow : Skill {
+public class SkillKnife : Skill {
 
-	public CrossBowArrow[] arrows;
+	public Knife[] knifes;
 
 	private Vector3 fromPos;
 
@@ -16,13 +16,13 @@ public class SkillCrossBow : Skill {
 			StartCoroutine(Shoot(i));
 		}
 		Invoke("BossGetHit", 0.4f);
-		Invoke("Destroy", 1.5f);
+		Invoke("Destroy", 2f);
 	}
 	
 	IEnumerator Shoot(int index) {
 		yield return new WaitForSeconds(index * 0.1f);
-		NGUITools.SetActive(arrows[index].gameObject, true);
-		arrows[index].Shoot(bossManager.GetBossMiddlePoint(), fromPos);
+		NGUITools.SetActive(knifes[index].gameObject, true);
+		knifes[index].Shoot(bossManager.GetBossMiddlePoint(), fromPos);
 	}
 	
 	void BossGetHit() {
@@ -31,8 +31,8 @@ public class SkillCrossBow : Skill {
 	}
 	
 	public override void Destroy() {
-		for (int i = 0; i < arrows.Length; i++) {
-			arrows[i].Destroy();
+		for (int i = 0; i < knifes.Length; i++) {
+			knifes[i].Destroy();
 		}
 	}
 }
