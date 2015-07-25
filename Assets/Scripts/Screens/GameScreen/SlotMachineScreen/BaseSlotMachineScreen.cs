@@ -345,7 +345,7 @@ public class BaseSlotMachineScreen : BaseScreen {
     }
   }
   
-  public void UpdateOtherPlayerCash(string username, int cashVal) {
+  public void UpdateOtherPlayerCash(string username, long cashVal) {
     PlayerSlotScript playerSlot = FindUserSlot(username);
      if (playerSlot != null) {
        playerSlot.UpdateCash(cashVal);

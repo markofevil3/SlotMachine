@@ -32,7 +32,7 @@ public class PopupInviteToGame : Popup {
 				friend = new JSONObject();
 				if (buddyList[i].IsOnline) {
 					friend.Add("displayName", buddyList[i].GetVariable("displayName").GetStringValue());
-					friend.Add("cash", buddyList[i].GetVariable("cash").GetIntValue());
+					friend.Add("cash", (long)buddyList[i].GetVariable("cash").GetDoubleValue());
 					friend.Add("username", buddyList[i].Name);
 					friendList.Add(friend);
 				}

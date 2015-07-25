@@ -19,7 +19,8 @@ public class Skill : MonoBehaviour {
 		BOW,
 		SPELL_FIRE,
 		SPELL_ICE,
-		METEOR
+		METEOR,
+		BASE_BALL
   }
 
 	public Type type;

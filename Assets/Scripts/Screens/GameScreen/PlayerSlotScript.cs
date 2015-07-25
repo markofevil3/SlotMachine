@@ -73,7 +73,7 @@ public class PlayerSlotScript : MonoBehaviour {
     PopupManager.Instance.OpenPopup(Popup.Type.POPUP_INVITE_TO_GAME, null);
   }
   
-  public void UpdateCash(int cashVal) {
+  public void UpdateCash(long cashVal) {
     cashLabel.text = cashVal.ToString("N0");
   }
   

@@ -319,7 +319,7 @@ public class SmartfoxClient : MonoBehaviour {
   	if (!enterUser.IsItMe && room.GroupId != "lobby" && ScreenManager.Instance.CurrentSlotScreen != null) {
   	  JSONObject userData = new JSONObject();
   	  userData.Add("username", enterUser.Name);
-  	  userData.Add("cash", enterUser.GetVariable("cash").GetIntValue());
+  	  userData.Add("cash", (long)enterUser.GetVariable("cash").GetDoubleValue());
   	  userData.Add("displayName", enterUser.GetVariable("displayName").GetStringValue());
   	  userData.Add("avatar", enterUser.GetVariable("avatar").GetStringValue());
   	  Debug.Log("OnUserEnterRoom --- " + userData.ToString());
@@ -402,7 +402,7 @@ public class SmartfoxClient : MonoBehaviour {
   void OnUserVarsUpdate(BaseEvent e) {
     User user = ((User)e.Params["user"]);
   	if (!user.IsItMe && ScreenManager.Instance.CurrentSlotScreen != null) {
-  	  ScreenManager.Instance.CurrentSlotScreen.UpdateOtherPlayerCash(user.Name, user.GetVariable("cash").GetIntValue());
+  	  ScreenManager.Instance.CurrentSlotScreen.UpdateOtherPlayerCash(user.Name, (long)user.GetVariable("cash").GetDoubleValue());
   	}
     // Debug.Log("OnUserVarsUpdate " + user.GetVariable("cash").GetIntValue());
   }

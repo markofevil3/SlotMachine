@@ -4,7 +4,7 @@ using System.Collections;
 public class SlotItemZombie : SlotItem {
 	
 	public const int ITEM_WILD = 0;
-	public const int ITEM_CHOPPER = 1;
+	public const int ITEM_BASEBALL = 1;
 	public const int ITEM_KNIFE = 2;
 	public const int ITEM_NAMI = 3;
 	public const int ITEM_PISTOL = 4;

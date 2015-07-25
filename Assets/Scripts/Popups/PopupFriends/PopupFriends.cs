@@ -32,12 +32,12 @@ public class PopupFriends : Popup {
 				friend = new JSONObject();
 				if (buddyList[i].IsOnline) {
 					friend.Add("displayName", buddyList[i].GetVariable("displayName").GetStringValue());
-					friend.Add("cash", buddyList[i].GetVariable("cash").GetIntValue());
+					friend.Add("cash", (long)buddyList[i].GetVariable("cash").GetDoubleValue());
 					friend.Add("avatar", buddyList[i].GetVariable("avatar").GetStringValue());
 					friend.Add("facebookId", buddyList[i].GetVariable("facebookId").GetStringValue());
 				} else {
 					friend.Add("displayName", buddyList[i].GetVariable("$displayName").GetStringValue());
-					friend.Add("cash", buddyList[i].GetVariable("$cash").GetIntValue());
+					friend.Add("cash", (long)buddyList[i].GetVariable("$cash").GetDoubleValue());
 					friend.Add("avatar", buddyList[i].ContainsVariable("$avatar") ? buddyList[i].GetVariable("$avatar").GetStringValue() : string.Empty);
 					friend.Add("facebookId", buddyList[i].ContainsVariable("$facebookId") ? buddyList[i].GetVariable("$facebookId").GetStringValue() : string.Empty);
 				}

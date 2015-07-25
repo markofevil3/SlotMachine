@@ -18,7 +18,14 @@ public class SkillLuffy : Skill {
 				SpawnParticle(i, smallDamage);
 			}
 		}
+		Invoke("BossGetHit", 0.5f);
+		
 		Invoke("Destroy", 2f);
+	}
+	
+	void BossGetHit() {
+		bossManager.Shake();
+		bossManager.GetHit(damage);
 	}
 	
 	void SpawnParticle(int index, int smallDamage) {
