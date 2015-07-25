@@ -17,7 +17,9 @@ public class Skill : MonoBehaviour {
 		CROSSBOW,
 		KNIFE,
 		BOW,
-		SPELL_FIRE
+		SPELL_FIRE,
+		SPELL_ICE,
+		METEOR
   }
 
 	public Type type;

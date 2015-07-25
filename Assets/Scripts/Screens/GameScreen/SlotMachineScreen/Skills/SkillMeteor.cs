@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SkillBow : Skill {
+public class SkillMeteor : Skill {
 
-	public BowArrow[] arrows;
+	public Meteor[] meteors;
 
 	private Vector3 fromPos;
 
@@ -12,18 +12,18 @@ public class SkillBow : Skill {
 		this.damage = damage;
 		this.level = level;
 		level += 2;
-		this.fromPos = new Vector3(0, 1.5f, 0);
+		this.fromPos = new Vector3(1f, 1.5f, 0);
 		for (int i = 0; i < level; i++) {
 			StartCoroutine(Shoot(i));
 		}
-		Invoke("BossGetHit", 0.5f);
-		Invoke("Destroy", 1.5f);
+		Invoke("BossGetHit", 0.7f);
+		Invoke("Destroy", 2f);
 	}
 	
 	IEnumerator Shoot(int index) {
-		yield return new WaitForSeconds(index * 0.1f);
-		NGUITools.SetActive(arrows[index].gameObject, true);
-		arrows[index].Shoot(bossManager.GetBossMiddlePoint(), fromPos);
+		yield return new WaitForSeconds(index * 0.25f);
+		NGUITools.SetActive(meteors[index].gameObject, true);
+		meteors[index].Shoot(bossManager.GetBossMiddlePoint(), fromPos);
 	}
 	
 	void BossGetHit() {
@@ -32,8 +32,8 @@ public class SkillBow : Skill {
 	}
 	
 	public override void Destroy() {
-		for (int i = 0; i < arrows.Length; i++) {
-			arrows[i].Destroy();
+		for (int i = 0; i < meteors.Length; i++) {
+			meteors[i].Destroy();
 		}
 		base.Destroy();
 	}

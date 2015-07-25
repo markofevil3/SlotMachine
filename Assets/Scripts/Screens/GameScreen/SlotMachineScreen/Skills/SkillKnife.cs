@@ -34,5 +34,6 @@ public class SkillKnife : Skill {
 		for (int i = 0; i < knifes.Length; i++) {
 			knifes[i].Destroy();
 		}
+		base.Destroy();
 	}
 }

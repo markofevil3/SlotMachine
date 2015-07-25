@@ -34,5 +34,6 @@ public class SkillCrossBow : Skill {
 		for (int i = 0; i < arrows.Length; i++) {
 			arrows[i].Destroy();
 		}
+		base.Destroy();
 	}
 }

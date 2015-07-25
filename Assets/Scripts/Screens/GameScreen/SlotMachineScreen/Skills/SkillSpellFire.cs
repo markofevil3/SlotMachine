@@ -34,5 +34,6 @@ public class SkillSpellFire : Skill {
 		for (int i = 0; i < spellFires.Length; i++) {
 			spellFires[i].Destroy();
 		}
+		base.Destroy();
 	}
 }
