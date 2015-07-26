@@ -11,7 +11,7 @@ public class SlotZombieScreen : BaseSlotMachineScreen {
 	
 	private Transform fallingLeave;
 	
-	public override void SpawnSkill(int type, int level, int damage, Vector3 fromPos) {
+	public override void SpawnSkill(int type, int level, int damage, Vector3 fromPos, bool isYou) {
 		GameObject tempGameObject;
 		SkillFireBall skill;
 		switch (type) {
@@ -26,11 +26,10 @@ public class SlotZombieScreen : BaseSlotMachineScreen {
 				SkillKnife skillKnife = tempGameObject.GetComponent<SkillKnife>();
 				skillKnife.Init(level, damage, bossManager, fromPos);
 			break;
-			case SlotItemZombie.ITEM_NAMI:
-				tempGameObject = MyPoolManager.Instance.Spawn("SkillThunder", skillCamera.transform).gameObject;
-				// tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillThunder", typeof(GameObject)) as GameObject);
-				SkillThunder thunderSkill = tempGameObject.GetComponent<SkillThunder>();
-				thunderSkill.Init(level, damage, bossManager);
+			case SlotItemZombie.ITEM_ELECTRICGUN:
+				tempGameObject = MyPoolManager.Instance.Spawn("SkillElectricGun", skillCamera.transform).gameObject;
+				SkillElectricGun skillElectricGun = tempGameObject.GetComponent<SkillElectricGun>();
+				skillElectricGun.Init(level, damage, bossManager);
 			break;
 			case SlotItemZombie.ITEM_PISTOL:
 				tempGameObject = MyPoolManager.Instance.Spawn("SkillPistol", skillCamera.transform).gameObject;
@@ -75,8 +74,8 @@ public class SlotZombieScreen : BaseSlotMachineScreen {
 				skill.Init(level, damage, bossManager);
 			break;
 		}
-		// tempGameObject = MyPoolManager.Instance.Spawn("SkillBaseBall", skillCamera.transform).gameObject;
-		// SkillBaseBall skillKnife = tempGameObject.GetComponent<SkillBaseBall>();
+		// tempGameObject = MyPoolManager.Instance.Spawn("SkillElectricGun", skillCamera.transform).gameObject;
+		// SkillElectricGun skillKnife = tempGameObject.GetComponent<SkillElectricGun>();
 		// skillKnife.Init(level, damage, bossManager);
 	}
 	

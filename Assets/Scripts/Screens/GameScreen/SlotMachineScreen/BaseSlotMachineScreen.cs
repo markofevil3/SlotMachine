@@ -81,7 +81,7 @@ public class BaseSlotMachineScreen : BaseScreen {
 			fromPos = userAvatarTexture.transform.position;
 		}
 		for (int i = 0; i < spinData.spawnSkills.Count; i++) {
-			SpawnSkill(spinData.spawnSkills[i], fromPos);
+			SpawnSkill(spinData.spawnSkills[i], fromPos, spinData.isYou);
 			yield return new WaitForSeconds(0.5f);
 		}
 		if (spinData.newBossData != null) {
@@ -233,15 +233,15 @@ public class BaseSlotMachineScreen : BaseScreen {
 	public virtual void UpdateFreeSpinText(int numb) {}	
 
 	public void EventTestSkill() {
-		SpawnSkill(0, 1, 1, userAvatarTexture.transform.position);
+		SpawnSkill(0, 1, 1, userAvatarTexture.transform.position, true);
 	}
 
-	public virtual void SpawnSkill(int type, int level, int damage, Vector3 fromPos) {
+	public virtual void SpawnSkill(int type, int level, int damage, Vector3 fromPos, bool isYou) {
 		
 	}
 	
-	public virtual void SpawnSkill(SpawnableSkill skill, Vector3 fromPos) {
-		SpawnSkill(skill.type, skill.level, skill.damage, fromPos);
+	public virtual void SpawnSkill(SpawnableSkill skill, Vector3 fromPos, bool isYou) {
+		SpawnSkill(skill.type, skill.level, skill.damage, fromPos, isYou);
 	}
 
 	public virtual void OtherPlayerSpinResult(string username, JSONObject jsonData) {

@@ -20,7 +20,9 @@ public class Skill : MonoBehaviour {
 		SPELL_FIRE,
 		SPELL_ICE,
 		METEOR,
-		BASE_BALL
+		BASE_BALL,
+		ELECTRIC_GUN,
+		FLAME_THROWER
   }
 
 	public Type type;
@@ -59,19 +61,8 @@ public class Skill : MonoBehaviour {
 	}
 
 	// example of fireball 
-	public virtual void Init(int level, int damage, BossManager bossManager, Vector3 fromPos) {
-		// transform.localScale = size;
-		// transform.position = startPos;
-		// Vector3 target = boss.bossSprite.transform.position;
-		// // Rotate skill to look at target
-		// transform.rotation = Quaternion.Euler(0 , 0, Mathf.Atan2((target.y - transform.position.y), (target.x - transform.position.x))*Mathf.Rad2Deg);
-		// this.boss = boss;
-		// this.damage = damage;
-		// sprite.color = new Color(1f,1f,1f,0f);
-		// LeanTween.move(gameObject, target, 0.6f).setEase(LeanTweenType.easeInQuad).setOnComplete(Explode);
-		// LeanTween.value(gameObject, UpdateSpriteAlpha, 0, 1f, 0.2f);
-	}
-
+	public virtual void Init(int level, int damage, BossManager bossManager, Vector3 fromPos) {}
+	public virtual void Init(int level, int damage, BossManager bossManager, Vector3 fromPos, bool isYou) {}
 	public virtual void Init(int level, int damage, BossManager bossManager) {}
 
 	// Fade in skill

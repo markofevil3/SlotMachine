@@ -9,7 +9,7 @@ public class SlotPirateScreen : BaseSlotMachineScreen {
 	public GameObject octopusFreeSpin;
 	public UILabel octopusFreeSpinLabel;
 
-	public override void SpawnSkill(int type, int level, int damage, Vector3 fromPos) {
+	public override void SpawnSkill(int type, int level, int damage, Vector3 fromPos, bool isYou) {
 		GameObject tempGameObject;
 		SkillFireBall skill;
 		switch (type) {
@@ -32,10 +32,9 @@ public class SlotPirateScreen : BaseSlotMachineScreen {
 				thunderSkill.Init(level, damage, bossManager);
 			break;
 			case SlotItemPirate.ITEM_FRANKY:
-				tempGameObject = MyPoolManager.Instance.Spawn("SkillFireBall", skillCamera.transform).gameObject;
-				// tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillFireBall", typeof(GameObject)) as GameObject);
-				skill = tempGameObject.GetComponent<SkillFireBall>();
-				skill.Init(level, damage, bossManager);
+				tempGameObject = MyPoolManager.Instance.Spawn("SkillFlameThrower", skillCamera.transform).gameObject;
+				SkillFlameThrower skillFlameThrower = tempGameObject.GetComponent<SkillFlameThrower>();
+				skillFlameThrower.Init(level, damage, bossManager, fromPos, isYou);
 			break;
 			case SlotItemPirate.ITEM_BROOK:
 				tempGameObject = MyPoolManager.Instance.Spawn("SkillDagger", skillCamera.transform).gameObject;
@@ -74,9 +73,9 @@ public class SlotPirateScreen : BaseSlotMachineScreen {
 				skill.Init(level, damage, bossManager);
 			break;
 		}
-			// tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillSanji", typeof(GameObject)) as GameObject);
-			// SkillSanji skillLuffy = tempGameObject.GetComponent<SkillSanji>();
-			// skillLuffy.Init(level, damage, bossManager);
+			// tempGameObject = MyPoolManager.Instance.Spawn("SkillFlameThrower", skillCamera.transform).gameObject;
+			// SkillFlameThrower skillLuffy = tempGameObject.GetComponent<SkillFlameThrower>();
+			// skillLuffy.Init(1, damage, bossManager, fromPos, true);
 	}
 	
 	public override void ShowFreeSpinAnimation() {

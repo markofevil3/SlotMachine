@@ -6,7 +6,7 @@ public class SlotItemZombie : SlotItem {
 	public const int ITEM_WILD = 0;
 	public const int ITEM_BASEBALL = 1;
 	public const int ITEM_KNIFE = 2;
-	public const int ITEM_NAMI = 3;
+	public const int ITEM_ELECTRICGUN = 3;
 	public const int ITEM_PISTOL = 4;
 	public const int ITEM_BROOK = 5;
 	public const int ITEM_CROSSBOW = 6;
