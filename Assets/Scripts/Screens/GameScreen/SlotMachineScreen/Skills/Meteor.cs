@@ -10,7 +10,6 @@ public class Meteor : MonoBehaviour {
 	
 	public void Shoot(Vector3 mToPos, Vector3 fromPos) {
 		// transform.position = fromPos;
-		NGUITools.SetActive(meteor, true);
 		NGUITools.SetActive(meteorHit, false);
 		Vector2 random = Random.insideUnitCircle / 4f;
 		Vector3 parallelDirection = fromPos - mToPos;
@@ -18,6 +17,7 @@ public class Meteor : MonoBehaviour {
 		mToPos.x += random.x;
 		this.toPos = mToPos;
 		transform.position = parallelDirection + toPos;
+		NGUITools.SetActive(meteor, true);
 		LeanTween.move(gameObject, toPos, 0.6f).setOnComplete(Explode);
 	}
 	
@@ -33,6 +33,8 @@ public class Meteor : MonoBehaviour {
 	}
 	
 	public void Destroy() {
+		NGUITools.SetActive(meteorHit, false);
+		NGUITools.SetActive(meteor, false);
 		NGUITools.SetActive(gameObject, false);
 	}
 	

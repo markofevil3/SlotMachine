@@ -22,7 +22,8 @@ public class SkillMeteor : Skill {
 	
 	IEnumerator Shoot(int index) {
 		yield return new WaitForSeconds(index * 0.25f);
-		NGUITools.SetActive(meteors[index].gameObject, true);
+		meteors[index].gameObject.SetActive(true);
+		// NGUITools.SetActive(meteors[index].gameObject, true);
 		meteors[index].Shoot(bossManager.GetBossMiddlePoint(), fromPos);
 	}
 	
