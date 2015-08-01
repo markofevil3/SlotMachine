@@ -66,12 +66,12 @@ public class SlotPirateScreen : BaseSlotMachineScreen {
 				SkillLuffy skillLuffy = tempGameObject.GetComponent<SkillLuffy>();
 				skillLuffy.Init(level, damage, bossManager);
 			break;
-			case SlotItemPirate.ITEM_RALLY:
-				tempGameObject = MyPoolManager.Instance.Spawn("SkillFireBall", skillCamera.transform).gameObject;
-				// tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillFireBall", typeof(GameObject)) as GameObject);
-				skill = tempGameObject.GetComponent<SkillFireBall>();
-				skill.Init(level, damage, bossManager);
-			break;
+			// case SlotItemPirate.ITEM_RALLY:
+			// 	tempGameObject = MyPoolManager.Instance.Spawn("SkillFireBall", skillCamera.transform).gameObject;
+			// 	// tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillFireBall", typeof(GameObject)) as GameObject);
+			// 	skill = tempGameObject.GetComponent<SkillFireBall>();
+			// 	skill.Init(level, damage, bossManager);
+			// break;
 		}
 			// tempGameObject = MyPoolManager.Instance.Spawn("SkillFlameThrower", skillCamera.transform).gameObject;
 			// SkillFlameThrower skillLuffy = tempGameObject.GetComponent<SkillFlameThrower>();

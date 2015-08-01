@@ -27,14 +27,14 @@ public class SlotDragonScreen : BaseSlotMachineScreen {
 				skillSpellIce.Init(level, damage, bossManager, fromPos);
 			break;
 			case SlotItemDragon.ITEM_AXE:
-				tempGameObject = MyPoolManager.Instance.Spawn("SkillFireBall", skillCamera.transform).gameObject;
-				skill = tempGameObject.GetComponent<SkillFireBall>();
-				skill.Init(level, damage, bossManager);
+				tempGameObject = MyPoolManager.Instance.Spawn("SkillAxe", skillCamera.transform).gameObject;
+				SkillAxe skillAxe = tempGameObject.GetComponent<SkillAxe>();
+				skillAxe.Init(level, damage, bossManager);
 			break;
 			case SlotItemDragon.ITEM_BOMB:
-				tempGameObject = MyPoolManager.Instance.Spawn("SkillDagger", skillCamera.transform).gameObject;
-				SkillDagger skillSword = tempGameObject.GetComponent<SkillDagger>();
-				skillSword.Init(level, damage, bossManager);
+				tempGameObject = MyPoolManager.Instance.Spawn("SkillSkullBomb", skillCamera.transform).gameObject;
+				SkillSkullBomb skillBomb = tempGameObject.GetComponent<SkillSkullBomb>();
+				skillBomb.Init(level, damage, bossManager);
 			break;
 			case SlotItemDragon.ITEM_SPELLLIGHTING:
 				tempGameObject = MyPoolManager.Instance.Spawn("SkillDagger", skillCamera.transform).gameObject;
@@ -47,24 +47,24 @@ public class SlotDragonScreen : BaseSlotMachineScreen {
 				skillSanji.Init(level, damage, bossManager);
 			break;
 			case SlotItemDragon.ITEM_SPELLFIRE:
-			tempGameObject = MyPoolManager.Instance.Spawn("SkillSpellFire", skillCamera.transform).gameObject;
-			SkillSpellFire skillSpellFire = tempGameObject.GetComponent<SkillSpellFire>();
-			skillSpellFire.Init(level, damage, bossManager, fromPos);
+				tempGameObject = MyPoolManager.Instance.Spawn("SkillSpellFire", skillCamera.transform).gameObject;
+				SkillSpellFire skillSpellFire = tempGameObject.GetComponent<SkillSpellFire>();
+				skillSpellFire.Init(level, damage, bossManager, fromPos);
 			break;
 			case SlotItemDragon.ITEM_SPELLRUBY:
-				tempGameObject = MyPoolManager.Instance.Spawn("SkillLuffy", skillCamera.transform).gameObject;
-				SkillLuffy skillLuffy = tempGameObject.GetComponent<SkillLuffy>();
-				skillLuffy.Init(level, damage, bossManager);
+				tempGameObject = MyPoolManager.Instance.Spawn("SkillIcePurple", skillCamera.transform).gameObject;
+				SkillIcePurple skillIcePurple = tempGameObject.GetComponent<SkillIcePurple>();
+				skillIcePurple.Init(level, damage, bossManager);
 			break;
-			case SlotItemDragon.ITEM_METEOR:
+			// case SlotItemDragon.ITEM_METEOR:
+			// 	tempGameObject = MyPoolManager.Instance.Spawn("SkillMeteor", skillCamera.transform).gameObject;
+			// 	SkillMeteor skillMeteor = tempGameObject.GetComponent<SkillMeteor>();
+			// 	skillMeteor.Init(level, damage, bossManager, fromPos);
+			// break;
+		}
 				tempGameObject = MyPoolManager.Instance.Spawn("SkillMeteor", skillCamera.transform).gameObject;
 				SkillMeteor skillMeteor = tempGameObject.GetComponent<SkillMeteor>();
-				skillMeteor.Init(level, damage, bossManager, fromPos);
-			break;
-		}
-		// tempGameObject = MyPoolManager.Instance.Spawn("SkillMeteor", skillCamera.transform).gameObject;
-		// SkillMeteor skillKnife = tempGameObject.GetComponent<SkillMeteor>();
-		// skillKnife.Init(level, damage, bossManager, fromPos);
+				skillMeteor.Init(1, damage, bossManager, fromPos);
 	}
 	
 	public override void ShowFreeSpinAnimation() {

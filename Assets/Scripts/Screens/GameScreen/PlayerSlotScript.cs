@@ -47,6 +47,7 @@ public class PlayerSlotScript : MonoBehaviour {
 		WWW www = new WWW(this.avatarLink);
 		yield return www;
 		if (www.texture != null) {
+			NGUITools.SetActive(avatarSprite.gameObject, true);
 			avatarSprite.mainTexture = www.texture;
 		}
 		www.Dispose();
@@ -57,6 +58,7 @@ public class PlayerSlotScript : MonoBehaviour {
     usernameLabel.text = string.Empty;
     cashLabel.text = string.Empty;
 		NGUITools.SetActive(btnAdd, true);
+		NGUITools.SetActive(avatarSprite.gameObject, false);
     EventDelegate.Set(eventTrigger.onClick, OpenInvitePlayerPopup);
     HideGlow();
     // btnThrowCard.gameObject.SetActive(false);

@@ -9,13 +9,15 @@ public class Meteor : MonoBehaviour {
 	Vector3 toPos;
 	
 	public void Shoot(Vector3 mToPos, Vector3 fromPos) {
-		transform.position = fromPos;
+		// transform.position = fromPos;
 		NGUITools.SetActive(meteor, true);
 		NGUITools.SetActive(meteorHit, false);
 		Vector2 random = Random.insideUnitCircle / 4f;
+		Vector3 parallelDirection = fromPos - mToPos;
 		mToPos.y += random.y;
 		mToPos.x += random.x;
 		this.toPos = mToPos;
+		transform.position = parallelDirection + toPos;
 		LeanTween.move(gameObject, toPos, 0.6f).setOnComplete(Explode);
 	}
 	

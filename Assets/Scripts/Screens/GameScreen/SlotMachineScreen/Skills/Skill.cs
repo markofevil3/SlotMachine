@@ -22,7 +22,10 @@ public class Skill : MonoBehaviour {
 		METEOR,
 		BASE_BALL,
 		ELECTRIC_GUN,
-		FLAME_THROWER
+		AXE,
+		ICE_PURPLE,
+		SKULL_BOMB,
+		FLAME_THROWER,	
   }
 
 	public Type type;

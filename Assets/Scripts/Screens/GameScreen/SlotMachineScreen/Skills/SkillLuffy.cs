@@ -5,11 +5,9 @@ public class SkillLuffy : Skill {
 
 	public LuffyHand[] hands;
 	
-	private int attackDamage;
-
 	public override void Init(int level, int damage, BossManager bossManager) {
 		this.bossManager = bossManager;
-		this.attackDamage = damage;
+		this.damage = damage;
 		int smallDamage = (int)(damage / level);
 		for (int i = 0; i < level; i++) {
 			if (i == level - 1 && level > 1) {

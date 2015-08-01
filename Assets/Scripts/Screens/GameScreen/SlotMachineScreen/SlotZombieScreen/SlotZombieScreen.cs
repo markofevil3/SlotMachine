@@ -67,12 +67,12 @@ public class SlotZombieScreen : BaseSlotMachineScreen {
 				SkillLuffy skillLuffy = tempGameObject.GetComponent<SkillLuffy>();
 				skillLuffy.Init(level, damage, bossManager);
 			break;
-			case SlotItemZombie.ITEM_RALLY:
-				tempGameObject = MyPoolManager.Instance.Spawn("SkillFireBall", skillCamera.transform).gameObject;
-				// tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillFireBall", typeof(GameObject)) as GameObject);
-				skill = tempGameObject.GetComponent<SkillFireBall>();
-				skill.Init(level, damage, bossManager);
-			break;
+			// case SlotItemZombie.ITEM_RALLY:
+			// 	tempGameObject = MyPoolManager.Instance.Spawn("SkillFireBall", skillCamera.transform).gameObject;
+			// 	// tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillFireBall", typeof(GameObject)) as GameObject);
+			// 	skill = tempGameObject.GetComponent<SkillFireBall>();
+			// 	skill.Init(level, damage, bossManager);
+			// break;
 		}
 		// tempGameObject = MyPoolManager.Instance.Spawn("SkillElectricGun", skillCamera.transform).gameObject;
 		// SkillElectricGun skillKnife = tempGameObject.GetComponent<SkillElectricGun>();
