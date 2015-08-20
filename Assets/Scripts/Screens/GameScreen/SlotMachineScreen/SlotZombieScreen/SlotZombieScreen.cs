@@ -22,7 +22,6 @@ public class SlotZombieScreen : BaseSlotMachineScreen {
 			break;
 			case SlotItemZombie.ITEM_KNIFE:
 				tempGameObject = MyPoolManager.Instance.Spawn("SkillKnife", skillCamera.transform).gameObject;
-				// tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillSwordBlue", typeof(GameObject)) as GameObject);
 				SkillKnife skillKnife = tempGameObject.GetComponent<SkillKnife>();
 				skillKnife.Init(level, damage, bossManager, fromPos);
 			break;
@@ -33,39 +32,34 @@ public class SlotZombieScreen : BaseSlotMachineScreen {
 			break;
 			case SlotItemZombie.ITEM_PISTOL:
 				tempGameObject = MyPoolManager.Instance.Spawn("SkillPistol", skillCamera.transform).gameObject;
-				// tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillFireBall", typeof(GameObject)) as GameObject);
 				SkillPistol skillPistol = tempGameObject.GetComponent<SkillPistol>();
 				skillPistol.Init(level, damage, bossManager);
 			break;
+			// TO DO: need new effect
 			case SlotItemZombie.ITEM_BROOK:
 				tempGameObject = MyPoolManager.Instance.Spawn("SkillDagger", skillCamera.transform).gameObject;
-				// tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillDagger", typeof(GameObject)) as GameObject);
 				SkillDagger skillSword = tempGameObject.GetComponent<SkillDagger>();
 				skillSword.Init(level, damage, bossManager);
 			break;
 			case SlotItemZombie.ITEM_CROSSBOW:
 			tempGameObject = MyPoolManager.Instance.Spawn("SkillCrossBow", skillCamera.transform).gameObject;
-			// tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillSwordBlue", typeof(GameObject)) as GameObject);
 			SkillCrossBow skillCrossBow = tempGameObject.GetComponent<SkillCrossBow>();
 			skillCrossBow.Init(level, damage, bossManager, fromPos);
 			break;
 			case SlotItemZombie.ITEM_MACHINEGUN:
 				tempGameObject = MyPoolManager.Instance.Spawn("SkillMachineGun", skillCamera.transform).gameObject;
-				// tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillSanji", typeof(GameObject)) as GameObject);
 				SkillMachineGun skillMachineGun = tempGameObject.GetComponent<SkillMachineGun>();
 				skillMachineGun.Init(level, damage, bossManager);
 			break;
 			case SlotItemZombie.ITEM_GRENADE:
 				tempGameObject = MyPoolManager.Instance.Spawn("SkillGrenade", skillCamera.transform).gameObject;
-				// tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillSwordBlue", typeof(GameObject)) as GameObject);
 				SkillGrenade skillGrenade = tempGameObject.GetComponent<SkillGrenade>();
 				skillGrenade.Init(level, damage, bossManager);
 			break;
-			case SlotItemZombie.ITEM_LUFFY:
-				tempGameObject = MyPoolManager.Instance.Spawn("SkillLuffy", skillCamera.transform).gameObject;
-				// tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillLuffy", typeof(GameObject)) as GameObject);
-				SkillLuffy skillLuffy = tempGameObject.GetComponent<SkillLuffy>();
-				skillLuffy.Init(level, damage, bossManager);
+			case SlotItemZombie.ITEM_MISSILE:
+				tempGameObject = MyPoolManager.Instance.Spawn("SkillMissile", skillCamera.transform).gameObject;
+				SkillMissile skillMissile = tempGameObject.GetComponent<SkillMissile>();
+				skillMissile.Init(level, damage, bossManager, fromPos);
 			break;
 			// case SlotItemZombie.ITEM_RALLY:
 			// 	tempGameObject = MyPoolManager.Instance.Spawn("SkillFireBall", skillCamera.transform).gameObject;
@@ -74,9 +68,9 @@ public class SlotZombieScreen : BaseSlotMachineScreen {
 			// 	skill.Init(level, damage, bossManager);
 			// break;
 		}
-		// tempGameObject = MyPoolManager.Instance.Spawn("SkillElectricGun", skillCamera.transform).gameObject;
-		// SkillElectricGun skillKnife = tempGameObject.GetComponent<SkillElectricGun>();
-		// skillKnife.Init(level, damage, bossManager);
+		// tempGameObject = MyPoolManager.Instance.Spawn("SkillMissile", skillCamera.transform).gameObject;
+		// SkillMissile skillKnife = tempGameObject.GetComponent<SkillMissile>();
+		// skillKnife.Init(level, damage, bossManager, fromPos);
 	}
 	
 	public override void ShowFreeSpinAnimation() {

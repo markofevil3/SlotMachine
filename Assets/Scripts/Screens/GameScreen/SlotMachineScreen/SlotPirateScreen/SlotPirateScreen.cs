@@ -19,6 +19,7 @@ public class SlotPirateScreen : BaseSlotMachineScreen {
 				SkillBite skillBite = tempGameObject.GetComponent<SkillBite>();
 				skillBite.Init(level, damage, bossManager);
 			break;
+			// TO DO: need new effect
 			case SlotItemPirate.ITEM_USOOP:
 				tempGameObject = MyPoolManager.Instance.Spawn("SkillFireBall", skillCamera.transform).gameObject;
 				// tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillFireBall", typeof(GameObject)) as GameObject);
@@ -31,6 +32,7 @@ public class SlotPirateScreen : BaseSlotMachineScreen {
 				SkillThunder thunderSkill = tempGameObject.GetComponent<SkillThunder>();
 				thunderSkill.Init(level, damage, bossManager);
 			break;
+			// TO DO: need new effect
 			case SlotItemPirate.ITEM_FRANKY:
 				tempGameObject = MyPoolManager.Instance.Spawn("SkillFlameThrower", skillCamera.transform).gameObject;
 				SkillFlameThrower skillFlameThrower = tempGameObject.GetComponent<SkillFlameThrower>();
@@ -42,6 +44,7 @@ public class SlotPirateScreen : BaseSlotMachineScreen {
 				SkillDagger skillSword = tempGameObject.GetComponent<SkillDagger>();
 				skillSword.Init(level, damage, bossManager);
 			break;
+			// TO DO: need new effect
 			case SlotItemPirate.ITEM_NICO:
 				tempGameObject = MyPoolManager.Instance.Spawn("SkillDagger", skillCamera.transform).gameObject;
 				// tempGameObject = NGUITools.AddChild(skillCamera, Resources.Load(Global.SCREEN_PATH + "/GameScreen/SlotMachine/SlotPirateScreen/SkillDagger", typeof(GameObject)) as GameObject);

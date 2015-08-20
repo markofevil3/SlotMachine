@@ -41,6 +41,7 @@ public class SlotDragonScreen : BaseSlotMachineScreen {
 				SkillDagger skillDagger = tempGameObject.GetComponent<SkillDagger>();
 				skillDagger.Init(level, damage, bossManager);
 			break;
+			// TO DO: need new effect
 			case SlotItemDragon.ITEM_SWORD:
 				tempGameObject = MyPoolManager.Instance.Spawn("SkillSanji", skillCamera.transform).gameObject;
 				SkillSanji skillSanji = tempGameObject.GetComponent<SkillSanji>();
