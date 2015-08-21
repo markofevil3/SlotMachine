@@ -20,8 +20,8 @@ public class SkillFlameThrower : Skill {
 			NGUITools.SetActive(flameBig, false);
 			NGUITools.SetActive(flameSmall, true);
 		}
-		Invoke("BossGetHit", 0.5f);
-		Invoke("Destroy", 1.5f);
+		Invoke("BossGetHit", 1.5f);
+		Invoke("Destroy", 5f);
 	}
 	
 	void BossGetHit() {
