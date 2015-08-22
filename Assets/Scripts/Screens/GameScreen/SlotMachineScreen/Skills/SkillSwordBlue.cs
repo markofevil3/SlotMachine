@@ -3,25 +3,39 @@ using System.Collections;
 
 public class SkillSwordBlue : Skill {
 
-	private Transform particle;
+	public GameObject[] swordHits;
 
-	public override void Init(int level, int damage, BossManager bossManager) {
+	public override void Init(int aLevel, int damage, BossManager bossManager) {
 		this.bossManager = bossManager;
-		this.level = level;
-		SpawnParticle(level);
-		transform.position = bossManager.GetBossMiddlePoint();
-		// StartCoroutine("CheckIfAlive");
-		bossManager.Shake();
-		bossManager.GetHit(damage);
-		base.Init();
+		this.damage = damage;
+		this.level = aLevel;
+		Vector3 toPos = bossManager.GetBossMiddlePoint();
+		// Vector2 random = Random.insideUnitCircle / 6f;
+		// toPos.y += random.y;
+		// toPos.x += random.x;
+		// transform.position = toPos;
+		
+		for (int i = 0; i < level; i++) {
+			StartCoroutine(Shoot(i));
+		}
+		Invoke("BossGetHit", 0.1f);
+		Invoke("Destroy", 1.5f);
 	}
 	
-	void SpawnParticle(int level) {
-		particle = MyPoolManager.Instance.Spawn("IceSlash" + level, transform);
+	IEnumerator Shoot(int index) {
+		yield return new WaitForSeconds(index * 0.2f);
+		NGUITools.SetActive(swordHits[index], true);
+	}
+
+	void BossGetHit() {
+		bossManager.Shake();
+		bossManager.GetHit(damage);
 	}
 	
 	public override void Destroy() {
-		MyPoolManager.Instance.Despawn(particle);
+		for (int i = 0; i < swordHits.Length; i++) {
+			NGUITools.SetActive(swordHits[i], false);
+		}
 		base.Destroy();
 	}
 }

@@ -27,6 +27,7 @@ public class Skill : MonoBehaviour {
 		SKULL_BOMB,
 		MISSILE,
 		FLAME_THROWER,
+		SPELL_LIGHTING
   }
 
 	public Type type;

@@ -37,15 +37,14 @@ public class SlotDragonScreen : BaseSlotMachineScreen {
 				skillBomb.Init(level, damage, bossManager);
 			break;
 			case SlotItemDragon.ITEM_SPELLLIGHTING:
-				tempGameObject = MyPoolManager.Instance.Spawn("SkillDagger", skillCamera.transform).gameObject;
-				SkillDagger skillDagger = tempGameObject.GetComponent<SkillDagger>();
-				skillDagger.Init(level, damage, bossManager);
+				tempGameObject = MyPoolManager.Instance.Spawn("SkillSpellLighting", skillCamera.transform).gameObject;
+				SkillSpellLighting skillSpellLighting = tempGameObject.GetComponent<SkillSpellLighting>();
+				skillSpellLighting.Init(level, damage, bossManager, fromPos);
 			break;
-			// TO DO: need new effect
 			case SlotItemDragon.ITEM_SWORD:
-				tempGameObject = MyPoolManager.Instance.Spawn("SkillSanji", skillCamera.transform).gameObject;
-				SkillSanji skillSanji = tempGameObject.GetComponent<SkillSanji>();
-				skillSanji.Init(level, damage, bossManager);
+				tempGameObject = MyPoolManager.Instance.Spawn("SkillSwordBlue", skillCamera.transform).gameObject;
+				SkillSwordBlue skillSword = tempGameObject.GetComponent<SkillSwordBlue>();
+				skillSword.Init(level, damage, bossManager);
 			break;
 			case SlotItemDragon.ITEM_SPELLFIRE:
 				tempGameObject = MyPoolManager.Instance.Spawn("SkillSpellFire", skillCamera.transform).gameObject;
@@ -63,9 +62,9 @@ public class SlotDragonScreen : BaseSlotMachineScreen {
 			// 	skillIcePurple.Init(level, damage, bossManager);
 			// break;
 		}
-		// tempGameObject = MyPoolManager.Instance.Spawn("SkillSkullBomb", skillCamera.transform).gameObject;
-		// SkillSkullBomb skillAxe = tempGameObject.GetComponent<SkillSkullBomb>();
-		// skillAxe.Init(3, damage, bossManager);
+		// tempGameObject = MyPoolManager.Instance.Spawn("SkillSpellLighting", skillCamera.transform).gameObject;
+		// SkillSpellLighting skillSpellFire = tempGameObject.GetComponent<SkillSpellLighting>();
+		// skillSpellFire.Init(level, damage, bossManager, fromPos);
 	}
 	
 	public override void ShowFreeSpinAnimation() {
