@@ -9,6 +9,8 @@ public class Global {
     SD
   }
   
+	public static bool ENABLE_CHEAT = true;
+	
 	// Variables
 	public static string UI_HD_PATH = "Atlas/UI_HD";
 	public static string UI_UHD_PATH = "Atlas/UI_UHD";

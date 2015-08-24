@@ -10,12 +10,12 @@ public class SpellFire : MonoBehaviour {
 	
 	public void Shoot(Vector3 mToPos, Vector3 fromPos) {
 		transform.position = fromPos;
-		NGUITools.SetActive(fireBall, true);
 		NGUITools.SetActive(fireBallHit, false);
 		Vector2 random = Random.insideUnitCircle / 6f;
 		mToPos.y += random.y;
 		mToPos.x += random.x;
 		this.toPos = mToPos;
+		NGUITools.SetActive(fireBall, true);
 		LeanTween.move(gameObject, toPos, 0.5f).setOnComplete(Explode);
 	}
 	

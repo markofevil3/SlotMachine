@@ -39,7 +39,11 @@ public class BaseSlotMachineScreen : BaseScreen {
 	public GameObject skillCamera;
 	public BossManager bossManager;
   public BigWinPanel bigWinPanel;
+	public GameObject cheatPanel;
 	public UIButton btnTestSkill;
+  public UIPopupList btnTestSkillSelector;
+  public UIPopupList btnTestSkillLevelSelector;
+  public UIPopupList btnTestSkillPosition;
 
 	
   private string roomId = string.Empty;
@@ -59,6 +63,75 @@ public class BaseSlotMachineScreen : BaseScreen {
     return gameType;
   }
   
+  public override void Init(object[] data) {
+    JSONObject jsonData = (JSONObject)data[1];
+		StopFreeSpinAnimation();
+    EventDelegate.Set(btnBack.onClick, EventBackToSelectGame);
+   	
+   	slotMachine.Init(jsonData.GetString("betPerLines"));
+    EventDelegate.Set(btnBetPerLine.onClick, EventBetPerLine);
+    EventDelegate.Set(btnLines.onClick, EventBetLines);
+    EventDelegate.Set(btnMaxBet.onClick, EventMaxBet);
+		
+    SetBetPerLine(DEFAULT_BET_PER_LINE_INDEX);
+    SetNumbLine(1);
+    
+    // Init other players if have
+    Debug.Log("### " + data[1].ToString());
+    JSONArray otherPlayerDatas = jsonData.GetArray("otherPlayers");
+		roomData = jsonData.GetObject("roomData");
+    int count = 0;
+    for (int i = 0; i < otherPlayerDatas.Length; i++) {
+      if (!AccountManager.Instance.IsYou(otherPlayerDatas[i].Obj.GetString("username"))) {
+        otherPlayers[count].Init(otherPlayerDatas[i].Obj.GetString("username"), otherPlayerDatas[i].Obj.GetString("displayName"), otherPlayerDatas[i].Obj.GetLong("cash"), otherPlayerDatas[i].Obj.GetString("avatar"));
+        count++;
+      }
+    }
+    
+    for (int i = 0; i < otherPlayers.Length; i++) {
+      if (otherPlayers[i].IsEmpty()) {
+        otherPlayers[i].InitEmpty();
+      }
+    }
+    
+    roomId = jsonData.GetString("roomId");
+    
+    UpdateUserCashLabel(0);
+		UpdateUserGemLabel(0);
+		UpdateUserKillLabel();
+    if (AccountManager.Instance.avatarLink != string.Empty) {
+			Utils.SetActive(userAvatarTexture.gameObject, true);
+			StartCoroutine(DisplayAvatar());
+      // avatarSprite.spriteName = avatarName;
+		} else {
+			Utils.SetActive(userAvatarTexture.gameObject, false);
+		}
+    bigWinPanel.Hide();
+		bossManager.Init(roomData.GetInt("dIndex"), roomData.GetInt("dHP"), roomData.GetInt("dMaxHP"), this, "BossGetHitCallback");
+		
+		if (Global.ENABLE_CHEAT) {
+			Utils.SetActive(cheatPanel, true);
+			// TEST CODE -- test skill
+	    EventDelegate.Set(btnTestSkill.onClick, EventTestSkill);
+	    // Set Bet Filter
+	    for (int i = 1; i < 10; i++) {
+	      btnTestSkillSelector.items.Add(i.ToString());
+	    }
+	    for (int i = 1; i <= 3; i++) {
+	      btnTestSkillLevelSelector.items.Add(i.ToString());
+	    }
+	    for (int i = 0; i < 4; i++) {
+	      btnTestSkillPosition.items.Add(i.ToString());
+	    }
+			
+		} else {
+			Utils.SetActive(cheatPanel, false);
+		}
+
+		
+    base.Init(data);
+  }
+	
 	public void AddSpinDataToQueue(SpinData mSpinData) {
 		listSpinDatas.Add(mSpinData);
 	}
@@ -141,56 +214,6 @@ public class BaseSlotMachineScreen : BaseScreen {
 		}
 	}
 	
-  public override void Init(object[] data) {
-    JSONObject jsonData = (JSONObject)data[1];
-		StopFreeSpinAnimation();
-    EventDelegate.Set(btnBack.onClick, EventBackToSelectGame);
-   	
-   	slotMachine.Init(jsonData.GetString("betPerLines"));
-    EventDelegate.Set(btnBetPerLine.onClick, EventBetPerLine);
-    EventDelegate.Set(btnLines.onClick, EventBetLines);
-    EventDelegate.Set(btnMaxBet.onClick, EventMaxBet);
-		// TEST CODE -- test skill
-    EventDelegate.Set(btnTestSkill.onClick, EventTestSkill);
-		
-    SetBetPerLine(DEFAULT_BET_PER_LINE_INDEX);
-    SetNumbLine(1);
-    
-    // Init other players if have
-    Debug.Log("### " + data[1].ToString());
-    JSONArray otherPlayerDatas = jsonData.GetArray("otherPlayers");
-		roomData = jsonData.GetObject("roomData");
-    int count = 0;
-    for (int i = 0; i < otherPlayerDatas.Length; i++) {
-      if (!AccountManager.Instance.IsYou(otherPlayerDatas[i].Obj.GetString("username"))) {
-        otherPlayers[count].Init(otherPlayerDatas[i].Obj.GetString("username"), otherPlayerDatas[i].Obj.GetString("displayName"), otherPlayerDatas[i].Obj.GetLong("cash"), otherPlayerDatas[i].Obj.GetString("avatar"));
-        count++;
-      }
-    }
-    
-    for (int i = 0; i < otherPlayers.Length; i++) {
-      if (otherPlayers[i].IsEmpty()) {
-        otherPlayers[i].InitEmpty();
-      }
-    }
-    
-    roomId = jsonData.GetString("roomId");
-    
-    UpdateUserCashLabel(0);
-		UpdateUserGemLabel(0);
-		UpdateUserKillLabel();
-    if (AccountManager.Instance.avatarLink != string.Empty) {
-			Utils.SetActive(userAvatarTexture.gameObject, true);
-			StartCoroutine(DisplayAvatar());
-      // avatarSprite.spriteName = avatarName;
-		} else {
-			Utils.SetActive(userAvatarTexture.gameObject, false);
-		}
-    bigWinPanel.Hide();
-		bossManager.Init(roomData.GetInt("dIndex"), roomData.GetInt("dHP"), roomData.GetInt("dMaxHP"), this, "BossGetHitCallback");
-    base.Init(data);
-  }
-
 	IEnumerator DisplayAvatar() {
 		WWW www = new WWW(AccountManager.Instance.avatarLink);
 		yield return www;
@@ -233,7 +256,12 @@ public class BaseSlotMachineScreen : BaseScreen {
 	public virtual void UpdateFreeSpinText(int numb) {}	
 
 	public void EventTestSkill() {
-		SpawnSkill(0, 1, 1, userAvatarTexture.transform.position, true);
+		int pos = int.Parse(btnTestSkillPosition.value);
+		if (pos == 3) {
+			SpawnSkill(int.Parse(btnTestSkillSelector.value), int.Parse(btnTestSkillLevelSelector.value), 1, userAvatarTexture.transform.position, true);
+		} else {
+			SpawnSkill(int.Parse(btnTestSkillSelector.value), int.Parse(btnTestSkillLevelSelector.value), 1, otherPlayers[pos].transform.position, false);
+		}
 	}
 
 	public virtual void SpawnSkill(int type, int level, int damage, Vector3 fromPos, bool isYou) {

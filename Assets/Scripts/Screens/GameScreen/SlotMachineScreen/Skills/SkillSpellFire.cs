@@ -21,7 +21,7 @@ public class SkillSpellFire : Skill {
 	
 	IEnumerator Shoot(int index) {
 		yield return new WaitForSeconds(index * 0.2f);
-		NGUITools.SetActive(spellFires[index].gameObject, true);
+		spellFires[index].gameObject.SetActive(true);
 		spellFires[index].Shoot(bossManager.GetBossMiddlePoint(), fromPos);
 	}
 	

@@ -20,8 +20,8 @@ public class SlotPirateScreen : BaseSlotMachineScreen {
 			break;
 			case SlotItemPirate.ITEM_USOOP:
 				tempGameObject = MyPoolManager.Instance.Spawn("SkillFireBall", skillCamera.transform).gameObject;
-				skill = tempGameObject.GetComponent<SkillFireBall>();
-				skill.Init(level, damage, bossManager);
+				SkillSpellFire skillSpellFire = tempGameObject.GetComponent<SkillSpellFire>();
+				skillSpellFire.Init(level, damage, bossManager, fromPos);
 			break;
 			case SlotItemPirate.ITEM_NAMI:
 				tempGameObject = MyPoolManager.Instance.Spawn("SkillThunder", skillCamera.transform).gameObject;
@@ -56,7 +56,7 @@ public class SlotPirateScreen : BaseSlotMachineScreen {
 			case SlotItemPirate.ITEM_LUFFY:
 				tempGameObject = MyPoolManager.Instance.Spawn("SkillLuffy", skillCamera.transform).gameObject;
 				SkillLuffy skillLuffy = tempGameObject.GetComponent<SkillLuffy>();
-				skillLuffy.Init(level, damage, bossManager);
+				skillLuffy.Init(level, damage, bossManager, fromPos);
 			break;
 			// case SlotItemPirate.ITEM_RALLY:
 			// 	tempGameObject = MyPoolManager.Instance.Spawn("SkillFireBall", skillCamera.transform).gameObject;
