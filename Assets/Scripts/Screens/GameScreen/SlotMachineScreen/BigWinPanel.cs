@@ -90,7 +90,7 @@ public class BigWinPanel : MonoBehaviour {
 	}
 
 	// Fade in Treasure
-	public void FadeInTreasure(int cash, int gem, JSONObject newBossData, bool shouldPause = true) {
+	public virtual void FadeInTreasure(int cash, int gem, JSONObject newBossData, bool shouldPause = true) {
 		if (shouldPause) {
 			ScreenManager.Instance.CurrentSlotScreen.PauseSpawnSkill();
 		}
@@ -108,14 +108,14 @@ public class BigWinPanel : MonoBehaviour {
 		StartCoroutine(FadeOutTreasure(cash, gem, newBossData));
 	}
 
-	IEnumerator FadeOutTreasure(int dropCash, int dropGem, JSONObject newBossData) {
+	public IEnumerator FadeOutTreasure(int dropCash, int dropGem, JSONObject newBossData) {
 		yield return new WaitForSeconds(2.0f);
 		TweenAlpha tween = TweenAlpha.Begin(gameObject, 0.5f, 0);
     EventDelegate.Add(tween.onFinished, HideNoResumeSkill, true);
 	}
 
 	// Spawn effect of Big win panel
-	void EventFinishFadeIn() {
+	public void EventFinishFadeIn() {
 		StartCoroutine(SpawnEffect());
 	}
 
@@ -132,7 +132,7 @@ public class BigWinPanel : MonoBehaviour {
 	}
 	
 	// Hide Treasure panel but dont resume skill - will resume after boss changed
-	private void HideNoResumeSkill() {
+	public void HideNoResumeSkill() {
 		NGUITools.SetActive(gameObject, false);
 	}
 	
