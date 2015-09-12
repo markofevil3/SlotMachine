@@ -44,7 +44,7 @@ public class BaseSlotMachineScreen : BaseScreen {
   public UIPopupList btnTestSkillSelector;
   public UIPopupList btnTestSkillLevelSelector;
   public UIPopupList btnTestSkillPosition;
-
+	public WinningLines winningLinesDisplay;
 	
   private string roomId = string.Empty;
 	private int DEFAULT_BET_PER_LINE_INDEX = 0;
@@ -128,7 +128,7 @@ public class BaseSlotMachineScreen : BaseScreen {
 			Utils.SetActive(cheatPanel, false);
 		}
 
-		
+		HideWinningLinesDisplay();
     base.Init(data);
   }
 	
@@ -152,6 +152,12 @@ public class BaseSlotMachineScreen : BaseScreen {
 			}
 		} else {
 			fromPos = userAvatarTexture.transform.position;
+			if (!bigWinPanel.isShowing) {
+				slotMachine.Wait();
+				if (!IsInvoking("ReleaseSlotPause")) {
+					Invoke("ReleaseSlotPause", 1f * spinData.spawnSkills.Count);
+				}
+			}
 		}
 		for (int i = 0; i < spinData.spawnSkills.Count; i++) {
 			SpawnSkill(spinData.spawnSkills[i], fromPos, spinData.isYou);
@@ -161,6 +167,10 @@ public class BaseSlotMachineScreen : BaseScreen {
 			yield return new WaitForSeconds(2f);
 			DisplayBossDrop(spinData.dropCash, spinData.dropGem, spinData.newBossData);
 		}
+	}
+	
+	void ReleaseSlotPause() {
+		slotMachine.Resume();
 	}
 	
 	public virtual void DisplayBossDrop(int dropCash, int dropGem, JSONObject newBossData) {
@@ -373,6 +383,14 @@ public class BaseSlotMachineScreen : BaseScreen {
     }
   }
   
+	public void ShowWinningLinesDisplay(List<int> winningLineIndexs) {
+		winningLinesDisplay.Show(winningLineIndexs);
+	}
+	
+	public void HideWinningLinesDisplay() {
+		winningLinesDisplay.Hide();
+	}
+	
   public void UpdateOtherPlayerCash(string username, long cashVal) {
     PlayerSlotScript playerSlot = FindUserSlot(username);
      if (playerSlot != null) {

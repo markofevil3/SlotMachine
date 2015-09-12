@@ -40,6 +40,7 @@ public class SlotMachine : MonoBehaviour {
 	}
 	
 	private bool pauseCount = false;
+	private List<int> winningLineIndexs = new List<int>();
 	
   public void Init(string betPerLines) {
     slotCombination.Init(betPerLines);
@@ -121,14 +122,20 @@ public class SlotMachine : MonoBehaviour {
 			} else {
 				ScreenManager.Instance.CurrentSlotScreen.UpdateFreeSpinText(freeSpinLeft);
 			}
+			winningLineIndexs.Clear();
 			// Glow winning item
 			for (int i = 0; i < winningCount.Length; i++) {
 				if (winningCount[i].Number >= 3 || ((int)winningType[i].Number == (int)SlotItem.Type.TILE_1 && winningCount[i].Number >= 2)) {
+					winningLineIndexs.Add(i);
 					for (int j = 0; j < SlotCombination.NUM_REELS; j++) {
 						slotItems[SlotCombination.COMBINATION[i, j]].Glow();
 					}
 					// ScreenManager.Instance.CurrentSlotScreen.AddSkillToQueue(new SpawnableSkill((int)winningType[i].Number, (int)winningCount[i].Number, (int)winningGold[i].Number, true));
 				}
+			}
+			// Show winning lines
+			if (winningLineIndexs.Count > 0) {
+				ScreenManager.Instance.CurrentSlotScreen.ShowWinningLinesDisplay(winningLineIndexs);
 			}
 			if (totalScore > 0) {
 				ScreenManager.Instance.CurrentSlotScreen.AddSpinDataToQueue(new SpinData(string.Empty, spinDataResult, true));
@@ -143,7 +150,7 @@ public class SlotMachine : MonoBehaviour {
 			}
     }
   }
-  
+	
 	public void Wait() {
 		// canStart = false;
 		pauseCount = true;
@@ -154,7 +161,7 @@ public class SlotMachine : MonoBehaviour {
 		// pauseCount = Mathf.Max(0, pauseCount - 1);
 		pauseCount = false;
 	}
-	
+
 	void EnableAutoStart() {
 		autoStart = true;
 	}

@@ -19,6 +19,9 @@ public class BigWinPanel : MonoBehaviour {
 	public Transform effectPoint1;
 	public Transform effectPoint2;
 	public Transform effectPoint3;
+	
+  [HideInInspector]
+	public bool isShowing = false;
 
 	public virtual float BIG_WIN_FADEIN_DURATION {
 		get { return 0.3f; }
@@ -31,6 +34,7 @@ public class BigWinPanel : MonoBehaviour {
 	// Fade in Big Win
 	public void FadeInBigWin(int numb) {
 		Debug.Log("FadeInBigWin");
+		isShowing = true;
 		totalScore = numb;
 		NGUITools.SetActive(gameObject, true);
 		NGUITools.SetActive(bigWinView, true);
@@ -52,7 +56,7 @@ public class BigWinPanel : MonoBehaviour {
 		if (ScreenManager.Instance.CurrentSlotScreen.slotMachine.gotFreeSpin) {
 			FadeInFreeSpin(ScreenManager.Instance.CurrentSlotScreen.slotMachine.freeSpinLeft, false);
 		} else {
-			TweenAlpha tween = TweenAlpha.Begin(gameObject, 0.5f, 0);
+			TweenAlpha tween = TweenAlpha.Begin(gameObject, 1f, 0);
 	    EventDelegate.Add(tween.onFinished, Hide, true);
 		}
 		ScreenManager.Instance.CurrentSlotScreen.slotMachine.UpdateScore(totalScore);
@@ -61,7 +65,7 @@ public class BigWinPanel : MonoBehaviour {
 	// Fade in Free Spin
 	public void FadeInFreeSpin(int numb, bool shouldPause = true) {
 		Debug.Log("FadeInFreeSpin");
-		
+		isShowing = true;
 		NGUITools.SetActive(gameObject, true);
 		NGUITools.SetActive(bigWinView, false);
 		NGUITools.SetActive(treasureView, false);
@@ -84,7 +88,7 @@ public class BigWinPanel : MonoBehaviour {
 	}
 
 	public void FadeOutFreeSpin() {
-		TweenAlpha tween = TweenAlpha.Begin(gameObject, 0.5f, 0);
+		TweenAlpha tween = TweenAlpha.Begin(gameObject, 1f, 0);
     EventDelegate.Add(tween.onFinished, Hide, true);
 		// ScreenManager.Instance.CurrentSlotScreen.slotMachine.UpdateScore(totalScore);
 	}
@@ -94,6 +98,7 @@ public class BigWinPanel : MonoBehaviour {
 		if (shouldPause) {
 			ScreenManager.Instance.CurrentSlotScreen.PauseSpawnSkill();
 		}
+		isShowing = true;
 		NGUITools.SetActive(gameObject, true);
 		NGUITools.SetActive(bigWinView, false);
 		NGUITools.SetActive(freeSpinView, false);
@@ -119,7 +124,7 @@ public class BigWinPanel : MonoBehaviour {
 		StartCoroutine(SpawnEffect());
 	}
 
-	IEnumerator SpawnEffect() {
+	public virtual IEnumerator SpawnEffect() {
 		yield return null;
 		Transform hpny1 = MyPoolManager.Instance.Spawn("HappyNewYear", effectPoint1.position, Quaternion.Euler(0, 0, 0), ScreenManager.Instance.CurrentSlotScreen.skillCamera.transform);
 		MyPoolManager.Instance.Despawn(hpny1, 2f);
@@ -138,6 +143,7 @@ public class BigWinPanel : MonoBehaviour {
 	
 	// Hide Big win, free spin panel and resume skill
 	public void Hide() {
+		isShowing = false;
 		NGUITools.SetActive(gameObject, false);
 		if (ScreenManager.Instance.CurrentSlotScreen != null && !ScreenManager.Instance.CurrentSlotScreen.isChangingBoss) {
 			ScreenManager.Instance.CurrentSlotScreen.ResumeSpawnSkill();

@@ -74,6 +74,7 @@ public class SlotReel : MonoBehaviour {
 		for (int i = 0; i < slotItems.Count; i++) {
 			slotItems[i].StopGlow();
 		}
+		ScreenManager.Instance.CurrentSlotScreen.HideWinningLinesDisplay();
     stop = false;
   }
 

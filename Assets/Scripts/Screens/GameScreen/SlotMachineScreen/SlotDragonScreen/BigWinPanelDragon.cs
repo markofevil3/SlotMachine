@@ -37,4 +37,15 @@ public class BigWinPanelDragon : BigWinPanel {
     EventDelegate.Add(tween.onFinished, HideNoResumeSkill, true);
 	}
 	
+	public override IEnumerator SpawnEffect() {
+		yield return null;
+		Transform hpny1 = MyPoolManager.Instance.Spawn("CFXM_Firework_Orange", effectPoint1.position, Quaternion.Euler(0, 0, 0), ScreenManager.Instance.CurrentSlotScreen.skillCamera.transform);
+		MyPoolManager.Instance.Despawn(hpny1, 2f);
+		yield return new WaitForSeconds(0.2f);
+		Transform hpny2 = MyPoolManager.Instance.Spawn("CFXM_Firework_Orange", effectPoint2.position, Quaternion.Euler(0, 0, 0), ScreenManager.Instance.CurrentSlotScreen.skillCamera.transform);
+		MyPoolManager.Instance.Despawn(hpny2, 2f);
+		yield return new WaitForSeconds(0.1f);
+		Transform hpny3 = MyPoolManager.Instance.Spawn("CFXM_Firework_Red", effectPoint3.position, Quaternion.Euler(0, 0, 0), ScreenManager.Instance.CurrentSlotScreen.skillCamera.transform);
+		MyPoolManager.Instance.Despawn(hpny3, 2f);
+	}
 }

@@ -6,6 +6,7 @@ public class SlotDragonScreen : BaseSlotMachineScreen {
 	
 	public GameObject freeSpinLeft;
 	public UILabel freeSpinLeftLabel;
+	public ParticleSystem[] batClouds;
 	
 	public override void SpawnSkill(int type, int level, int damage, Vector3 fromPos, bool isYou) {
 		GameObject tempGameObject;
@@ -69,10 +70,17 @@ public class SlotDragonScreen : BaseSlotMachineScreen {
 	
 	public override void ShowFreeSpinAnimation() {
 		Utils.SetActive(freeSpinLeft, true);
+		for (int i = 0; i < batClouds.Length; i++) {
+			batClouds[i].gameObject.SetActive(true);
+			// batClouds[i].GetComponent<Renderer>().sortingOrder = -1;
+		}
 	}
 
 	public override void StopFreeSpinAnimation() {
 		Utils.SetActive(freeSpinLeft, false);
+		for (int i = 0; i < batClouds.Length; i++) {
+			batClouds[i].gameObject.SetActive(false);
+		}
 	}
 	
 	public override void UpdateFreeSpinText(int numb) {
