@@ -37,14 +37,14 @@ public class SlotZombieScreen : BaseSlotMachineScreen {
 			break;
 			// TO DO: need new effect
 			case SlotItemZombie.ITEM_BROOK:
-				tempGameObject = MyPoolManager.Instance.Spawn("SkillDagger", skillCamera.transform).gameObject;
-				SkillDagger skillSword = tempGameObject.GetComponent<SkillDagger>();
-				skillSword.Init(level, damage, bossManager);
+				tempGameObject = MyPoolManager.Instance.Spawn("SkillMachineGun", skillCamera.transform).gameObject;
+				SkillMachineGun skillMachineGun2 = tempGameObject.GetComponent<SkillMachineGun>();
+				skillMachineGun2.Init(level, damage, bossManager);
 			break;
 			case SlotItemZombie.ITEM_CROSSBOW:
-			tempGameObject = MyPoolManager.Instance.Spawn("SkillCrossBow", skillCamera.transform).gameObject;
-			SkillCrossBow skillCrossBow = tempGameObject.GetComponent<SkillCrossBow>();
-			skillCrossBow.Init(level, damage, bossManager, fromPos);
+				tempGameObject = MyPoolManager.Instance.Spawn("SkillCrossBow", skillCamera.transform).gameObject;
+				SkillCrossBow skillCrossBow = tempGameObject.GetComponent<SkillCrossBow>();
+				skillCrossBow.Init(level, damage, bossManager, fromPos);
 			break;
 			case SlotItemZombie.ITEM_MACHINEGUN:
 				tempGameObject = MyPoolManager.Instance.Spawn("SkillMachineGun", skillCamera.transform).gameObject;

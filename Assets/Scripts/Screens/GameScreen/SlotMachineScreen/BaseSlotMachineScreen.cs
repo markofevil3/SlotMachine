@@ -152,7 +152,7 @@ public class BaseSlotMachineScreen : BaseScreen {
 			}
 		} else {
 			fromPos = userAvatarTexture.transform.position;
-			if (!bigWinPanel.isShowing) {
+			if (!bigWinPanel.isShowing && spinData.newBossData == null) {
 				slotMachine.Wait();
 				if (!IsInvoking("ReleaseSlotPause")) {
 					Invoke("ReleaseSlotPause", 1f * spinData.spawnSkills.Count);
@@ -170,6 +170,7 @@ public class BaseSlotMachineScreen : BaseScreen {
 	}
 	
 	void ReleaseSlotPause() {
+		Debug.Log("ReleaseSlotPause===");
 		slotMachine.Resume();
 	}
 	
