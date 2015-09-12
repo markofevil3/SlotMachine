@@ -9,7 +9,7 @@ public class Global {
     SD
   }
   
-	public static bool ENABLE_CHEAT = true;
+	public static bool ENABLE_CHEAT = false;
 	
 	// Variables
 	public static string UI_HD_PATH = "Atlas/UI_HD";

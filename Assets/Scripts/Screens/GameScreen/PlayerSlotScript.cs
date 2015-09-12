@@ -26,7 +26,7 @@ public class PlayerSlotScript : MonoBehaviour {
   public void Init(string mUsername, string displayName, long cash, string avatarLink) {
     username = mUsername;
     usernameLabel.text = displayName;
-    cashLabel.text = cash.ToString("N0");
+    cashLabel.text = Utils.CurrencyToStringShort(cash);
 		this.avatarLink = avatarLink;
     if (this.avatarLink != string.Empty) {
 			StartCoroutine(DisplayAvatar());
@@ -76,7 +76,7 @@ public class PlayerSlotScript : MonoBehaviour {
   }
   
   public void UpdateCash(long cashVal) {
-    cashLabel.text = cashVal.ToString("N0");
+    cashLabel.text = Utils.CurrencyToStringShort(cashVal);
   }
   
   public bool IsEmpty() {
