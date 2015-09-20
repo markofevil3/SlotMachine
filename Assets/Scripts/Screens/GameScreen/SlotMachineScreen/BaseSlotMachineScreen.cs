@@ -341,11 +341,13 @@ public class BaseSlotMachineScreen : BaseScreen {
   void SetBetPerLine(int betPerLineIndex) {
     slotMachine.SetBetPerLine(betPerLineIndex);
     betPerLineLabel.text = slotMachine.GetBetPerLine().ToString();
+		UpdateTotalBet();
   }
 
   void SetNumbLine(int lineVal) {
     slotMachine.SetNumLine(lineVal);
     lineLabel.text = slotMachine.GetNumLine().ToString();
+		UpdateTotalBet();
   }
 
   void EventBetPerLine() {
@@ -362,6 +364,10 @@ public class BaseSlotMachineScreen : BaseScreen {
 		slotMachine.StartMachine();
   }
   
+	void UpdateTotalBet() {
+		inGameChatBar.UpdateTotalBet(slotMachine.GetNumLine() * slotMachine.GetBetPerLine());
+	}
+	
   public void OnPlayerJoinRoom(string roomId, JSONObject userData) {
     if (this.roomId == roomId) {
       PlayerSlotScript playerSlot = GetAvailableSlot(userData.GetString("username"));

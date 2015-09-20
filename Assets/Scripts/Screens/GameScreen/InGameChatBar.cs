@@ -16,6 +16,8 @@ public class InGameChatBar : MonoBehaviour {
 	public UILabel recentChatMes;
 	public UISprite background;
 	public UISprite textListBackground;
+	public UILabel totalBetLabel;
+	public UISprite totalBetGoldIcon;
 
 	private bool isOpen = false;
 	private Vector3 closePos;
@@ -95,6 +97,11 @@ public class InGameChatBar : MonoBehaviour {
 		#endif 
 		// static public TweenPosition Begin (GameObject go, float duration, Vector3 pos, bool worldSpace);
 		
+	}
+	
+	public void UpdateTotalBet(int totalBet) {
+		totalBetLabel.text = Localization.Format("TotalBet_Text", totalBet.ToString("N0"));
+		totalBetGoldIcon.UpdateAnchors();
 	}
 	
 	void Update() {
