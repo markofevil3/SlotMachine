@@ -3,7 +3,7 @@
 // Copyright © 2011-2015 Tasharen Entertainment
 //----------------------------------------------
 
-#if !UNITY_EDITOR && (UNITY_IPHONE || UNITY_ANDROID || UNITY_WP8 || UNITY_WP_8_1 || UNITY_BLACKBERRY)
+#if !UNITY_EDITOR && (UNITY_IPHONE || UNITY_ANDROID || UNITY_WP8 || UNITY_WP_8_1 || UNITY_BLACKBERRY || UNITY_WINRT || UNITY_METRO)
 #define MOBILE
 #endif
 
@@ -36,6 +36,19 @@ public class UIInput : MonoBehaviour
 		Filename,
 	}
 
+#if UNITY_EDITOR
+	public enum KeyboardType
+	{
+		Default = (int)TouchScreenKeyboardType.Default,
+		ASCIICapable = (int)TouchScreenKeyboardType.ASCIICapable,
+		NumbersAndPunctuation = (int)TouchScreenKeyboardType.NumbersAndPunctuation,
+		URL = (int)TouchScreenKeyboardType.URL,
+		NumberPad = (int)TouchScreenKeyboardType.NumberPad,
+		PhonePad = (int)TouchScreenKeyboardType.PhonePad,
+		NamePhonePad = (int)TouchScreenKeyboardType.NamePhonePad,
+		EmailAddress = (int)TouchScreenKeyboardType.EmailAddress,
+	}
+#else
 	public enum KeyboardType
 	{
 		Default = 0,
@@ -47,6 +60,7 @@ public class UIInput : MonoBehaviour
 		NamePhonePad = 6,
 		EmailAddress = 7,
 	}
+#endif
 
 	public enum OnReturnKey
 	{
@@ -226,11 +240,7 @@ public class UIInput : MonoBehaviour
 	{
 		get
 		{
-#if UNITY_METRO
-			return true;
-#else
 			return hideInput && label != null && !label.multiLine && inputType != InputType.Password;
-#endif
 		}
 	}
 
@@ -464,6 +474,7 @@ public class UIInput : MonoBehaviour
 			mDefaultText = label.text;
 			mDefaultColor = label.color;
 			label.supportEncoding = false;
+			mEllipsis = label.overflowEllipsis;
 
 			if (label.alignment == NGUIText.Alignment.Justified)
 			{
@@ -533,10 +544,18 @@ public class UIInput : MonoBehaviour
 		selection = this;
 		if (mDoInit) Init();
 
+		if (label != null)
+		{
+			mEllipsis = label.overflowEllipsis;
+			label.overflowEllipsis = false;
+		}
+
 		// Unity has issues bringing up the keyboard properly if it's in "hideInput" mode and you happen
 		// to select one input in the same Update as de-selecting another.
 		if (label != null && NGUITools.GetActive(this)) mSelectMe = Time.frameCount;
 	}
+
+	[System.NonSerialized] bool mEllipsis = false;
 
 	/// <summary>
 	/// Notification of the input field losing selection.
@@ -545,6 +564,8 @@ public class UIInput : MonoBehaviour
 	protected void OnDeselectEvent ()
 	{
 		if (mDoInit) Init();
+
+		if (label != null) label.overflowEllipsis = mEllipsis;
 
 		if (label != null && NGUITools.GetActive(this))
 		{
@@ -623,16 +644,12 @@ public class UIInput : MonoBehaviour
 				{
 					TouchScreenKeyboard.hideInput = true;
 					kt = (TouchScreenKeyboardType)((int)keyboardType);
- #if UNITY_METRO
-					val = "";
- #else
 					val = "|";
- #endif
 				}
 				else if (inputType == InputType.Password)
 				{
 					TouchScreenKeyboard.hideInput = false;
-					kt = TouchScreenKeyboardType.Default;
+					kt = (TouchScreenKeyboardType)((int)keyboardType);
 					val = mValue;
 					mSelectionStart = mSelectionEnd;
 				}
@@ -649,9 +666,9 @@ public class UIInput : MonoBehaviour
 					TouchScreenKeyboard.Open(val, kt, false, false, true) :
 					TouchScreenKeyboard.Open(val, kt, !inputShouldBeHidden && inputType == InputType.AutoCorrect,
 						label.multiLine && !hideInput, false, false, defaultText);
- #if UNITY_METRO
+#if UNITY_METRO
 				mKeyboard.active = true;
- #endif
+#endif
 			}
 			else
 #endif // MOBILE
@@ -670,10 +687,6 @@ public class UIInput : MonoBehaviour
 #if MOBILE
 		if (mKeyboard != null)
 		{
- #if UNITY_METRO
-			string text = Input.inputString;
-			if (!string.IsNullOrEmpty(text)) Insert(text);
- #else
 			string text = (mKeyboard.done || !mKeyboard.active) ? mCached : mKeyboard.text;
  
 			if (inputShouldBeHidden)
@@ -684,9 +697,11 @@ public class UIInput : MonoBehaviour
 					{
 						Insert(text.Substring(1));
 					}
-					else DoBackspace();
-
-					mKeyboard.text = "|";
+					else if (!mKeyboard.done && mKeyboard.active)
+					{
+						DoBackspace();
+						mKeyboard.text = "|";
+					}
 				}
 			}
 			else if (mCached != text)
@@ -694,7 +709,7 @@ public class UIInput : MonoBehaviour
 				mCached = text;
 				if (!mKeyboard.done && mKeyboard.active) value = text;
 			}
- #endif // UNITY_METRO
+
 			if (mKeyboard.done || !mKeyboard.active)
 			{
 				if (!mKeyboard.wasCanceled) Submit();

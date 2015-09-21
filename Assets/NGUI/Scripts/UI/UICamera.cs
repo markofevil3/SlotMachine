@@ -320,6 +320,12 @@ public class UICamera : MonoBehaviour
 	public KeyCode cancelKey0 = KeyCode.Escape;
 	public KeyCode cancelKey1 = KeyCode.JoystickButton1;
 
+	/// <summary>
+	/// Whether NGUI will automatically hide the mouse cursor when controller or touch input is detected.
+	/// </summary>
+
+	public bool autoHideCursor = true;
+
 	public delegate void OnCustomInput ();
 
 	/// <summary>
@@ -344,7 +350,7 @@ public class UICamera : MonoBehaviour
 	{
 		get
 		{
-			return mDisableController && UIPopupList.current == null;
+			return mDisableController && !UIPopupList.isOpen;
 		}
 		set
 		{
@@ -407,6 +413,19 @@ public class UICamera : MonoBehaviour
 	/// </summary>
 
 	static public UICamera current = null;
+
+	/// <summary>
+	/// NGUI event system that will be handling all events.
+	/// </summary>
+
+	static public UICamera first
+	{
+		get
+		{
+			if (list == null || list.size == 0) return null;
+			return list[0];
+		}
+	}
 
 	/// <summary>
 	/// Last camera active prior to sending out the event. This will always be the camera that actually sent out the event.
@@ -499,16 +518,19 @@ public class UICamera : MonoBehaviour
 					else
 #endif
 					{
+						if (current != null && current.autoHideCursor)
+						{
 #if UNITY_4_3 || UNITY_4_5 || UNITY_4_6
-						Screen.showCursor = false;
-						Screen.lockCursor = true;
+							Screen.showCursor = false;
+							Screen.lockCursor = true;
 #else
-						Cursor.visible = false;
-						Cursor.lockState = CursorLockMode.Locked;
+							Cursor.visible = false;
+							Cursor.lockState = CursorLockMode.Locked;
 #endif
 
-						// Skip the next 2 frames worth of mouse movement
-						mMouse[0].ignoreDelta = 2;
+							// Skip the next 2 frames worth of mouse movement
+							mMouse[0].ignoreDelta = 2;
+						}
 					}
 
 					if (onSchemeChange != null) onSchemeChange();
@@ -665,9 +687,21 @@ public class UICamera : MonoBehaviour
 		get
 		{
 			if (currentTouch != null) return currentTouch.isOverUI;
-			if (mHover == null) return false;
-			if (mHover == fallThrough) return false;
-			return NGUITools.FindInParents<UIRoot>(mHover) != null;
+
+			for (int i = 0, imax = activeTouches.Count; i < imax; ++i)
+			{
+				MouseOrTouch touch = activeTouches[i];
+				if (touch.pressed != null && touch.pressed != fallThrough && NGUITools.FindInParents<UIRoot>(touch.pressed) != null)
+					return true;
+			}
+
+			if (mMouse[0].current != null && mMouse[0].current != fallThrough && NGUITools.FindInParents<UIRoot>(mMouse[0].current) != null)
+				return true;
+
+			if (controller.pressed != null && controller.pressed != fallThrough && NGUITools.FindInParents<UIRoot>(controller.pressed) != null)
+				return true;
+
+			return false;
 		}
 	}
 
@@ -1528,28 +1562,15 @@ public class UICamera : MonoBehaviour
 		mWidth = Screen.width;
 		mHeight = Screen.height;
 
-		/*if (Application.platform == RuntimePlatform.Android ||
-			Application.platform == RuntimePlatform.IPhonePlayer
-			|| Application.platform == RuntimePlatform.WP8Player
-#if UNITY_4_3
-			|| Application.platform == RuntimePlatform.BB10Player
+#if (UNITY_IPHONE || UNITY_ANDROID || UNITY_WP8 || UNITY_WP_8_1 || UNITY_BLACKBERRY || UNITY_WINRT || UNITY_METRO)
+		currentScheme = ControlScheme.Touch;
 #else
-			|| Application.platform == RuntimePlatform.BlackBerryPlayer
-#endif
-			)
+		if (Application.platform == RuntimePlatform.PS3 ||
+			Application.platform == RuntimePlatform.XBOX360)
 		{
-			useTouch = true;
-			useMouse = false;
-			useKeyboard = false;
+			currentScheme = ControlScheme.Controller;
 		}
-		else if (Application.platform == RuntimePlatform.PS3 ||
-				 Application.platform == RuntimePlatform.XBOX360)
-		{
-			useMouse = false;
-			useTouch = false;
-			useKeyboard = false;
-			useController = true;
-		}*/
+#endif
 
 		// Save the starting mouse position
 		mMouse[0].pos = Input.mousePosition;
@@ -1560,6 +1581,26 @@ public class UICamera : MonoBehaviour
 			mMouse[i].lastPos = mMouse[0].pos;
 		}
 		mLastPos = mMouse[0].pos;
+
+#if !UNITY_EDITOR && (UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX || UNITY_STANDALONE_LINUX)
+		string[] args = System.Environment.GetCommandLineArgs();
+
+		if (args != null)
+		{
+			for (int i = 0; i < args.Length; ++i)
+			{
+				string s = args[i];
+				if (s == "-noMouse") useMouse = false;
+				else if (s == "-noTouch") useTouch = false;
+				else if (s == "-noController") useController = false;
+				else if (s == "-noJoystick") useController = false;
+				else if (s == "-useMouse") useMouse = true;
+				else if (s == "-useTouch") useTouch = true;
+				else if (s == "-useController") useController = true;
+				else if (s == "-useJoystick") useController = true;
+			}
+		}
+#endif
 	}
 
 	/// <summary>
@@ -1578,6 +1619,10 @@ public class UICamera : MonoBehaviour
 
 	void OnDisable () { list.Remove(this); }
 
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX || UNITY_STANDALONE_LINUX
+	static bool disableControllerCheck = true;
+#endif
+
 	/// <summary>
 	/// We don't want the camera to send out any kind of mouse events.
 	/// </summary>
@@ -1589,7 +1634,7 @@ public class UICamera : MonoBehaviour
 
 		if (Application.isPlaying)
 		{
-			// Always set a fallthrough object
+			// Always set a fall-through object
 			if (fallThrough == null)
 			{
 				UIRoot root = NGUITools.FindInParents<UIRoot>(gameObject);
@@ -1605,6 +1650,19 @@ public class UICamera : MonoBehaviour
 				}
 			}
 			cachedCamera.eventMask = 0;
+
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX || UNITY_STANDALONE_LINUX
+			// Automatically disable controller-based input if the game starts with a non-zero controller input.
+			// This most commonly happens with Thrustmaster and other similar joystick types.
+			if (disableControllerCheck && useController && handlesEvents)
+			{
+				disableControllerCheck = false;
+				if (!string.IsNullOrEmpty(horizontalAxisName) && Mathf.Abs(GetAxis(horizontalAxisName)) > 0.1f) useController = false;
+				else if (!string.IsNullOrEmpty(verticalAxisName) && Mathf.Abs(GetAxis(verticalAxisName)) > 0.1f) useController = false;
+				else if (!string.IsNullOrEmpty(horizontalPanAxisName) && Mathf.Abs(GetAxis(horizontalPanAxisName)) > 0.1f) useController = false;
+				else if (!string.IsNullOrEmpty(verticalPanAxisName) && Mathf.Abs(GetAxis(verticalPanAxisName)) > 0.1f) useController = false;
+			}
+#endif
 		}
 	}
 
@@ -1648,8 +1706,8 @@ public class UICamera : MonoBehaviour
 				Notify(mHover, "OnScroll", scroll);
 			}
 
-			if (showTooltips && mTooltipTime != 0f && !UIPopupList.isOpen && (mTooltipTime < RealTime.time ||
-				GetKey(KeyCode.LeftShift) || GetKey(KeyCode.RightShift)))
+			if (showTooltips && mTooltipTime != 0f && !UIPopupList.isOpen && mMouse[0].dragged == null &&
+				(mTooltipTime < RealTime.time || GetKey(KeyCode.LeftShift) || GetKey(KeyCode.RightShift)))
 			{
 				currentTouch = mMouse[0];
 				currentTouchID = -1;
@@ -1839,6 +1897,7 @@ public class UICamera : MonoBehaviour
 			currentKey = KeyCode.Mouse0;
 			hoveredObject = currentTouch.current;
 		}
+
 		currentTouch = null;
 
 		// Update the last value
@@ -2113,7 +2172,7 @@ public class UICamera : MonoBehaviour
 		}
 
 		// Send out all key events
-		if (Input.anyKeyDown)
+		if (GetAnyKeyDown != null ? GetAnyKeyDown() : Input.anyKeyDown)
 		{
 			for (int i = 0, imax = NGUITools.keys.Length; i < imax; ++i)
 			{
@@ -2149,6 +2208,9 @@ public class UICamera : MonoBehaviour
 				onPress(currentTouch.pressed, false);
 
 			Notify(currentTouch.pressed, "OnPress", false);
+
+			if (currentScheme == ControlScheme.Mouse && hoveredObject == null && currentTouch.current != null)
+				hoveredObject = currentTouch.current;
 
 			currentTouch.pressed = currentTouch.current;
 			currentTouch.dragged = currentTouch.current;

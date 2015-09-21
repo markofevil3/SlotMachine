@@ -71,6 +71,7 @@ public class UILabel : UIWidget
 	[HideInInspector][SerializeField] bool mUseFloatSpacing = false;
 	[HideInInspector][SerializeField] float mFloatSpacingX = 0;
 	[HideInInspector][SerializeField] float mFloatSpacingY = 0;
+	[HideInInspector][SerializeField] bool mOverflowEllipsis = false;
 
 	// Obsolete values
 	[HideInInspector][SerializeField] bool mShrinkToFit = false;
@@ -540,6 +541,26 @@ public class UILabel : UIWidget
 		}
 	}
 
+	/// <summary>
+	/// Whether to append "..." at the end of clamped text that didn't fit.
+	/// </summary>
+
+	public bool overflowEllipsis
+	{
+		get
+		{
+			return mOverflowEllipsis;
+		}
+		set
+		{
+			if (mOverflowEllipsis != value)
+			{
+				mOverflowEllipsis = value;
+				MarkAsChanged();
+			}
+		}
+	}
+
 #if DYNAMIC_FONT
 	/// <summary>
 	/// Whether the label will use the printed size instead of font size when printing the label.
@@ -927,7 +948,7 @@ public class UILabel : UIWidget
 				// Font hasn't been used yet? Register a change delegate callback
 #if UNITY_4_3 || UNITY_4_5 || UNITY_4_6
 				if (!mFontUsage.TryGetValue(mActiveTTF, out usage))
-					mActiveTTF.textureRebuildCallback = OnFontTextureChanged;
+					mActiveTTF.textureRebuildCallback = delegate() { OnFontChanged(mActiveTTF); };
 #endif
 #if UNITY_FLASH
 				mFontUsage[mActiveTTF] = usage + 1;
@@ -947,41 +968,6 @@ public class UILabel : UIWidget
 	/// So... queue yet another work-around.
 	/// </summary>
 
-#if UNITY_4_3 || UNITY_4_5 || UNITY_4_6
-	static void OnFontTextureChanged ()
-	{
-		for (int i = 0; i < mList.size; ++i)
-		{
-			UILabel lbl = mList[i];
-
-			if (lbl != null)
-			{
-				Font fnt = lbl.trueTypeFont;
-
-				if (fnt != null)
-				{
-					fnt.RequestCharactersInTexture(lbl.mText, lbl.mFinalFontSize, lbl.mFontStyle);
-				}
-			}
-		}
-
-		for (int i = 0; i < mList.size; ++i)
-		{
-			UILabel lbl = mList[i];
-
-			if (lbl != null)
-			{
-				Font fnt = lbl.trueTypeFont;
-
-				if (fnt != null)
-				{
-					lbl.RemoveFromPanel();
-					lbl.CreatePanel();
-				}
-			}
-		}
-	}
-#else
 	static void OnFontChanged (Font font)
 	{
 		for (int i = 0; i < mList.size; ++i)
@@ -995,27 +981,30 @@ public class UILabel : UIWidget
 				if (fnt == font)
 				{
 					fnt.RequestCharactersInTexture(lbl.mText, lbl.mFinalFontSize, lbl.mFontStyle);
-				}
-			}
-		}
-
-		for (int i = 0; i < mList.size; ++i)
-		{
-			UILabel lbl = mList[i];
-
-			if (lbl != null)
-			{
-				Font fnt = lbl.trueTypeFont;
-
-				if (fnt == font)
-				{
 					lbl.RemoveFromPanel();
 					lbl.CreatePanel();
+
+					if (mTempPanelList == null)
+						mTempPanelList = new List<UIPanel>();
+
+					if (!mTempPanelList.Contains(lbl.panel))
+						mTempPanelList.Add(lbl.panel);
 				}
 			}
 		}
+
+		if (mTempPanelList != null)
+		{
+			for (int i = 0, imax = mTempPanelList.Count; i < imax; ++i)
+			{
+				UIPanel p = mTempPanelList[i];
+				p.Refresh();
+			}
+			mTempPanelList.Clear();
+		}
 	}
-#endif
+
+	static List<UIPanel> mTempPanelList;
 #endif
 
 	/// <summary>
@@ -1287,7 +1276,8 @@ public class UILabel : UIWidget
 				NGUIText.Update(false);
 
 				// Wrap the text
-				bool fits = NGUIText.WrapText(mText, out mProcessedText, true, false);
+				bool fits = NGUIText.WrapText(mText, out mProcessedText, true, false,
+					mOverflowEllipsis && mOverflow == Overflow.ClampContent);
 
 				if (mOverflow == Overflow.ShrinkContent && !fits)
 				{
@@ -1746,6 +1736,7 @@ public class UILabel : UIWidget
 			col.r = Mathf.GammaToLinearSpace(col.r);
 			col.g = Mathf.GammaToLinearSpace(col.g);
 			col.b = Mathf.GammaToLinearSpace(col.b);
+			col.a = Mathf.GammaToLinearSpace(col.a);
 		}
 
 		string text = processedText;
