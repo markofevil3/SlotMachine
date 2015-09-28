@@ -31,6 +31,7 @@ public class BaseSlotMachineScreen : BaseScreen {
   public UILabel userCashLabel;
 	public UILabel userGemLabel;
 	public UILabel userKillLabel;
+	public UIButton btnPayout;
 	public UITexture userAvatarTexture;
 	public UIEventTriggerExtent backgroundEventListener;
 	public InGameChatBar inGameChatBar;
