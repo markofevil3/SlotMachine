@@ -21,7 +21,7 @@ public class SlotItem : MonoBehaviour {
   public UISprite sprite;
   public UISprite glowSprite;
   
-  private string[] baseSpriteNames = new string[10] {"wild", "apple", "strawberry", "radish", "broccoli", "eggplant", "bell_pepper", "chili_pepper", "mushroom", "fruits"};
+  private static string[] baseSpriteNames = new string[10] {"wild", "apple", "strawberry", "radish", "broccoli", "eggplant", "bell_pepper", "chili_pepper", "mushroom", "fruits"};
   private Type type;
   private int index;
 	private TweenAlpha tweenAlpha;
@@ -29,6 +29,21 @@ public class SlotItem : MonoBehaviour {
   public virtual string GetSpriteName(int index) {
     return baseSpriteNames[index];
   }
+
+	public static string GetItemSpriteName(BaseSlotMachineScreen.GameType gameType, int index) {
+		switch(gameType) {
+			case BaseSlotMachineScreen.GameType.SLOT_DRAGON:
+				return SlotItemDragon.spriteNames[index];
+			break;
+			case BaseSlotMachineScreen.GameType.SLOT_PIRATE:
+				return SlotItemPirate.spriteNames[index];
+			break;
+			case BaseSlotMachineScreen.GameType.SLOT_ZOMBIE:
+				return SlotItemZombie.spriteNames[index];
+			break;
+		}
+		return null;
+	}
 
   public virtual void Init(Type type, int index) {
     if (sprite == null) {

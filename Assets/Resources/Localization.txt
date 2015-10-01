@@ -82,3 +82,8 @@ PopupInbox_ClaimSuccess,Claim reward successful!,Claim reward successful!
 Btn_Invite,Invite,Invite
 FreeSpinCountText,{0} spins,{0} spins
 TotalBet_Text,Total bet: [FFD800FF]{0},Total bet: [FFD800FF]{0}
+PopupPayout_jacpotText,Max bet = JACKPOT,Max bet = JACKPOT
+PopupPayout_specialText_SLOT_DRAGON,3 or more anywhere on sreen = FREE SPIN,3 or more anywhere on sreen = FREE SPIN
+PopupPayout_specialText_SLOT_PIRATE,3 or more anywhere on sreen = FREE SPIN,3 or more anywhere on sreen = FREE SPIN
+PopupPayout_specialText_SLOT_ZOMBIE,3 or more anywhere on sreen = FREE SPIN,3 or more anywhere on sreen = FREE SPIN
+PopupPayout_Title,Payouts,Payouts

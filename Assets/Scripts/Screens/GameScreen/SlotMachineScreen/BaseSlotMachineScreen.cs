@@ -73,6 +73,7 @@ public class BaseSlotMachineScreen : BaseScreen {
     EventDelegate.Set(btnBetPerLine.onClick, EventBetPerLine);
     EventDelegate.Set(btnLines.onClick, EventBetLines);
     EventDelegate.Set(btnMaxBet.onClick, EventMaxBet);
+    EventDelegate.Set(btnPayout.onClick, EventOpenPopupPayout);
 		
     SetBetPerLine(DEFAULT_BET_PER_LINE_INDEX);
     SetNumbLine(1);
@@ -239,6 +240,10 @@ public class BaseSlotMachineScreen : BaseScreen {
     PopupManager.Instance.OpenPopup(Popup.Type.POPUP_LEAVE_GAME, new object[] { gameType });
   }
   
+	void EventOpenPopupPayout() {
+    PopupManager.Instance.OpenPopup(Popup.Type.POPUP_PAYOUT, null);
+	}
+	
   public override void Open() {}
   
 	// Set result after receive from server, then slot reel will display result

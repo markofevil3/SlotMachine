@@ -15,7 +15,7 @@ public class SlotItemDragon : SlotItem {
 	public const int ITEM_METEOR = 9;
 	public const int ITEM_FREESPIN = 10;
 
-  private string[] spriteNames = new string[11] {"character-13", "1-02", "7-02", "5-02", "8-02", "2-02", "4-02", "6-02", "9-02", "meteor", "3-02"};
+  public static string[] spriteNames = new string[11] {"character-13", "1-02", "7-02", "5-02", "8-02", "2-02", "4-02", "6-02", "9-02", "meteor", "3-02"};
 	
   public override string GetSpriteName(int index) {
     return spriteNames[index];

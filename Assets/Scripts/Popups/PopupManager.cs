@@ -18,6 +18,7 @@ public class PopupManager : MonoBehaviour {
   private PopupReloadGame popupReloadGame;
 	private PopupSetting popupSetting;
 	private PopupInbox popupInbox;
+	private PopupPayout popupPayout;
 
   private PopupLoading popupLoading;
   
@@ -250,6 +251,20 @@ public class PopupManager : MonoBehaviour {
 	       	}
 	     	}
 	    break;
+	    case Popup.Type.POPUP_PAYOUT:
+	    	if (popupPayout == null) {
+	      	GameObject tempGameObject = NGUITools.AddChild(root, Resources.Load(Global.POPUP_PATH + "/PopupPayout", typeof(GameObject)) as GameObject);
+	       	tempGameObject.name = "PopupPayout";
+	       	popupPayout = tempGameObject.GetComponent<PopupPayout>();
+	       	tempPopup = popupPayout as Popup;
+	       	popupPayout.Init(data);
+	       	if (shouldAnimate) {
+	       	  popupPayout.Open();
+	       	} else {
+	       	  popupPayout.OpenPopupNoAnimation();
+	       	}
+	     	}
+	    break;
 	  }
 	  if (tempPopup != null) {
 	    openingPopup.Add(tempPopup);
@@ -289,6 +304,9 @@ public class PopupManager : MonoBehaviour {
 	    break;
 	    case Popup.Type.POPUP_INBOX:
 	      popupInbox = null;
+	    break;
+	    case Popup.Type.POPUP_PAYOUT:
+	      popupPayout = null;
 	    break;
 	  }
   }
