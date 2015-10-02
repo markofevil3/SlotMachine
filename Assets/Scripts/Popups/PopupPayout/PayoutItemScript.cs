@@ -8,7 +8,7 @@ public class PayoutItemScript : MonoBehaviour {
 	public UILabel[] winMultiLabels;
 	public UILabel specialText;
 
-	public void Init(string iconSpriteName) {
+	public void Init(int type, string iconSpriteName) {
 		if (ScreenManager.Instance != null && ScreenManager.Instance.CurrentSlotScreen != null) {
 			itemIcon.atlas = AtlasManager.Instance.GetAtlasReferenceBySlotType(ScreenManager.Instance.CurrentSlotScreen.gameType);
 			itemIcon.spriteName = iconSpriteName;
