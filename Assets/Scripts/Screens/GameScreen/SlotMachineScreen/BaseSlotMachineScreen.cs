@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Boomlagoon.JSON;
@@ -19,6 +20,8 @@ public class BaseSlotMachineScreen : BaseScreen {
 	public JSONObject roomData;
   [HideInInspector]
 	public bool isChangingBoss = false;
+	[HideInInspector]
+  public int[,] PAYOUTS = new int[11,5];
 	
   public GameType gameType;
   public UIButton btnBack;
@@ -64,8 +67,26 @@ public class BaseSlotMachineScreen : BaseScreen {
     return gameType;
   }
   
+	private void InitPayouts(string payoutData) {
+		string[] rows = payoutData.Split(';');		
+		string[] split;
+		for (int i = 0; i < rows.Length; i++) {
+			split = rows[i].Trim().Split(',');
+			for (int j = 0; j < SlotCombination.NUM_REELS; j++) {
+				if (split.Length - 1 >= j) {
+					PAYOUTS[i, j] = int.Parse(split[j].Trim());
+				}
+			}
+		}
+		rows = null;
+		split = null;
+	}
+	
   public override void Init(object[] data) {
     JSONObject jsonData = (JSONObject)data[1];
+
+		InitPayouts(jsonData.GetString("payouts"));
+		
 		StopFreeSpinAnimation();
     EventDelegate.Set(btnBack.onClick, EventBackToSelectGame);
    	

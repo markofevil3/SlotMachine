@@ -86,7 +86,6 @@ public class SlotCombination : MonoBehaviour {
   
   public void Init(string betPerLinesData) {
 		Utils.StringToIntArray(betPerLinesData, betPerLines);
-		Debug.Log("####### " + Utils.ArrIntToString(betPerLines));
   }
   
   public void SetBetPerLine(int betVal) {
